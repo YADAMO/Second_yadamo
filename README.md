@@ -1,2 +1,1 @@
-# Second_yadamo
-yadamo
+がんばりましょう
