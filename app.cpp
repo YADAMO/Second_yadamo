@@ -9,6 +9,10 @@
 #include "app.h"
 #include "LineTracer.h"
 
+#include "Judgement.h"
+#include "WhiteJudge.h"
+
+
 #if defined(BUILD_MODULE)
 #include "module_cfg.h"
 #else
