@@ -11,6 +11,7 @@ APPL_CXXOBJS += \
 	BlackJudge.o \
 	GreenJudge.o \
 	TouchJudge.o \
+	ObstacleJudge.o \
 	DistanceMeter.o
 
 
