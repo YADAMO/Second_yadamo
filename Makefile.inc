@@ -10,6 +10,7 @@ APPL_CXXOBJS += \
 	WhiteJudge.o \
 	BlackJudge.o \
 	GreenJudge.o \
+	TouchJudge.o \
 	DistanceMeter.o
 
 
