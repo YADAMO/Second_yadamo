@@ -10,7 +10,8 @@
 #include "LineTracer.h"
 
 #include "WhiteJudge.h"
-// #include "DistanceMeter.h"
+#include "DistanceMeter.h"
+
 
 
 #if defined(BUILD_MODULE)
