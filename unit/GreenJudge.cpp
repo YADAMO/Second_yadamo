@@ -4,6 +4,7 @@
 
 GreenJudge::GreenJudge(ColorSensor *colorSensor){
 	this->colorSensor = colorSensor;
+	this->interval = 1;
 }
 
 bool GreenJudge::judge(){

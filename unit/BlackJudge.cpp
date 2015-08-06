@@ -4,6 +4,7 @@
 
 BlackJudge::BlackJudge(ColorSensor *colorSensor){
 	this->colorSensor = colorSensor;
+	this->interval = 1;
 }
 
 bool BlackJudge::judge(){

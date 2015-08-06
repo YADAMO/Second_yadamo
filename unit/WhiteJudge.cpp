@@ -4,6 +4,7 @@
 
 WhiteJudge::WhiteJudge(ColorSensor *colorSensor){
 	this->colorSensor = colorSensor;
+	this->interval = 1;
 }
 
 bool WhiteJudge::judge(){

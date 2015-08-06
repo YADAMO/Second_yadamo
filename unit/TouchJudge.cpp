@@ -4,6 +4,7 @@
 
 TouchJudge::TouchJudge(TouchSensor *touchSensor){
 	this->touchSensor = touchSensor;
+	interval = 1;
 }
 
 bool TouchJudge::judge(){
