@@ -7,7 +7,8 @@ APPL_CXXOBJS += \
 	LineMonitor.o \
 	BalancerCpp.o \
 	LineTracer.o \
-	WhiteJudge.o
+	WhiteJudge.o \
+	DistanceMeter.o
 
 
 SRCLANG := c++
