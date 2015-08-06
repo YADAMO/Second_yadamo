@@ -2,8 +2,7 @@
 
 class Judgement{
 public:
-	virtual Judgement();
-	virtual bool judge();
+	virtual bool judge(){}
 private:
 
 };

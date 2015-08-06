@@ -6,7 +6,7 @@ WhiteJudge::WhiteJudge(){
 
 }
 
-bool Judgement::judge(){
+bool WhiteJudge::judge(){
 
 	return false;
 }
