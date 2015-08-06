@@ -7,7 +7,9 @@ APPL_CXXOBJS += \
 	LineMonitor.o \
 	BalancerCpp.o \
 	LineTracer.o \
-	WhiteJudge.o
+	WhiteJudge.o \
+	BlackJudge.o \
+	GreenJudge.o
 
 
 SRCLANG := c++

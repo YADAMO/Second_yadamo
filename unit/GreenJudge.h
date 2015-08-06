@@ -6,9 +6,9 @@
 
 using namespace ev3api;
 
-class WhiteJudge : public Judgement{
+class GreenJudge : public Judgement{
 public:
-	WhiteJudge(ColorSensor *ColorSensor);
+	GreenJudge(ColorSensor *ColorSensor);
     virtual bool judge();
 
 private:

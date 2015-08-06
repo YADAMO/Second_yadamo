@@ -2,11 +2,14 @@
 
 #include "WhiteJudge.h"
 
-WhiteJudge::WhiteJudge(){
-
+WhiteJudge::WhiteJudge(ColorSensor *colorSensor){
+	this->colorSensor = colorSensor;
 }
 
 bool WhiteJudge::judge(){
-
-	return false;
+	if(colorSensor->getColorNumber() == 6){
+		return true;
+	}else{
+		return false;
+	}
 }
