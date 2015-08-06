@@ -11,7 +11,8 @@ APPL_CXXOBJS += \
 	BlackJudge.o \
 	GreenJudge.o \
 	TouchJudge.o \
-	DistanceMeter.o
+	DistanceMeter.o \
+	SpeedMeter.o
 
 
 SRCLANG := c++
