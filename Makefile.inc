@@ -12,7 +12,6 @@ APPL_CXXOBJS += \
 	GreenJudge.o \
 	TouchJudge.o \
 	ObstacleJudge.o \
-	DistanceMeter.o
 	DistanceMeter.o \
 	SpeedMeter.o
 
