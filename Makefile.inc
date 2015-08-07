@@ -14,7 +14,8 @@ APPL_CXXOBJS += \
 	ObstacleJudge.o \
 	DistanceMeter.o \
 	SpeedMeter.o \
-	Messenger.o
+	Messenger.o \
+	Observer.o
 
 
 SRCLANG := c++

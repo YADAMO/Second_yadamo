@@ -8,5 +8,6 @@ SpeedMeter::SpeedMeter(){
 
 double SpeedMeter::calcSpeed(double dst){
 	double deltDst = dst - preDistance;
+	preDistance = dst;
 	return deltDst * 1000;
 }
