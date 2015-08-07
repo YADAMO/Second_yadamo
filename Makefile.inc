@@ -13,7 +13,8 @@ APPL_CXXOBJS += \
 	TouchJudge.o \
 	ObstacleJudge.o \
 	DistanceMeter.o \
-	SpeedMeter.o
+	SpeedMeter.o \
+	Messenger.o
 
 
 SRCLANG := c++

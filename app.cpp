@@ -11,6 +11,7 @@
 
 #include "WhiteJudge.h"
 #include "DistanceMeter.h"
+#include "Messenger.h"
 
 
 
@@ -37,6 +38,7 @@ static LineMonitor     *gLineMonitor;
 static Balancer        *gBalancer;
 static BalancingWalker *gBalancingWalker;
 static LineTracer      *gLineTracer;
+static Messenger       *gMessenger;
 
 /**
  * EV3システム生成
@@ -50,6 +52,7 @@ static void user_system_create() {
                                            gBalancer);
     gLineMonitor     = new LineMonitor(gColorSensor);
     gLineTracer      = new LineTracer(gLineMonitor, gBalancingWalker);
+    gMessenger       = new Messenger(&gColorSensor);
 
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
@@ -101,7 +104,8 @@ void tracer_task(intptr_t exinf) {
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // バックボタン押下
     } else {
-        gLineTracer->run();  // 倒立走行
+        gMessenger->message();
+        //gLineTracer->run();  // 倒立走行
     }
 
     ext_tsk();
