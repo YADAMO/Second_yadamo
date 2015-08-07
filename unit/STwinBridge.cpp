@@ -2,7 +2,7 @@
 
 #include "STwinBridge.h"
 
-STwinBridge::StwinBridge(){
+STwinBridge::STwinBridge(){
 }
 
 bool STwinBridge::run(){

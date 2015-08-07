@@ -16,7 +16,8 @@ APPL_CXXOBJS += \
 	SpeedMeter.o \
 	Messenger.o \
 	Observer.o \
-	ScenarioController.o
+	ScenarioController.o \
+	STwinBridge.o
 
 
 SRCLANG := c++
