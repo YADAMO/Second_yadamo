@@ -6,6 +6,7 @@ Messenger::Messenger(ColorSensor *colorSensor){
 	this->colorSensor = colorSensor;
 }
 
+//実験用メソッド、必要なくなったら消してください
 void Messenger::message(){
 	char *color, *text;
 	switch(colorSensor->getColorNumber()){

@@ -17,7 +17,13 @@ APPL_CXXOBJS += \
 	Messenger.o \
 	Observer.o \
 	ScenarioController.o \
-	STwinBridge.o
+	STwinBridge.o \
+	SBarcode.o \
+	SUndetermined.o \
+	SFigureL.o \
+	SLoopLine.o \
+	SParkingP.o \
+	SParkingL.o
 
 
 SRCLANG := c++
