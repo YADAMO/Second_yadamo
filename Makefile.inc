@@ -23,7 +23,9 @@ APPL_CXXOBJS += \
 	SFigureL.o \
 	SLoopLine.o \
 	SParkingP.o \
-	SParkingL.o
+	SParkingL.o \
+	IN.o \
+	OUT.o
 
 
 SRCLANG := c++
