@@ -9,7 +9,8 @@ using namespace ev3api;
 class Messenger{
 public:
 	Messenger(ColorSensor *colorSensor);
-	void message();
+	void messageColor();
+	void messageString(char *text, int line);
 
 private:
 	ColorSensor *colorSensor;

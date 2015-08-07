@@ -104,7 +104,7 @@ void tracer_task(intptr_t exinf) {
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // バックボタン押下
     } else {
-        gMessenger->message();
+        gMessenger->messageColor();
         //gLineTracer->run();  // 倒立走行
     }
 

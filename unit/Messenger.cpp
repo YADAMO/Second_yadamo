@@ -7,7 +7,7 @@ Messenger::Messenger(ColorSensor *colorSensor){
 }
 
 //実験用メソッド、必要なくなったら消してください
-void Messenger::message(){
+void Messenger::messageColor(){
 	char *color, *text;
 	switch(colorSensor->getColorNumber()){
 		case 1:
@@ -32,4 +32,8 @@ void Messenger::message(){
     strcat(text, color);
 
 	ev3_lcd_draw_string(text , 10, 10);
+}
+
+void Messenger::messageString(char *text, int line){
+	ev3_lcd_draw_string(text , 5, 20 * line);
 }
