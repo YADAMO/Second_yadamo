@@ -24,12 +24,11 @@ APPL_CXXOBJS += \
 	SLoopLine.o \
 	SParkingP.o \
 	SParkingL.o \
-<<<<<<< Updated upstream
 	IN.o \
-	OUT.o
-=======
-	Calibration.o 
->>>>>>> Stashed changes
+	OUT.o \
+	Calibration.o \
+	Drive.o \
+	PID.o
 
 
 SRCLANG := c++
