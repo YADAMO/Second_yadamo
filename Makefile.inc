@@ -3,10 +3,6 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 APPL_COBJS += balancer.o balancer_param.o
 
 APPL_CXXOBJS += \
-	BalancingWalker.o \
-	LineMonitor.o \
-	BalancerCpp.o \
-	LineTracer.o \
 	WhiteJudge.o \
 	BlackJudge.o \
 	GreenJudge.o \
@@ -28,7 +24,8 @@ APPL_CXXOBJS += \
 	OUT.o \
 	Calibration.o \
 	Drive.o \
-	PID.o
+	PID.o\
+	LineTracer.o
 
 
 SRCLANG := c++
