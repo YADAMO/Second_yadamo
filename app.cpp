@@ -8,10 +8,40 @@
 
 #include "app.h"
 
+// センサー類
+#include "SonarSensor.h"
+#include "Motor.h"
+#include "ColorSensor.h"
+#include "TouchSensor.h"
+
+// 判断クラス系
+#include "Observer.h"
 #include "WhiteJudge.h"
+#include "BlackJudge.h"
+#include "GreenJudge.h"
+#include "TouchJudge.h"
+#include "ObstacleJudge.h"
+
+// 計測器系
 #include "DistanceMeter.h"
+#include "SpeedMeter.h"
+
+// シナリオ系
+#include "IN.h"
+#include "OUT.h"
+#include "SBarcode.h"
+#include "SFigureL.h"
+#include "SLoopLine.h"
+#include "SParkingL.h"
+#include "SParkingP.h"
+#include "STwinBridge.h"
+#include "SUndetermined.h" 
+
+// その他
 #include "Messenger.h"
 #include "LineTracer.h"
+#include "Drive.h"
+
 
 
 #if defined(BUILD_MODULE)
@@ -21,13 +51,28 @@
 #endif
 
 // using宣言
-
+using namespace ev3api;
 
 // Device objects
 // オブジェクトを静的に確保する
-
+SonarSensor sonar(PORT_1);
+ColorSensor color(PORT_3);
+TouchSensor touch(PORT_2);
+Motor rightMotor(PORT_B);
+Motor leftMotor(PORT_C);
+Motor frontMotor(PORT_D);
 
 // オブジェクトの定義
+WhiteJudge whiteJudge(&color);
+BlackJudge blackJudge(&color);
+GreenJudge greenJudge(&color);
+TouchJudge touchJudge(&touch);
+ObstacleJudge obstacleJudge(&sonar);
+DistanceMeter distanceMeter(&rightMotor, &leftMotor);
+Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
+Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
+LineTracer lineTracer(&drive, &color);
+
 
 
 /**
@@ -76,11 +121,14 @@ void main_task(intptr_t unused) {
  * ライントレースタスク
  */
 void tracer_task(intptr_t exinf) {
-    if (ev3_button_is_pressed(BACK_BUTTON)) {
-        wup_tsk(MAIN_TASK);  // バックボタン押下
-    } else {
-        
-    }
+    // if (ev3_button_is_pressed(BACK_BUTTON)) {
+    //     wup_tsk(MAIN_TASK);  // バックボタン押下
+    // } else {
+           
+    // }
 
-    ext_tsk();
+    // ext_tsk();
+    observer.update();
+    lineTracer.trace(20, LEFT);
+
 }

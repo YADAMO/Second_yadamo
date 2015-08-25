@@ -11,7 +11,7 @@ using namespace ev3api;
 
 class LineTracer{
 public:
-	LineTracer(Drive &dr, ColorSensor &col);
+	LineTracer(Drive *dr, ColorSensor *col);
 	void trace(double speed, int edge);
 	void setTarget(int tar);
 	int getTarget();

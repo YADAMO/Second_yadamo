@@ -12,10 +12,7 @@
 
 class Observer{
 public:
-	Observer(WhiteJudge &whiteJudge, BlackJudge &blackJudge,
-			GreenJudge &greenJudge, ObstacleJudge &obstacleJudge,
-			TouchJudge &touchJudge, DistanceMeter &distanceMeter,
-			SpeedMeter &speedMeter);
+	Observer(WhiteJudge *whiteJudge, BlackJudge *blackJudge, GreenJudge *greenJudge, ObstacleJudge *obstacleJudge, TouchJudge *touchJudge, DistanceMeter *distanceMeter);
 
 	void update();
 	bool isStep();

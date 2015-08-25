@@ -2,11 +2,11 @@
 
 #include "Drive.h"
 
-Drive::Drive(Motor &rm, Motor &lm, Motor &fm, Observer &obsvr){
-	Rmotor = &rm;
-	Lmotor = &lm;
-	Fmotor = &fm;
-	observer = &obsvr;
+Drive::Drive(Motor *rm, Motor *lm, Motor *fm, Observer *obsvr){
+	Rmotor = rm;
+	Lmotor = lm;
+	Fmotor = fm;
+	observer = obsvr;
 	speedPid = new PID(0.001, 0.29, 0, 0.06);
 	anglePid = new PID(0.001, 0.29, 0, 0.06);
 	Rrad = Rmotor->getCount();

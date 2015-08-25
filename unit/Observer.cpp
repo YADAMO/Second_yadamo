@@ -2,14 +2,14 @@
 
 #include "Observer.h"
 
-Observer::Observer(WhiteJudge &whiteJudge, BlackJudge &blackJudge, GreenJudge &greenJudge, ObstacleJudge &obstacleJudge, TouchJudge &touchJudge, DistanceMeter &distanceMeter, SpeedMeter &speedMeter){
-	this->whiteJudge = &whiteJudge;
-	this->blackJudge = &blackJudge;
-	this->greenJudge = &greenJudge;
-	this->obstacleJudge = &obstacleJudge;
-	this->touchJudge = &touchJudge;
-	this->distanceMeter = &distanceMeter;
-	this->speedMeter = &speedMeter;
+Observer::Observer(WhiteJudge *whiteJudge, BlackJudge *blackJudge, GreenJudge *greenJudge, ObstacleJudge *obstacleJudge, TouchJudge *touchJudge, DistanceMeter *distanceMeter){
+	this->whiteJudge = whiteJudge;
+	this->blackJudge = blackJudge;
+	this->greenJudge = greenJudge;
+	this->obstacleJudge = obstacleJudge;
+	this->touchJudge = touchJudge;
+	this->distanceMeter = distanceMeter;
+	this->speedMeter = new SpeedMeter();
 
 	this->is_Step = false;
 	this->is_Black = false;

@@ -6,7 +6,7 @@ using namespace ev3api;
 
 class DistanceMeter{
 public:
-	DistanceMeter(Motor &rm, Motor &lm);
+	DistanceMeter(Motor *rm, Motor *lm);
 	void init();
 	double getDistance();
 

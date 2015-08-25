@@ -8,7 +8,7 @@ using namespace ev3api;
 
 class Drive{
 public:
-	Drive(Motor &rm, Motor &lm, Motor &fm, Observer &obsvr);
+	Drive(Motor *rm, Motor *lm, Motor *fm, Observer *obsvr);
 	void drive(int angle, double spd);
 private:
 	int calcFront(int angle);

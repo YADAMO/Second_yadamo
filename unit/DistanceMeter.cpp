@@ -2,9 +2,9 @@
 
 #include "DistanceMeter.h"
 
-DistanceMeter::DistanceMeter(Motor &rm, Motor &lm){
-	Rmotor = &rm;
-	Lmotor = &lm;
+DistanceMeter::DistanceMeter(Motor *rm, Motor *lm){
+	Rmotor = rm;
+	Lmotor = lm;
 	rDistance = 0;
 	lDistance = 0;
 	init();

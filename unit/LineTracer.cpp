@@ -2,9 +2,9 @@
 
 #include "LineTracer.h"
 
-LineTracer::LineTracer(Drive &dr, ColorSensor &col){
-	drive = &dr;
-	colorSensor = &col;
+LineTracer::LineTracer(Drive *dr, ColorSensor *col){
+	drive = dr;
+	colorSensor = col;
 	brightPid = new PID(0.001, 0.29, 0, 0.06);
 	target = 0;
 }
