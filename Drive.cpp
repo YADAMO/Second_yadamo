@@ -10,17 +10,69 @@ Drive::Drive(Motor *rm, Motor *lm, Motor *fm){
 
 }
 
-void Drive::drive(int angle, double spd){
-	// int speed = speedPid->calc(spd, observer->getSpeed());
+int Drive::calcSteerAngle(int right, int left){
+	int angle = right - left;
+	if(angle >= 127)  angle = 127;
+	if(angle <= -128) angle = -128;
 
-	// int Rpwm = speed + calcRear(angle);
-	// int Lpwm = speed;
-
-	// Rmotor->setSpeed(Rpwm);
-	// Lmotor->setSpeed(Lpwm);
-	// Fmotor->setSpeed(calcFront(angle));
+	return angle*4;
 }
 
+void Drive::drive(int angle, double spd){
+	// int speed = speedPid->calc(spd, observer->getSpeed());
+	int speed = (int)spd;
+	// int Rpwm = speed + calcRear(angle);
+	int Rpwm = speed;
+	int Lpwm = speed;
+
+	Rmotor->setSpeed(Rpwm);
+	Lmotor->setSpeed(Lpwm);
+	Fmotor->setSpeed(calcFront(angle));
+}
+
+void Drive::drive(int turn, int speed){
+  int count = Fmotor->getAngle();
+  steerAngle = 0;
+  int right, left;
+  
+  right = -turn + speed;
+  left = turn + speed;
+  if(right >= 127)	right = 127;
+  if(right <= -128)	right = -128;
+  if(left >= 127)	left = 127;
+  if(left <= -128)	left = -128;
+  
+  Lmotor->setSpeed(left);
+  Rmotor->setSpeed(right);
+
+  steerAngle = calcSteerAngle(right, left);
+
+  if(turn > 0){//左旋回  steerAngle負
+    if(count > steerAngle){
+	  if(-turn - TURN_BASE_SPEED <= -128)	Fmotor->setSpeed(-128);
+	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }else if(turn < 0){//右旋回 steerAngle正
+    if(count < steerAngle){
+	  if(-turn + TURN_BASE_SPEED >= 127)	Fmotor->setSpeed(127);
+	  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }else{
+    if(count > 0){
+	  if(-turn - TURN_BASE_SPEED <= -128)	Fmotor->setSpeed(-128);
+	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+    }else if(count < 0){
+	  if(-turn + TURN_BASE_SPEED >= 127)	Fmotor->setSpeed(127);
+	  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }
+}
 
 int Drive::calcFront(int angle){
 	double result = angle /90.0 * 60.0;

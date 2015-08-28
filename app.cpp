@@ -88,7 +88,7 @@ Logger logger;
 // Observer observer();
 // Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
 // Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
-// Drive drive(&rightMotor, &leftMotor, &frontMotor);
+Drive drive(&rightMotor, &leftMotor, &frontMotor);
 // LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge);
 
@@ -113,7 +113,8 @@ void loggging_cyc(intptr_t exinf){
 
     // logger.send();
 
-    calibration.doCalibration();   
+    // calibration.doCalibration();  
+    drive.drive(15,30);     
 }
 
 void main_task(intptr_t unused) {
