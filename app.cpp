@@ -1,18 +1,29 @@
-/******************************************************************************
- *  app.cpp (for LEGO Mindstorms EV3)
- *  Created on: 2015/01/25
- *  Implementation of the Task main_task
- *  Author: Kazuhiro.Kawachi
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
- *****************************************************************************/
+/**
+ * This sample program balances a two-wheeled Segway type robot such as Gyroboy in EV3 core set.
+ *
+ * References:
+ * http://www.hitechnic.com/blog/gyro-sensor/htway/
+ * http://www.cs.bgu.ac.il/~ami/teaching/Lejos-2013/classes/src/lejos/robotics/navigation/Segoway.java
+ */
 
+#include "ev3api.h"
 #include "app.h"
 
-// センサー類
-#include "SonarSensor.h"
+#if defined(BUILD_MODULE)
+#include "module_cfg.h"
+#else
+#include "kernel_cfg.h"
+#endif
+
+#include "libcpp-test.h"
+
+//センサ周り
 #include "Motor.h"
-#include "ColorSensor.h"
-#include "TouchSensor.h"
+#include "Gyro.h"
+#include "Color.h"
+#include "Touch.h"
+#include "Sonic.h"
+#include "Battery.h"
 
 // 判断クラス系
 #include "Observer.h"
@@ -38,97 +49,76 @@
 #include "SUndetermined.h" 
 
 // その他
-#include "Messenger.h"
 #include "LineTracer.h"
 #include "Drive.h"
+#include "Logger.h"
+#include "Calibration.h"
 
 
+#include <stdlib.h>
+#include <string>
+#include <sstream>
 
-#if defined(BUILD_MODULE)
-#include "module_cfg.h"
+#define DEBUG
+
+#ifdef DEBUG
+#define _debug(x) (x)
 #else
-#include "kernel_cfg.h"
+#define _debug(x)
 #endif
 
-// using宣言
-using namespace ev3api;
-
-// Device objects
-// オブジェクトを静的に確保する
-SonarSensor sonar(PORT_1);
-ColorSensor color(PORT_3);
-TouchSensor touch(PORT_2);
-Motor rightMotor(PORT_B);
-Motor leftMotor(PORT_C);
-Motor frontMotor(PORT_D);
+using namespace std;
 
 // オブジェクトの定義
+Motor rightMotor(EV3_PORT_B);
+Motor leftMotor(EV3_PORT_C);
+Motor frontMotor(EV3_PORT_D);
+Gyro gyro(EV3_PORT_4);
+Color color(EV3_PORT_3);
+Touch touch(EV3_PORT_1);
+Sonic sonic(EV3_PORT_2);
+
 WhiteJudge whiteJudge(&color);
 BlackJudge blackJudge(&color);
 GreenJudge greenJudge(&color);
 TouchJudge touchJudge(&touch);
-ObstacleJudge obstacleJudge(&sonar);
+ObstacleJudge obstacleJudge(&sonic);
 DistanceMeter distanceMeter(&rightMotor, &leftMotor);
-Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
-Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
-LineTracer lineTracer(&drive, &color);
+Logger logger;
+// Observer observer();
+// Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
+// Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
+// Drive drive(&rightMotor, &leftMotor, &frontMotor);
+// LineTracer lineTracer(&drive, &color);
+Calibration calibration(&color, &touchJudge);
 
 
+void loggging_cyc(intptr_t exinf){
+    // logger.addData(1.00);
+    // logger.addData(2.00);
+    // logger.addData(3.00);
+    // logger.addData(4.00);
+    // logger.addData(5.00);
+    // logger.addData(6.00);
+    // logger.addData(7.00);
+    // logger.addData(8.00);
+    // logger.addData(9.00);
+    // logger.addData(10.00);
+    // logger.addData(11.00);
+    // logger.addData(12.00);
+    // logger.addData(13.00);
+    // logger.addData(14.00);
+    // logger.addData(15.00);
+    // logger.addData(16.00);
 
-/**
- * EV3システム生成
- */
-static void user_system_create() {
-    // オブジェクトの作成
+    // logger.send();
 
-    // 初期化完了通知
-    ev3_led_set_color(LED_ORANGE);
+    calibration.doCalibration();   
 }
 
-/**
- * EV3システム破棄
- */
-static void user_system_destroy() {
-}
-
-/**
- * トレース実行タイミング
- */
-void ev3_cyc_tracer(intptr_t exinf) {
-    act_tsk(TRACER_TASK);
-}
-
-/**
- * メインタスク
- */
 void main_task(intptr_t unused) {
-    user_system_create();  // センサやモータの初期化処理
 
-    // 周期ハンドラ開始
-    ev3_sta_cyc(EV3_CYC_TRACER);
-
-    slp_tsk();  // バックボタンが押されるまで待つ
-
-    // 周期ハンドラ停止
-    ev3_stp_cyc(EV3_CYC_TRACER);
-
-    user_system_destroy();  // 終了処理
-
-    ext_tsk();
-}
-
-/**
- * ライントレースタスク
- */
-void tracer_task(intptr_t exinf) {
-    // if (ev3_button_is_pressed(BACK_BUTTON)) {
-    //     wup_tsk(MAIN_TASK);  // バックボタン押下
-    // } else {
-           
-    // }
-
-    // ext_tsk();
-    observer.update();
-    lineTracer.trace(20, LEFT);
+    
+    ev3_sta_cyc(LOGGING_CYC);
 
 }
