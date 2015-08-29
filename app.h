@@ -87,9 +87,8 @@ extern "C" {
 
 extern void	task(intptr_t exinf);
 extern void	main_task(intptr_t exinf);
-extern void balance_task(intptr_t exinf);
-extern void idle_task(intptr_t exinf);
-extern void loggging_cyc(intptr_t exinf);
+extern void yadamo_task(intptr_t exinf);
+extern void miri_cyc(intptr_t exinf);
 //extern void	tex_routine(TEXPTN texptn, intptr_t exinf);
 //#ifdef CPUEXC1
 //extern void	cpuexc_handler(void *p_excinf);

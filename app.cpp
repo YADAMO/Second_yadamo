@@ -71,6 +71,11 @@
 
 using namespace std;
 
+void destroy();
+void logging();
+
+bool calibration_flag = false;
+
 // オブジェクトの定義
 Motor rightMotor(EV3_PORT_B);
 Motor leftMotor(EV3_PORT_C);
@@ -87,50 +92,85 @@ TouchJudge touchJudge(&touch);
 ObstacleJudge obstacleJudge(&sonic);
 DistanceMeter distanceMeter(&rightMotor, &leftMotor);
 Logger logger;
-Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
-// Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
-// Drive drive(&rightMotor, &leftMotor, &frontMotor);
-Calibration calibration(&color, &touchJudge);
-// LineTracer lineTracer(&drive, &color, &calibration);
+Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter, &rightMotor, &leftMotor, &frontMotor);
+Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
+LineTracer lineTracer(&drive, &color);
+Calibration calibration(&color, &touchJudge, &lineTracer);
 
+void miri_cyc(intptr_t exinf){
+    act_tsk(YADAMO_TASK);
+}
 
+void yadamo_task(intptr_t exinf){
+    observer.update();
 
-void loggging_cyc(intptr_t exinf){
-    // logger.addData(1.00);
-    // logger.addData(2.00);
-    // logger.addData(3.00);
-    // logger.addData(4.00);
-    // logger.addData(5.00);
-    // logger.addData(6.00);
-    // logger.addData(7.00);
-    // logger.addData(8.00);
-    // logger.addData(9.00);
-    // logger.addData(10.00);
-    // logger.addData(11.00);
-    // logger.addData(12.00);
-    // logger.addData(13.00);
-    // logger.addData(14.00);
-    // logger.addData(15.00);
-    // logger.addData(16.00);
+    if (ev3_button_is_pressed(BACK_BUTTON)) {
+        wup_tsk(MAIN_TASK);  // バックボタン押下
+    }else{
+        if(!calibration_flag){
 
-    // logger.send();
-    char bright[64] = "";
-    char ambient[64] = "";
+            calibration_flag = calibration.doCalibration();
+        }else{
+           // logging();
 
-    sprintf(bright, "bright = %d", color.getReflect());
-    sprintf(ambient, "ambient = %d", color.getAmbient());
-    ev3_lcd_draw_string(bright, 0, 72);
-    ev3_lcd_draw_string(ambient, 0, 88);
+            
+            ev3_lcd_set_font(EV3_FONT_MEDIUM);
+            char a[64] = "";
+            int runtime = observer.getRuntime()/1000;
+            sprintf(a, "%d", runtime);
 
-    // logger.addData((double)color.getReflect());
-    // logger.send();
-    // lineTracer.trace(10, RIGHT);
-    // drive.drive(15,30);     
+            ev3_lcd_draw_string(a, 0, 72);
+            
+
+        }
+    }
+    ext_tsk();
 }
 
 void main_task(intptr_t unused) {
-    calibration.doCalibration();  
-    
-    ev3_sta_cyc(LOGGING_CYC);
+    ev3_sta_cyc(MIRI_CYC);
+
+    slp_tsk();  // バックボタンが押されるまで待つ
+
+    // 周期ハンドラ停止
+    ev3_stp_cyc(MIRI_CYC);
+
+    destroy();
+
+    ext_tsk();
+}
+
+void logging(){
+    logger.addData((double)observer.getRuntime());
+    // logger.addData((double)gyro.getAngle());
+    // logger.addData((double)color.getReflect());
+    // logger.addData((double)lineTracer.trace(5, LEFT));
+    // logger.addData((double)sonic.getDistance());
+    logger.send();
+}
+
+
+void destroy(){
+    rightMotor.setSpeed(0);
+    leftMotor.setSpeed(0);
+    frontMotor.setRotate(-observer.Fangle, 100, true);
+    // delete rightMotor;
+    // delete leftMotor;
+    // delete frontMotor;
+    // delete gyro;
+    // delete color;
+    // delete touch;
+    // delete sonic;
+    // delete whiteJudge;
+    // delete blackJudge;
+    // delete greenJudge;
+    // delete touchJudge;
+    // delete obstacleJudge;
+    // delete distanceMeter;
+    // delete logger;
+    // delete observer;
+    // delete drive;
+    // delete lineTracer;
+    // delete calibration;
 
 }

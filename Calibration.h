@@ -3,15 +3,17 @@
 #include "ev3api.h"
 #include "Color.h"
 #include "TouchJudge.h"
+#include "LineTracer.h"
 
 class Calibration {
 public:
-    Calibration(Color *col, TouchJudge *tj);
-    void doCalibration();
+    Calibration(Color *col, TouchJudge *tj, LineTracer *lt);
+    bool doCalibration();
     int getTarget();
 private:
     Color *color;
     TouchJudge *touchJudge;
+    LineTracer *lineTracer;
 
     int touchCount, tc;
     bool judge;
