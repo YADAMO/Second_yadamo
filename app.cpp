@@ -93,8 +93,8 @@ Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJ
 Calibration calibration(&color, &touchJudge);
 // LineTracer lineTracer(&drive, &color, &calibration);
 
-
-
+memfile_t *pfile;
+const char *fname = "/ev3rt/app/y1.wav";
 void loggging_cyc(intptr_t exinf){
     // logger.addData(1.00);
     // logger.addData(2.00);
@@ -116,12 +116,19 @@ void loggging_cyc(intptr_t exinf){
     // logger.send();
     char bright[64] = "";
     char ambient[64] = "";
+    char mA[64] = "";
+    char V[64] = "";
+
 
     sprintf(bright, "bright = %d", color.getReflect());
     sprintf(ambient, "ambient = %d", color.getAmbient());
-    ev3_lcd_draw_string(bright, 0, 72);
-    ev3_lcd_draw_string(ambient, 0, 88);
+    sprintf(mA, "%d mA", getBatteryCurrent());
+    sprintf(V, "%d V", getBatteryVoltage());
 
+    ev3_lcd_draw_string(bright, 0, 8);
+    ev3_lcd_draw_string(ambient, 0, 24);
+    ev3_lcd_draw_string(mA, 0, 40);
+    ev3_lcd_draw_string(V, 0, 56);
     // logger.addData((double)color.getReflect());
     // logger.send();
     // lineTracer.trace(10, RIGHT);
@@ -130,7 +137,16 @@ void loggging_cyc(intptr_t exinf){
 
 void main_task(intptr_t unused) {
     calibration.doCalibration();  
-    
+    if( ev3_button_is_pressed(UP_BUTTON) )
+    {
+        ev3_memfile_load(fname, pfile);
+        ev3_speaker_play_file(pfile, 5000);
+
+
+        rightMotor.setSpeed(0);
+        leftMotor.setSpeed(0);
+        frontMotor.setSpeed(0);
+    }
     ev3_sta_cyc(LOGGING_CYC);
 
 }
