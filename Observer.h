@@ -8,12 +8,11 @@
 #include "DistanceMeter.h"
 #include "SpeedMeter.h"
 
-#include <list>
-
 class Observer{
 public:
-	Observer();
-	Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm);
+	Observer(WhiteJudge *wj, BlackJudge *bj,
+			GreenJudge *gj, ObstacleJudge *oj,
+			TouchJudge *tj, DistanceMeter *dm);
 
 	void update();
 	bool isStep();
@@ -37,7 +36,7 @@ private:
 
 	bool is_Step, is_Obstacle, is_Touch, is_Black, is_White, is_Green;
 	double distance, speed;
-	std::list<double> buffer;
+	double buffer[5];
 	long runtime;
 
 };

@@ -2,24 +2,6 @@
 
 #include "Observer.h"
 
-Observer::Observer(){
-		this->is_Step = false;
-	this->is_Black = false;
-	this->is_White = false;
-	this->is_Green = false;
-	this->is_Touch = false;
-	this->is_Obstacle = false;
-		this->distance = 0;
-	this->speed = 0;
-
-	int i = 0;
-	for(i = 0; i < 5; i++){
-		buffer.push_back(0);
-	}
-
-	runtime = 0;
-}
-
 Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm){
 	whiteJudge = wj;
 	blackJudge = bj;
@@ -39,7 +21,7 @@ Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge
 	speed = 0;
 
 	for(int i = 0; i < 5; i++){
-		buffer.push_back(0);
+		buffer[i] = 0.0;
 	}
 
 	runtime = 0;
@@ -76,10 +58,11 @@ void Observer::update(){
 		distance = distanceMeter->getDistance();
 		speed = speedMeter->calcSpeed(distance);
 
-		buffer.push_back(distance);
-		buffer.pop_front();
-
-		is_Step = (buffer.front() == distance);
+		for(int i = 0; i < 4; i++){
+			buffer[i] = buffer[i+1];
+		}
+		buffer[4] = distance;
+		is_Step = (buffer[0] == buffer[4]);
 	}
 
 

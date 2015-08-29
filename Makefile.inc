@@ -28,7 +28,8 @@ APPL_CXXOBJS += \
 	PID.o\
 	LineTracer.o \
 	Battery.o \
-	Logger.o 
+	Logger.o \
+	Observer.o
 
 SRCLANG := c++
 

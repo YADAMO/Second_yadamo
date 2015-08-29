@@ -53,6 +53,8 @@
 #include "Drive.h"
 #include "Logger.h"
 #include "Calibration.h"
+#include "Observer.h"
+
 
 
 #include <stdlib.h>
@@ -85,12 +87,12 @@ TouchJudge touchJudge(&touch);
 ObstacleJudge obstacleJudge(&sonic);
 DistanceMeter distanceMeter(&rightMotor, &leftMotor);
 Logger logger;
-// Observer observer();
-// Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
+Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
 // Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
-Drive drive(&rightMotor, &leftMotor, &frontMotor);
-// LineTracer lineTracer(&drive, &color);
+// Drive drive(&rightMotor, &leftMotor, &frontMotor);
 Calibration calibration(&color, &touchJudge);
+// LineTracer lineTracer(&drive, &color, &calibration);
+
 
 
 void loggging_cyc(intptr_t exinf){
@@ -112,13 +114,22 @@ void loggging_cyc(intptr_t exinf){
     // logger.addData(16.00);
 
     // logger.send();
+    char bright[64] = "";
+    char ambient[64] = "";
 
-    // calibration.doCalibration();  
-    drive.drive(15,30);     
+    sprintf(bright, "bright = %d", color.getReflect());
+    sprintf(ambient, "ambient = %d", color.getAmbient());
+    ev3_lcd_draw_string(bright, 0, 72);
+    ev3_lcd_draw_string(ambient, 0, 88);
+
+    // logger.addData((double)color.getReflect());
+    // logger.send();
+    // lineTracer.trace(10, RIGHT);
+    // drive.drive(15,30);     
 }
 
 void main_task(intptr_t unused) {
-
+    calibration.doCalibration();  
     
     ev3_sta_cyc(LOGGING_CYC);
 

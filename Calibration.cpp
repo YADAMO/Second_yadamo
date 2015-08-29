@@ -12,6 +12,7 @@ Calibration::Calibration(Color *col, TouchJudge *tj){
   black = -1;
   green = -1;
   gray = -1;
+  target = 0;
 }
 
 /**
@@ -62,6 +63,7 @@ void Calibration::doCalibration() {
     }
     drawLCD();
     if(touchCount == 4){
+      target = (white + black)/2;
       break;
     }
     
@@ -106,4 +108,8 @@ int Calibration::getBlack(){
 }
 int Calibration::getGreen(){
   return green;
+}
+
+int Calibration::getTarget(){
+  return target;
 }

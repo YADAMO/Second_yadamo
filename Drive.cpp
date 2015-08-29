@@ -1,19 +1,20 @@
 
 #include "Drive.h"
 
-Drive::Drive(Motor *rm, Motor *lm, Motor *fm){
+Drive::Drive(Motor *rm, Motor *lm, Motor *fm, SpeedMeter *sp){
 	Rmotor = rm;
 	Lmotor = lm;
 	Fmotor = fm;
+	speedMeter = sp;
 	Rrad = Rmotor->getAngle();
 	Lrad = Lmotor->getAngle();
 
 }
 
 int Drive::calcSteerAngle(int right, int left){
-	int angle = right - left;
-	if(angle >= 127)  angle = 127;
-	if(angle <= -128) angle = -128;
+	int angle =  right - left;
+	if(angle >= 100)  angle = 100;
+	if(angle <= -100) angle = -100;
 
 	return angle*4;
 }
@@ -22,8 +23,8 @@ void Drive::drive(int angle, double spd){
 	// int speed = speedPid->calc(spd, observer->getSpeed());
 	int speed = (int)spd;
 	// int Rpwm = speed + calcRear(angle);
-	int Rpwm = speed;
-	int Lpwm = speed;
+	int Rpwm = speed + angle;
+	int Lpwm = speed - angle;
 
 	Rmotor->setSpeed(Rpwm);
 	Lmotor->setSpeed(Lpwm);
@@ -37,41 +38,43 @@ void Drive::drive(int turn, int speed){
   
   right = -turn + speed;
   left = turn + speed;
-  if(right >= 127)	right = 127;
-  if(right <= -128)	right = -128;
-  if(left >= 127)	left = 127;
-  if(left <= -128)	left = -128;
+  if(right >= 100)	right = 100;
+  if(right <= -100)	right = -100;
+  if(left >= 100)	left = 100;
+  if(left <= -100)	left = -100;
   
   Lmotor->setSpeed(left);
   Rmotor->setSpeed(right);
 
   steerAngle = calcSteerAngle(right, left);
 
-  if(turn > 0){//左旋回  steerAngle負
-    if(count > steerAngle){
-	  if(-turn - TURN_BASE_SPEED <= -128)	Fmotor->setSpeed(-128);
-	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
-    }else{
-      Fmotor->setSpeed(0);
-    }
-  }else if(turn < 0){//右旋回 steerAngle正
-    if(count < steerAngle){
-	  if(-turn + TURN_BASE_SPEED >= 127)	Fmotor->setSpeed(127);
-	  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
-    }else{
-      Fmotor->setSpeed(0);
-    }
-  }else{
-    if(count > 0){
-	  if(-turn - TURN_BASE_SPEED <= -128)	Fmotor->setSpeed(-128);
-	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
-    }else if(count < 0){
-	  if(-turn + TURN_BASE_SPEED >= 127)	Fmotor->setSpeed(127);
-	  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
-    }else{
-      Fmotor->setSpeed(0);
-    }
-  }
+  Fmotor->setSpeed(steerAngle);
+
+  // if(turn > 0){//左旋回  steerAngle負
+  //   if(count > steerAngle){
+	 //  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
+	 //  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+  //   }else{
+  //     Fmotor->setSpeed(0);
+  //   }
+  // }else if(turn < 0){//右旋回 steerAngle正
+  //   if(count < steerAngle){
+	 //  if(-turn + TURN_BASE_SPEED >= 100)	Fmotor->setSpeed(100);
+	 //  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
+  //   }else{
+  //     Fmotor->setSpeed(0);
+  //   }
+  // }else{
+  //   if(count > 0){
+	 //  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
+	 //  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+  //   }else if(count < 0){
+	 //  if(-turn + TURN_BASE_SPEED >= 100)	Fmotor->setSpeed(100);
+	 //  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
+  //   }else{
+  //     Fmotor->setSpeed(0);
+  //   }
+  // }
 }
 
 int Drive::calcFront(int angle){
