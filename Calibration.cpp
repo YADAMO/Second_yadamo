@@ -1,9 +1,10 @@
 
 #include "Calibration.h"
 
-Calibration::Calibration(Color *col, TouchJudge *tj){
+Calibration::Calibration(Color *col, TouchJudge *tj, LineTracer *lt){
   color = col;
   touchJudge = tj;
+  lineTracer = lt;
 
   touchCount = 0;
   tc = 0;
@@ -18,7 +19,7 @@ Calibration::Calibration(Color *col, TouchJudge *tj){
 /**
  * キャリブレーションする
  */
-void Calibration::doCalibration() {
+bool Calibration::doCalibration() {
 
   while(1){
     if(touchJudge->judge()){
@@ -64,10 +65,14 @@ void Calibration::doCalibration() {
     drawLCD();
     if(touchCount == 4){
       target = (white + black)/2;
+      lineTracer->setTarget(target);
+      return true;
       break;
     }
     
   }
+
+  return false;
 
 }
 

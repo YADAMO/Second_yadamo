@@ -7,12 +7,14 @@
 #include "TouchJudge.h"
 #include "DistanceMeter.h"
 #include "SpeedMeter.h"
+#include "Motor.h"
 
 class Observer{
 public:
 	Observer(WhiteJudge *wj, BlackJudge *bj,
 			GreenJudge *gj, ObstacleJudge *oj,
-			TouchJudge *tj, DistanceMeter *dm);
+			TouchJudge *tj, DistanceMeter *dm,
+			Motor *rm, Motor *lm, Motor *fm);
 
 	void update();
 	bool isStep();
@@ -25,6 +27,10 @@ public:
 	double getSpeed();
 	int getRuntime();
 
+	long RangleBuf[5];
+	long LangleBuf[5];
+	int Fangle;
+
 private:
 	WhiteJudge *whiteJudge;
 	BlackJudge *blackJudge;
@@ -33,10 +39,14 @@ private:
 	TouchJudge *touchJudge;
 	DistanceMeter *distanceMeter;
 	SpeedMeter *speedMeter = new SpeedMeter();
+	Motor *Rmotor;
+	Motor *Lmotor;
+	Motor *Fmotor;
 
 	bool is_Step, is_Obstacle, is_Touch, is_Black, is_White, is_Green;
 	double distance, speed;
 	double buffer[5];
+
 	long runtime;
 
 };

@@ -7,6 +7,7 @@ class Motor{
 public:
 	Motor(motor_port_t port);
 	void setSpeed(int speed);
+	void setRotate(int degree, int speed, bool isBlock);
 	int getSpeed();
 	int32_t getAngle();
 

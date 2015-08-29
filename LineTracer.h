@@ -10,7 +10,7 @@
 class LineTracer{
 public:
 	LineTracer(Drive *dr, Color *col);
-	void trace(double speed, int edge);
+	int trace(double speed, int edge);
 	void setTarget(int tar);
 	int getTarget();
 

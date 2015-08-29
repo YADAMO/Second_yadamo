@@ -2,13 +2,18 @@
 
 #include "Observer.h"
 
-Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm){
+Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj,
+	ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm,
+	Motor *rm, Motor *lm, Motor *fm){
 	whiteJudge = wj;
 	blackJudge = bj;
 	greenJudge = gj;
 	obstacleJudge = oj;
 	touchJudge = tj;
 	distanceMeter = dm;
+	Rmotor = rm;
+	Lmotor = lm;
+	Fmotor = fm;
 
 	is_Step = false;
 	is_Black = false;
@@ -22,14 +27,17 @@ Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge
 
 	for(int i = 0; i < 5; i++){
 		buffer[i] = 0.0;
+		RangleBuf[i] = 0;
+		LangleBuf[i] = 0;
 	}
 
 	runtime = 0;
+	Fangle = Fmotor->getAngle();;
 
 }
 
 void Observer::update(){
-	runtime++;
+	runtime += 1;
 	if(runtime % whiteJudge->getInterval() == 0){
 		is_White = whiteJudge->judge();
 	}
@@ -53,17 +61,23 @@ void Observer::update(){
 	if(runtime % obstacleJudge->getInterval() == 0){
 		is_Obstacle = obstacleJudge->judge();
 	}
+	
+	// 毎回値入れる系
+	distance = distanceMeter->getDistance();
+	speed = speedMeter->calcSpeed(distance);
 
-	if(runtime % 1 == 0){
-		distance = distanceMeter->getDistance();
-		speed = speedMeter->calcSpeed(distance);
-
-		for(int i = 0; i < 4; i++){
-			buffer[i] = buffer[i+1];
-		}
-		buffer[4] = distance;
-		is_Step = (buffer[0] == buffer[4]);
+	for(int i = 0; i < 4; i++){
+		buffer[i] = buffer[i+1];
+		RangleBuf[i] = RangleBuf[i+1];
+		LangleBuf[i] = LangleBuf[i+1];
 	}
+	buffer[4] = distance;
+	RangleBuf[4] = Rmotor->getAngle();
+	LangleBuf[4] = Lmotor->getAngle();
+	Fangle = Fmotor->getAngle();
+
+	// 段差判定
+	is_Step = (buffer[0] == buffer[4]);
 
 
 }
