@@ -9,10 +9,10 @@ Calibration::Calibration(Color *col, TouchJudge *tj, LineTracer *lt){
   touchCount = 0;
   tc = 0;
   judge = false;
-  white = -1;
-  black = -1;
-  green = -1;
-  gray = -1;
+  white = 0;
+  black = 0;
+  green = 0;
+  gray = 0;
   target = 0;
 }
 
@@ -66,6 +66,7 @@ bool Calibration::doCalibration() {
     if(touchCount == 4){
       target = (white + black)/2;
       lineTracer->setTarget(target);
+      drawLCD();
       return true;
       break;
     }
@@ -82,26 +83,29 @@ void Calibration::drawLCD(){
     char b[64] = "";
     char gra[64] = "";
     char gre[64] = "";
+    char tar[64] = "";
     
     sprintf(w, "white = %d", white);
     sprintf(b, "black = %d", black);
     sprintf(gra, "gray = %d", gray);
     sprintf(gre, "green = %d", green);
+    sprintf(tar, "target = %d", target);
 
     ev3_lcd_draw_string(w, 0, 8);
     ev3_lcd_draw_string(b, 0, 24);
     ev3_lcd_draw_string(gra, 0, 40);
     ev3_lcd_draw_string(gre, 0, 56);
+    ev3_lcd_draw_string(tar, 0, 72);
 }
 
 
-void Calibration::setWhite(int value) {
+void Calibration::setWhite(uint8_t value) {
   white = value;
 }
-void Calibration::setBlack(int value) {
+void Calibration::setBlack(uint8_t value) {
   black = value;
 }
-void Calibration::setGreen(int value) {
+void Calibration::setGreen(uint8_t value) {
   green = value;
 }
 

@@ -111,15 +111,15 @@ void yadamo_task(intptr_t exinf){
 
             calibration_flag = calibration.doCalibration();
         }else{
-           // logging();
+           logging();
 
-            
-            ev3_lcd_set_font(EV3_FONT_MEDIUM);
-            char a[64] = "";
-            int runtime = observer.getRuntime()/1000;
-            sprintf(a, "%d", runtime);
+                        
+            // ev3_lcd_set_font(EV3_FONT_MEDIUM);
+            // char a[64] = "";
+            // int runtime = observer.getRuntime()/1000;
+            // sprintf(a, "%d", runtime);
 
-            ev3_lcd_draw_string(a, 0, 72);
+            // ev3_lcd_draw_string(a, 0, 72);
             
 
         }
@@ -141,7 +141,7 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
-    logger.addData((double)observer.getRuntime());
+    logger.addData((double)color.getReflect());
     // logger.addData((double)gyro.getAngle());
     // logger.addData((double)color.getReflect());
     // logger.addData((double)lineTracer.trace(5, LEFT));

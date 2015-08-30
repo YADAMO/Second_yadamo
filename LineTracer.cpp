@@ -29,10 +29,10 @@ int LineTracer::trace(double speed, int edge){
 }
 
 
-void LineTracer::setTarget(int tar){
+void LineTracer::setTarget(uint8_t tar){
 	target = tar;
 }
 
-int LineTracer::getTarget(){
+uint8_t LineTracer::getTarget(){
 	return target;
 }

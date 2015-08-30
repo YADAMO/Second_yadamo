@@ -4,6 +4,7 @@
 #include "Color.h"
 #include "TouchJudge.h"
 #include "LineTracer.h"
+#include <cstdint>
 
 class Calibration {
 public:
@@ -17,12 +18,12 @@ private:
 
     int touchCount, tc;
     bool judge;
-    int white, black, green, gray;
-    int target;
+    uint8_t white, black, green, gray;
+    uint8_t target;
 
-    void setWhite(int white);
-    void setBlack(int black);
-    void setGreen(int green);
+    void setWhite(uint8_t white);
+    void setBlack(uint8_t black);
+    void setGreen(uint8_t green);
     int getWhite();
     int getBlack();
     int getGreen();
