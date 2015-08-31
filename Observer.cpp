@@ -39,15 +39,15 @@ Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj,
 void Observer::update(){
 	runtime += 1;
 	if(runtime % whiteJudge->getInterval() == 0){
-		is_White = whiteJudge->judge();
+		// is_White = whiteJudge->judge();
 	}
 
 	if(runtime % blackJudge->getInterval() == 0){
-		is_Black = blackJudge->judge();
+		// is_Black = blackJudge->judge();
 	}
 
 	if(runtime % greenJudge->getInterval() == 0){
-		is_Green = greenJudge->judge();
+		// is_Green = greenJudge->judge();
 	}
 
 	if(runtime % obstacleJudge->getInterval() == 0){

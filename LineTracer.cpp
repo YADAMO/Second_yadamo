@@ -4,28 +4,23 @@
 LineTracer::LineTracer(Drive *dr, Color *col){
 	drive = dr;
 	color = col;
-	brightPid = new PID(0.001, 0.05, 0.05, 0.05);
+	// brightPid = new PID(2.5, 0.03, 0.03); // speed = 40
+	brightPid = new PID(3, 0.03, 0.03);
+
 	target = 0;
 }
 
 int LineTracer::trace(double speed, int edge){
-	int bright = color->getReflect();
-	// int angle = brightPid->calc(target, bright);
-	int angle = 0;
-
-	if(bright > target){
-		angle = 60;
-	}else if(bright < target){
-		angle = -60;
-	}
+	uint8_t bright = color->getReflect();
+	int angle = brightPid->calc(target, bright);
 	if(angle > 90){
 		angle = 90;
 	}else if(angle < -90){
 		angle = -90;
 	}
-
-	return drive->drive(angle * edge , speed);
-	// return angle;
+	// drive->drive((int)angle * edge , speed);
+	drive->_drive(angle* edge, (int)speed);
+	return angle;
 }
 
 
