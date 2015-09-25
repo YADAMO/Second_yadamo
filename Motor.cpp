@@ -9,8 +9,8 @@ Motor::Motor(motor_port_t port){
 
 }
 
-void Motor::setRotate(int degree, int speed, bool block){
-	ev3_motor_rotate(port, -degree, speed, block);	
+ER Motor::setRotate(int degree, int speed, bool block){
+	return ev3_motor_rotate(port, -degree, speed, block);	
 }
 
 void Motor::setSpeed(int speed){
@@ -22,14 +22,14 @@ void Motor::setSpeed(int speed){
 	}else{
 		sp = speed;
 	}
-	ev3_motor_set_power	(port, -sp);
+	ev3_motor_set_power	(port, sp);
 }
 
 int Motor::getSpeed(){
-	return -ev3_motor_get_power(port);
+	return ev3_motor_get_power(port);
 }
 
 int32_t Motor::getAngle(){
-	return -ev3_motor_get_counts(port);
+	return ev3_motor_get_counts(port);
 
 }

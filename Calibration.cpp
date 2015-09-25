@@ -38,12 +38,16 @@ bool Calibration::doCalibration() {
       switch(touchCount){
         case 0:
           white = color->getReflect();
+          lineTracer->white = white;
           ev3_speaker_play_tone(NOTE_C4, 100);
           touchCount++;
         break;
 
         case 1:
           black = color->getReflect();
+          lineTracer->black = black;
+          target = (white + black)/2;
+          lineTracer->target = target;
           ev3_speaker_play_tone(NOTE_D4, 100);
           touchCount++;
         break;
@@ -64,9 +68,6 @@ bool Calibration::doCalibration() {
     }
     drawLCD();
     if(touchCount == 4){
-      target = (white + black)/2;
-      lineTracer->setTarget(target);
-      drawLCD();
       return true;
       break;
     }
@@ -78,7 +79,7 @@ bool Calibration::doCalibration() {
 }
 
 void Calibration::drawLCD(){
-  ev3_lcd_set_font(EV3_FONT_MEDIUM);
+  ev3_lcd_set_font(EV3_FONT_SMALL);
     char w[64] = "";
     char b[64] = "";
     char gra[64] = "";
@@ -91,11 +92,11 @@ void Calibration::drawLCD(){
     sprintf(gre, "green = %d", green);
     sprintf(tar, "target = %d", target);
 
-    ev3_lcd_draw_string(w, 0, 8);
-    ev3_lcd_draw_string(b, 0, 24);
-    ev3_lcd_draw_string(gra, 0, 40);
-    ev3_lcd_draw_string(gre, 0, 56);
-    ev3_lcd_draw_string(tar, 0, 72);
+    ev3_lcd_draw_string(w, 0, 0);
+    ev3_lcd_draw_string(b, 0, 8);
+    ev3_lcd_draw_string(gra, 0, 16);
+    ev3_lcd_draw_string(gre, 0, 24);
+    ev3_lcd_draw_string(tar, 0, 32);
 }
 
 

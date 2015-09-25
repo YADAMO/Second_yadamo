@@ -76,6 +76,7 @@ void logging();
 
 bool calibration_flag = false;
 
+
 // オブジェクトの定義
 Motor rightMotor(EV3_PORT_B);
 Motor leftMotor(EV3_PORT_C);
@@ -103,25 +104,33 @@ void miri_cyc(intptr_t exinf){
 
 void yadamo_task(intptr_t exinf){
     observer.update();
+    
 
-    if (ev3_button_is_pressed(BACK_BUTTON)) {
+    // if (ev3_button_is_pressed(BACK_BUTTON)) {
+    if(observer.getDistance() > 300){
         wup_tsk(MAIN_TASK);  // バックボタン押下
     }else{
         if(!calibration_flag){
 
             calibration_flag = calibration.doCalibration();
+            // drive.init();
         }else{
-           logging();
+           // logging();
+            int a = lineTracer.trace(20, RIGHT, 0);
+   
+            char br[64] = "";
+            char tr[64] = "";
 
-                        
-            // ev3_lcd_set_font(EV3_FONT_MEDIUM);
-            // char a[64] = "";
-            // int runtime = observer.getRuntime()/1000;
-            // sprintf(a, "%d", runtime);
+            sprintf(br, "%d", color.getReflect());
+            sprintf(tr, "%d", a);
 
-            // ev3_lcd_draw_string(a, 0, 72);
-            
-
+            ev3_lcd_draw_string("            ", 0, 40);
+            ev3_lcd_draw_string("            ", 0, 48); 
+            ev3_lcd_draw_string(br, 0, 40);
+            ev3_lcd_draw_string(tr, 0, 48);            
+            // drive._drive(0, 10);
+            // lineTracer.trace(20, RIGHT, 0);
+            // drive.straight(20);
         }
     }
     ext_tsk();
@@ -141,9 +150,12 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
-    logger.addData((double)color.getReflect());
-    // logger.addData((double)gyro.getAngle());
+
+
     // logger.addData((double)color.getReflect());
+    // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
+    // logger.addData((double)gyro.getAngle());
+    
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
     logger.send();
@@ -151,9 +163,20 @@ void logging(){
 
 
 void destroy(){
-    rightMotor.setSpeed(0);
-    leftMotor.setSpeed(0);
-    frontMotor.setRotate(-observer.Fangle, 100, true);
+
+        
+        // rightMotor.setSpeed(0);
+        // leftMotor.setSpeed(0);
+        frontMotor.setRotate(observer.Fangle, 100, true);
+        rightMotor.setRotate(rightMotor.getAngle(), 60, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 60, false);
+
+    while(1){
+        if(ev3_button_is_pressed(BACK_BUTTON)){
+            break;
+        }
+
+    }
     // delete rightMotor;
     // delete leftMotor;
     // delete frontMotor;

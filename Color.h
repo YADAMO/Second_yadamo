@@ -11,6 +11,7 @@ public:
 	uint8_t getReflect();
 	colorid_t getColor();
 
+
 private:
 	sensor_port_t port;
 	sensor_type_t type;
