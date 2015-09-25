@@ -113,21 +113,25 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
 
             calibration_flag = calibration.doCalibration();
-            // drive.init();
+            drive.init();
         }else{
+            drive.straight(10);
            // logging();
-            int a = lineTracer.trace(20, RIGHT, 0);
+            // int a = lineTracer.trace(20, RIGHT, 0);
    
             char br[64] = "";
             char tr[64] = "";
+            char ar[64] = "";
 
-            sprintf(br, "%d", color.getReflect());
-            sprintf(tr, "%d", a);
+            sprintf(br, "%d", rightMotor.getAngle());
+            sprintf(tr, "%d", leftMotor.getAngle());
+            sprintf(ar, "%d", frontMotor.getAngle());
 
-            ev3_lcd_draw_string("            ", 0, 40);
-            ev3_lcd_draw_string("            ", 0, 48); 
+            // ev3_lcd_draw_string("            ", 0, 40);
+            // ev3_lcd_draw_string("            ", 0, 48); 
             ev3_lcd_draw_string(br, 0, 40);
             ev3_lcd_draw_string(tr, 0, 48);            
+            ev3_lcd_draw_string(ar, 0, 56);            
             // drive._drive(0, 10);
             // lineTracer.trace(20, RIGHT, 0);
             // drive.straight(20);
@@ -168,8 +172,8 @@ void destroy(){
         // rightMotor.setSpeed(0);
         // leftMotor.setSpeed(0);
         frontMotor.setRotate(observer.Fangle, 100, true);
-        rightMotor.setRotate(rightMotor.getAngle(), 60, false);
-        leftMotor.setRotate(leftMotor.getAngle(), 60, false);
+        rightMotor.setRotate(rightMotor.getAngle(), 15, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 15, false);
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){
