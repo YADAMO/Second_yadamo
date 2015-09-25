@@ -115,8 +115,9 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
             drive.init();
         }else{
-            drive.straight(10);
-           // logging();
+            // drive.straight(10);
+            drive._drive(10, 20);
+           logging();
             // int a = lineTracer.trace(20, RIGHT, 0);
    
             char br[64] = "";
@@ -156,9 +157,9 @@ void main_task(intptr_t unused) {
 void logging(){
 
 
-    // logger.addData((double)color.getReflect());
+    logger.addData((double)color.getReflect());
     // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
-    // logger.addData((double)gyro.getAngle());
+    logger.addData((double)gyro.getAngle());
     
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
@@ -171,6 +172,7 @@ void destroy(){
         
         // rightMotor.setSpeed(0);
         // leftMotor.setSpeed(0);
+        logger.end();
         frontMotor.setRotate(observer.Fangle, 100, true);
         rightMotor.setRotate(rightMotor.getAngle(), 15, false);
         leftMotor.setRotate(leftMotor.getAngle(), 15, false);
