@@ -38,14 +38,16 @@ bool Calibration::doCalibration() {
       switch(touchCount){
         case 0:
           white = color->getReflect();
+          lineTracer->white = white;
           ev3_speaker_play_tone(NOTE_C4, 100);
           touchCount++;
         break;
 
         case 1:
           black = color->getReflect();
+          lineTracer->black = black;
           target = (white + black)/2;
-          lineTracer->setTarget(target);
+          lineTracer->target = target;
           ev3_speaker_play_tone(NOTE_D4, 100);
           touchCount++;
         break;

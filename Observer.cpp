@@ -63,7 +63,7 @@ void Observer::update(){
 	}
 	
 	// 毎回値入れる系
-	distance = distanceMeter->getDistance();
+	distance = -distanceMeter->getDistance();
 	speed = speedMeter->calcSpeed(distance);
 
 	for(int i = 0; i < 4; i++){

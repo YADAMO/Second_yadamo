@@ -22,14 +22,14 @@ void Motor::setSpeed(int speed){
 	}else{
 		sp = speed;
 	}
-	ev3_motor_set_power	(port, -sp);
+	ev3_motor_set_power	(port, sp);
 }
 
 int Motor::getSpeed(){
-	return -ev3_motor_get_power(port);
+	return ev3_motor_get_power(port);
 }
 
 int32_t Motor::getAngle(){
-	return -ev3_motor_get_counts(port);
+	return ev3_motor_get_counts(port);
 
 }

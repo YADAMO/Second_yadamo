@@ -104,10 +104,10 @@ void miri_cyc(intptr_t exinf){
 
 void yadamo_task(intptr_t exinf){
     observer.update();
-    logging();
+    
 
     // if (ev3_button_is_pressed(BACK_BUTTON)) {
-    if(observer.getDistance() > 200){
+    if(observer.getDistance() > 300){
         wup_tsk(MAIN_TASK);  // バックボタン押下
     }else{
         if(!calibration_flag){
@@ -115,20 +115,21 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
             // drive.init();
         }else{
-           
-            // lineTracer.trace(20, RIGHT);
-            // ev3_lcd_draw_string("            ", 0, 40);
-            // ev3_lcd_draw_string("            ", 0, 48);    
-            // char br[64] = "";
-            // char tr[64] = "";
+           // logging();
+            int a = lineTracer.trace(20, RIGHT, 0);
+   
+            char br[64] = "";
+            char tr[64] = "";
 
-            // sprintf(br, "%d", color.getReflect());
-            // sprintf(tr, "%d", lineTracer.trace(30, RIGHT));
+            sprintf(br, "%d", color.getReflect());
+            sprintf(tr, "%d", a);
 
-            // ev3_lcd_draw_string(br, 0, 40);
-            // ev3_lcd_draw_string(tr, 0, 48);            
-            // drive._drive(90, 0);
-            lineTracer.trace(70, RIGHT);
+            ev3_lcd_draw_string("            ", 0, 40);
+            ev3_lcd_draw_string("            ", 0, 48); 
+            ev3_lcd_draw_string(br, 0, 40);
+            ev3_lcd_draw_string(tr, 0, 48);            
+            // drive._drive(0, 10);
+            // lineTracer.trace(20, RIGHT, 0);
             // drive.straight(20);
         }
     }
@@ -149,9 +150,12 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
-    logger.addData((double)color.getReflect());
-    // logger.addData((double)gyro.getAngle());
+
+
     // logger.addData((double)color.getReflect());
+    // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
+    // logger.addData((double)gyro.getAngle());
+    
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
     logger.send();
@@ -163,9 +167,9 @@ void destroy(){
         
         // rightMotor.setSpeed(0);
         // leftMotor.setSpeed(0);
-        frontMotor.setRotate(-observer.Fangle, 100, true);
-        rightMotor.setRotate(-rightMotor.getAngle(), 100, false);
-        leftMotor.setRotate(-leftMotor.getAngle(), 100, false);
+        frontMotor.setRotate(observer.Fangle, 100, true);
+        rightMotor.setRotate(rightMotor.getAngle(), 60, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 60, false);
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){

@@ -11,6 +11,14 @@ Drive::Drive(Motor *rm, Motor *lm, Motor *fm, Observer *ob){
 
 }
 
+int Drive::calcSteerAngle(int8_t right, int8_t left){
+  int angle = right - left;
+  if(angle >= 100)  angle = 100;
+  if(angle <= -100) angle = -100;
+
+  return angle*4;
+}
+
 int Drive::drive(int angle, double spd){
 	// int speed = speedPid->calc(spd, observer->getSpeed());
 	int diff = calcRear(angle);
@@ -29,8 +37,8 @@ void Drive::_drive(int turn, int speed){
   steerAngle = 0;
   int right, left;
   
-  right = speed + turn;
-  left = speed - turn;
+  right = -speed - turn;
+  left = -speed + turn;
   if(right >= 100)	right = 100;
   if(right <= -100)	right = -100;
   if(left >= 100)	left = 100;
@@ -38,34 +46,34 @@ void Drive::_drive(int turn, int speed){
   
   Lmotor->setSpeed(left);
   Rmotor->setSpeed(right);
-  Fmotor->setSpeed(calcFront(turn));
-  // steerAngle = calcSteerAngle(right, left);
-  steerAngle = 0;
-  // if(turn > 0){//左旋回  steerAngle負
-  //   if(count > steerAngle){
-	 //  if(-turn - TURN_BASE_SPEED <= -128)	motorS->setPWM(-128);
-	 //  else motorS->setPWM(-turn - TURN_BASE_SPEED);
-  //   }else{
-  //     motorS->setPWM(0);
-  //   }
-  // }else if(turn < 0){//右旋回 steerAngle正
-  //   if(count < steerAngle){
-	 //  if(-turn + TURN_BASE_SPEED >= 127)	motorS->setPWM(127);
-	 //  else motorS->setPWM(-turn + TURN_BASE_SPEED);
-  //   }else{
-  //     motorS->setPWM(0);
-  //   }
-  // }else{
-  //   if(count > 0){
-	 //  if(-turn - TURN_BASE_SPEED <= -128)	motorS->setPWM(-128);
-	 //  else motorS->setPWM(-turn - TURN_BASE_SPEED);
-  //   }else if(count < 0){
-	 //  if(-turn + TURN_BASE_SPEED >= 127)	motorS->setPWM(127);
-	 //  else motorS->setPWM(-turn + TURN_BASE_SPEED);
-  //   }else{
-  //     motorS->setPWM(0);
-  //   }
-  // }
+ 
+  // Fmotor->setSpeed(calcFront(turn));
+  steerAngle = calcSteerAngle(right, left);
+  if(turn > 0){//左旋回  steerAngle負
+    if(count > steerAngle){
+	  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
+	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }else if(turn < 0){//右旋回 steerAngle正
+    if(count < steerAngle){
+	  if(-turn + TURN_BASE_SPEED >= 100)	Fmotor->setSpeed(100);
+	  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }else{
+    if(count > 0){
+	  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
+	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+    }else if(count < 0){
+	  if(turn + TURN_BASE_SPEED >= 100)	Fmotor->setSpeed(100);
+	  else Fmotor->setSpeed(turn + TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }
 }
 
 
@@ -93,7 +101,7 @@ int Drive::calcRear(int angle){
 	double r = 4.1;//後輪の半径(cm)
 
 	double needdiff = (2 * pi * w * ((double)angle / 360.0));
-	double targetrad = ((needdiff * 360.0)/(2.0 * pi * r))/3;//最後の/3は1:3だから
+	double targetrad = ((needdiff * 360.0)/(2.0 * pi * r))/3;//最後の/3は1:3
 
 	int raddiff = (observer->RangleBuf[4] - observer->RangleBuf[0]) - (observer->LangleBuf[4] - observer->LangleBuf[0]);
 

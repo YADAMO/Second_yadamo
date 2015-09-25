@@ -11,12 +11,14 @@
 class LineTracer{
 public:
 	LineTracer(Drive *dr, Color *col);
-	int trace(double speed, int edge);
-	void setTarget(uint8_t tar);
+	int trace(double speed, int edge, int target);
+	int calcCorrection();
 	uint8_t getTarget();
+	uint8_t black;
+	uint8_t white;
+	uint8_t target;
 
 private:
-	uint8_t target;
 	PID *brightPid;
 	Drive *drive;
 	Color *color;

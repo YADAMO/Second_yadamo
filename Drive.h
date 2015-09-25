@@ -6,6 +6,7 @@
 
 #define MAX_FRONT_RANGLE 500
 #define MAX_FRONT_LANGLE -500
+#define TURN_BASE_SPEED 70
 
 class Drive{
 public:
@@ -16,6 +17,7 @@ public:
 	int calcRear(int angle);
 	void straight(int speed);
 	void init();
+	int calcSteerAngle(int8_t right, int8_t left);
 private:
 
 	Motor *Rmotor;
