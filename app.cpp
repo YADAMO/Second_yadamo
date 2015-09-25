@@ -93,10 +93,11 @@ TouchJudge touchJudge(&touch);
 ObstacleJudge obstacleJudge(&sonic);
 DistanceMeter distanceMeter(&rightMotor, &leftMotor);
 Logger logger;
-Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter, &rightMotor, &leftMotor, &frontMotor);
+Observer observer(&color, &obstacleJudge, &touchJudge, &distanceMeter, &rightMotor, &leftMotor, &frontMotor);
 Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
+SBarcode barcode(&lineTracer, &observer, &drive);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
@@ -104,7 +105,6 @@ void miri_cyc(intptr_t exinf){
 
 void yadamo_task(intptr_t exinf){
     observer.update();
-    
 
     // if (ev3_button_is_pressed(BACK_BUTTON)) {
     if(observer.getDistance() > 300){
@@ -124,9 +124,9 @@ void yadamo_task(intptr_t exinf){
             char tr[64] = "";
             char ar[64] = "";
 
-            sprintf(br, "%d", rightMotor.getAngle());
-            sprintf(tr, "%d", leftMotor.getAngle());
-            sprintf(ar, "%d", frontMotor.getAngle());
+            sprintf(br, "%d", (int)rightMotor.getAngle());
+            sprintf(tr, "%d", (int)leftMotor.getAngle());
+            sprintf(ar, "%d", (int)frontMotor.getAngle());
 
             // ev3_lcd_draw_string("            ", 0, 40);
             // ev3_lcd_draw_string("            ", 0, 48); 

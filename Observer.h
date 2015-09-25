@@ -11,8 +11,7 @@
 
 class Observer{
 public:
-	Observer(WhiteJudge *wj, BlackJudge *bj,
-			GreenJudge *gj, ObstacleJudge *oj,
+	Observer(Color *cl, ObstacleJudge *oj,
 			TouchJudge *tj, DistanceMeter *dm,
 			Motor *rm, Motor *lm, Motor *fm);
 
@@ -26,15 +25,14 @@ public:
 	double getDistance();
 	double getSpeed();
 	int getRuntime();
+	colorid_t judgeColor();
 
 	long RangleBuf[5];
 	long LangleBuf[5];
 	int Fangle;
 
 private:
-	WhiteJudge *whiteJudge;
-	BlackJudge *blackJudge;
-	GreenJudge *greenJudge;
+	Color *color;
 	ObstacleJudge *obstacleJudge;
 	TouchJudge *touchJudge;
 	DistanceMeter *distanceMeter;
