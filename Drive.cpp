@@ -118,8 +118,8 @@ void Drive::init(){
 void Drive::straight(int speed){
 	int turn = (Rmotor->getAngle() - rightOffset) - (Lmotor->getAngle() - leftOffset);
 	
-	int right = -turn/2 + speed;
-	int left = turn/2 + speed;
+	int right = -turn/2 - speed;
+	int left = turn/2 - speed;
 	if(right >= 100)	right = 100;
 	if(right <= -100)	right = -100;
 	if(left >= 100)	left = 100;
@@ -131,5 +131,6 @@ void Drive::straight(int speed){
   
 	Lmotor->setSpeed(left);
 	Rmotor->setSpeed(right);
-  	Fmotor->setSpeed(-handle);
+  	// Fmotor->setSpeed(-handle);
+  	Fmotor->setRotate(turn*8, 100, false);
 }
