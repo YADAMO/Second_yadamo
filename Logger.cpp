@@ -25,3 +25,8 @@ void Logger::addData(double data){
 	buff[ptr] = data;
 	ptr++;
 }
+
+void Logger::end(){
+	char tmp[20] = "EEEEEEEE";
+	fprintf(bt , tmp);
+}

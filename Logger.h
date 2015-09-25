@@ -8,6 +8,7 @@ public:
 	Logger();
 	bool send();
 	void addData(double data);
+	void end();
 private:
 	double buff[16];
 	int ptr;
