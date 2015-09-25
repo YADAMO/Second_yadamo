@@ -2,12 +2,10 @@
 
 #include "Observer.h"
 
-Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj,
+Observer::Observer(Color *cl,
 	ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm,
 	Motor *rm, Motor *lm, Motor *fm){
-	whiteJudge = wj;
-	blackJudge = bj;
-	greenJudge = gj;
+	color = cl;
 	obstacleJudge = oj;
 	touchJudge = tj;
 	distanceMeter = dm;
@@ -38,17 +36,6 @@ Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj,
 
 void Observer::update(){
 	runtime += 1;
-	if(runtime % whiteJudge->getInterval() == 0){
-		// is_White = whiteJudge->judge();
-	}
-
-	if(runtime % blackJudge->getInterval() == 0){
-		// is_Black = blackJudge->judge();
-	}
-
-	if(runtime % greenJudge->getInterval() == 0){
-		// is_Green = greenJudge->judge();
-	}
 
 	if(runtime % obstacleJudge->getInterval() == 0){
 		is_Obstacle = obstacleJudge->judge();
@@ -56,10 +43,6 @@ void Observer::update(){
 
 	if(runtime % touchJudge->getInterval() == 0){
 		is_Touch = touchJudge->judge();
-	}
-
-	if(runtime % obstacleJudge->getInterval() == 0){
-		is_Obstacle = obstacleJudge->judge();
 	}
 	
 	// 毎回値入れる系
@@ -79,7 +62,10 @@ void Observer::update(){
 	// 段差判定
 	is_Step = (buffer[0] == buffer[4]);
 
+}
 
+colorid_t Observer::judgeColor(){
+	return color->getColor();
 }
 
 bool Observer::isStep(){

@@ -9,11 +9,12 @@ LineTracer::LineTracer(Drive *dr, Color *col){
 	black = 0;
 	white = 0;
 	target = 0;
+	bright = 0;
 }
 
 int LineTracer::trace(double speed, int edge, int target){
 	// int bright = calcCorrection();
-	int bright = color->getReflect();
+	bright = color->getReflect();
 	// int angle = brightPid->calc(target, bright);
 	int angle = brightPid->calc(this->target, bright);
 
@@ -25,4 +26,8 @@ int LineTracer::calcCorrection(){
 	double rate = (color->getReflect() - (double)black) / ((double)white - (double)black);
 
 	return (int)rate * 200;
+}
+
+int LineTracer::getBright(){
+	return bright;
 }

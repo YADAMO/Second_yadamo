@@ -17,6 +17,8 @@ public:
 	uint8_t black;
 	uint8_t white;
 	uint8_t target;
+	int bright;
+	int getBright();
 
 private:
 	PID *brightPid;
