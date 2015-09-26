@@ -19,6 +19,14 @@ int Drive::calcSteerAngle(int8_t right, int8_t left){
   return angle*4;
 }
 
+int Drive::calcSteerAngleFfixed(int8_t right, int8_t left){
+  int angle = right - left;
+  if(angle >= 10)  angle = 10;
+  if(angle <= -10) angle = -10;
+
+  return angle*4;
+}
+
 int Drive::drive(int angle, double spd){
 	// int speed = speedPid->calc(spd, observer->getSpeed());
 	int diff = calcRear(angle);
@@ -91,6 +99,33 @@ void Drive::driveFfixed(int turn, int speed){
   
   Lmotor->setSpeed(left);
   Rmotor->setSpeed(right);
+
+  steerAngle = calcSteerAngleFfixed(right, left);
+  if(turn > 0){//左旋回  steerAngle負
+    if(count > steerAngle){
+	  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
+	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }else if(turn < 0){//右旋回 steerAngle正
+    if(count < steerAngle){
+	  if(-turn + TURN_BASE_SPEED >= 100)	Fmotor->setSpeed(100);
+	  else Fmotor->setSpeed(-turn + TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }else{
+    if(count > 0){
+	  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
+	  else Fmotor->setSpeed(-turn - TURN_BASE_SPEED);
+    }else if(count < 0){
+	  if(turn + TURN_BASE_SPEED >= 100)	Fmotor->setSpeed(100);
+	  else Fmotor->setSpeed(turn + TURN_BASE_SPEED);
+    }else{
+      Fmotor->setSpeed(0);
+    }
+  }
  
 }
 
