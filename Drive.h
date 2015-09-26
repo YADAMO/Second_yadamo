@@ -19,6 +19,7 @@ public:
 	void straight(int speed);
 	void init();
 	int calcSteerAngle(int8_t right, int8_t left);
+	void curve(int right, int left);
 private:
 
 	Motor *Rmotor;

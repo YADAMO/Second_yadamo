@@ -152,3 +152,8 @@ void Drive::straight(int speed){
   	// Fmotor->setSpeed(-handle);
   	Fmotor->setRotate(turn*8, 100, false);
 }
+
+void Drive::curve(int right, int left){
+	Rmotor->setSpeed(right);
+	Lmotor->setSpeed(left);
+}

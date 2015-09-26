@@ -31,7 +31,8 @@ APPL_CXXOBJS += \
 	Logger.o \
 	Observer.o \
 	Stepper.o \
-	LineReturn.o
+	LineReturn.o \
+	SL1.o
 
 SRCLANG := c++
 
