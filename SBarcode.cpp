@@ -105,55 +105,55 @@ bool SBarcode::calcBarcode(){
 				for(; curbp < 1; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 9:
 				for(; curbp < 2; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 12:
 				for(; curbp < 3; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 15:
 				for(; curbp < 4; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 18:
 				for(; curbp < 5; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 21:
 				for(; curbp < 6; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 24:
 				for(; curbp < 7; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 27:
 				for(; curbp < 8; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 30:
 				for(; curbp < 8; curbp++){
 					bitArray[curbp] = pcolor;
 				}
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				end = 1;
 				break;
 			default:
@@ -164,12 +164,12 @@ bool SBarcode::calcBarcode(){
 }
 
 unsigned char SBarcode::getBitArray(){
-	return (bitArray[0] ||
-		bitArray[1] << 1 ||
-		bitArray[2] << 2 ||
-		bitArray[3] << 3 ||
-		bitArray[4] << 4 ||
-		bitArray[5] << 5 ||
-		bitArray[6] << 6 ||
+	return (bitArray[0] |
+		bitArray[1] << 1 |
+		bitArray[2] << 2 |
+		bitArray[3] << 3 |
+		bitArray[4] << 4 |
+		bitArray[5] << 5 |
+		bitArray[6] << 6 |
 		bitArray[7] << 7);
 }
