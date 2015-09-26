@@ -76,6 +76,24 @@ void Drive::_drive(int turn, int speed){
   }
 }
 
+//前輪固定走行
+void Drive::driveFfixed(int turn, int speed){
+  int32_t count = observer->Fangle;
+  steerAngle = 0;
+  int right, left;
+  
+  right = -speed - turn;
+  left = -speed + turn;
+  if(right >= 100)	right = 100;
+  if(right <= -100)	right = -100;
+  if(left >= 100)	left = 100;
+  if(left <= -100)	left = -100;
+  
+  Lmotor->setSpeed(left);
+  Rmotor->setSpeed(right);
+ 
+}
+
 
 int Drive::calcFront(int angle){
 	int targetDegrees = 0;

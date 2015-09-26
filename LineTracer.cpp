@@ -22,6 +22,16 @@ int LineTracer::trace(double speed, int edge, int target){
 	return angle;
 }
 
+int LineTracer::traceFfixed(double speed, int edge, int target){
+	// int bright = calcCorrection();
+	bright = color->getReflect();
+	// int angle = brightPid->calc(target, bright);
+	int angle = brightPid->calc(this->target, bright);
+
+	drive->driveFfixed(angle* edge, (int)speed);
+	return angle;
+}
+
 int LineTracer::calcCorrection(){
 	double rate = (color->getReflect() - (double)black) / ((double)white - (double)black);
 

@@ -13,6 +13,7 @@ public:
 	Drive(Motor *rm, Motor *lm, Motor *fm, Observer *ob);
 	int drive(int angle, double spd);
 	void _drive(int turn, int speed);
+	void driveFfixed(int turn, int speed);
 	int calcFront(int angle);
 	int calcRear(int angle);
 	void straight(int speed);
