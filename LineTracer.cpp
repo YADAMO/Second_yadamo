@@ -18,7 +18,8 @@ int LineTracer::trace(double speed, int edge, int target){
 	// int angle = brightPid->calc(target, bright);
 	int angle = brightPid->calc(this->target, bright);
 
-	drive->_drive(angle* edge, (int)speed);
+	//drive->_drive(angle* edge, (int)speed);
+	drive->driveFfixed(angle* edge, (int)speed);
 	return angle;
 }
 
