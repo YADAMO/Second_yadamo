@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ScenarioController.h"
+#include "Drive.h"
+#include "LineTracer.h"
+#include "Observer.h"
 
 class SLoopLine : public ScenarioController{
 public:
