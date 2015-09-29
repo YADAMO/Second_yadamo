@@ -4,9 +4,12 @@
 
 class SLoopLine : public ScenarioController{
 public:
-	SLoopLine();
+	SLoopLine(LineTracer *lt, Observer *ob, Drive *dr);
     virtual bool run();
 
 private:
+	LineTracer *lineTracer;
+	Observer *observer;
+	Drive *drive;
 	int runtime;
 };

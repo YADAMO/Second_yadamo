@@ -17,6 +17,7 @@ private:
     LineTracer *lineTracer;
 
     int touchCount, tc;
+    int battery;
     bool judge;
     uint8_t white, black, green, gray;
     uint8_t target;

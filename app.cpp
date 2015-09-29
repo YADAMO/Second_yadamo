@@ -47,6 +47,7 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
+#include "Curve.h"
 
 // その他
 #include "LineTracer.h"
@@ -75,7 +76,7 @@ void destroy();
 void logging();
 
 bool calibration_flag = false;
-
+int phase = 0;
 
 // オブジェクトの定義
 Motor rightMotor(EV3_PORT_B);
@@ -98,46 +99,62 @@ Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger);
+Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
 }
 
 void yadamo_task(intptr_t exinf){
-    observer.update();
-
-    // if (ev3_button_is_pressed(BACK_BUTTON)) {
-    if(observer.getDistance() > 300){
+  observer.update();
+    // if(curve.run(-20, -55, -400, 100)){
+    if (ev3_button_is_pressed(BACK_BUTTON)) {
+    // if(observer.getDistance() > 200){
         wup_tsk(MAIN_TASK);  // バックボタン押下
     }else{
         if(!calibration_flag){
 
             calibration_flag = calibration.doCalibration();
-            drive.init();
         }else{
-            // drive.straight(10);
-            drive._drive(10, 20);
-           logging();
-            // int a = lineTracer.trace(20, RIGHT, 0);
-   
-            char br[64] = "";
-            char tr[64] = "";
-            char ar[64] = "";
 
-            sprintf(br, "%d", (int)rightMotor.getAngle());
-            sprintf(tr, "%d", (int)leftMotor.getAngle());
-            sprintf(ar, "%d", (int)frontMotor.getAngle());
+    //        logging();
+    //         char br[64] = "";
+    //         char tr[64] = "";
+    //         char ar[64] = "";
 
-            // ev3_lcd_draw_string("            ", 0, 40);
-            // ev3_lcd_draw_string("            ", 0, 48); 
-            ev3_lcd_draw_string(br, 0, 40);
-            ev3_lcd_draw_string(tr, 0, 48);            
-            ev3_lcd_draw_string(ar, 0, 56);            
-            // drive._drive(0, 10);
-            // lineTracer.trace(20, RIGHT, 0);
-            // drive.straight(20);
+    //         sprintf(br, "%d", (int)rightMotor.getAngle());
+    //         sprintf(tr, "%d", (int)leftMotor.getAngle());
+    //         sprintf(ar, "%d", (int)frontMotor.getAngle());
+
+    //         // ev3_lcd_draw_string("            ", 0, 40);
+    //         // ev3_lcd_draw_string("            ", 0, 48); 
+    //         ev3_lcd_draw_string(br, 0, 40);
+    //         ev3_lcd_draw_string(tr, 0, 48);            
+    //         ev3_lcd_draw_string(ar, 0, 56); 
+        switch(phase){
+        case 0:
+            // curve.run();
+            // lineTracer.traceFfixed(20, RIGHT, 0);
+            // if(observer.getDistance() > 490){
+                // phase++;
+            // }
+            if(curve.runPid(35, -470, 70, R)){
+                phase++;
+
+            }
+        break;
+        case 1:
+            wup_tsk(MAIN_TASK);
+            // if(curve.run(-15, -50, -400, 70))    phase++;
+        break;
+        case 2:
+            lineTracer.traceFfixed(20, RIGHT, 0);
+        break;
+            }
         }
     }
+
+
     ext_tsk();
 }
 
@@ -159,7 +176,7 @@ void logging(){
 
     logger.addData((double)color.getReflect());
     // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
-    logger.addData((double)gyro.getAngle());
+    logger.addData((double)observer.getSpeed());
     
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
@@ -174,8 +191,8 @@ void destroy(){
         // leftMotor.setSpeed(0);
         logger.end();
         frontMotor.setRotate(observer.Fangle, 100, true);
-        rightMotor.setRotate(rightMotor.getAngle(), 15, false);
-        leftMotor.setRotate(leftMotor.getAngle(), 15, false);
+        // rightMotor.setRotate(rightMotor.getAngle(), 15, false);
+        // leftMotor.setRotate(leftMotor.getAngle(), 15, false);
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){

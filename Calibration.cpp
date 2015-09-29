@@ -1,4 +1,3 @@
-
 #include "Calibration.h"
 
 Calibration::Calibration(Color *col, TouchJudge *tj, LineTracer *lt){
@@ -20,7 +19,7 @@ Calibration::Calibration(Color *col, TouchJudge *tj, LineTracer *lt){
  * キャリブレーションする
  */
 bool Calibration::doCalibration() {
-
+  int cali_time = 0;
   while(1){
     if(touchJudge->judge()){
       tc++;
@@ -32,6 +31,16 @@ bool Calibration::doCalibration() {
       judge = true;
     }else{
       judge = false;
+    }
+
+    //追加キャリブレーション
+    //それっぽいスタート位置に走行体をセットしたらうるさくなる
+    if(touchCount == 4 && color->getReflect() >= target - 3 && color->getReflect() <= target + 3){
+      if(cali_time % 200 == 0){
+        ev3_speaker_play_tone(NOTE_C4, 100);
+        cali_time = 0;
+      }
+      cali_time++;
     }
 
     if(judge){
@@ -63,11 +72,19 @@ bool Calibration::doCalibration() {
           ev3_speaker_play_tone(NOTE_G4, 100);
           touchCount++;
         break;
+
+        case 4:
+          touchCount++;
+        break;
+
+        case 5:
+          touchCount++;
+        break;
       }
 
     }
     drawLCD();
-    if(touchCount == 4){
+    if(touchCount == 6){
       return true;
       break;
     }
@@ -85,18 +102,21 @@ void Calibration::drawLCD(){
     char gra[64] = "";
     char gre[64] = "";
     char tar[64] = "";
+    char bat[64] = "";
     
     sprintf(w, "white = %d", white);
     sprintf(b, "black = %d", black);
     sprintf(gra, "gray = %d", gray);
     sprintf(gre, "green = %d", green);
     sprintf(tar, "target = %d", target);
+    sprintf(bat, "battery = %d", ev3_battery_voltage_mV());
 
     ev3_lcd_draw_string(w, 0, 0);
     ev3_lcd_draw_string(b, 0, 8);
     ev3_lcd_draw_string(gra, 0, 16);
     ev3_lcd_draw_string(gre, 0, 24);
     ev3_lcd_draw_string(tar, 0, 32);
+    ev3_lcd_draw_string(bat, 0, 40);
 }
 
 

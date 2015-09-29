@@ -12,6 +12,7 @@ class LineTracer{
 public:
 	LineTracer(Drive *dr, Color *col);
 	int trace(double speed, int edge, int target);
+	int traceFfixed(double speed, int edge, int target);
 	int calcCorrection();
 	uint8_t getTarget();
 	uint8_t black;
