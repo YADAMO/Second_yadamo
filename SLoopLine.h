@@ -8,4 +8,5 @@ public:
     virtual bool run();
 
 private:
+	int runtime;
 };

@@ -97,7 +97,7 @@ Observer observer(&color, &obstacleJudge, &touchJudge, &distanceMeter, &rightMot
 Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
-SBarcode barcode(&lineTracer, &observer, &drive);
+SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);

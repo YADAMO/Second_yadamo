@@ -1,10 +1,11 @@
 
 #include "SBarcode.h"
 
-SBarcode::SBarcode(LineTracer *lt, Observer *ob, Drive *dr){
+SBarcode::SBarcode(LineTracer *lt, Observer *ob, Drive *dr, Logger *lg){
 	lineTracer = lt;
 	observer = ob;
 	drive = dr;
+	logger = lg;
 	distance = 0;
 	preCol = COLOR_NONE;
 	runtime = 0;
@@ -81,6 +82,9 @@ bool SBarcode::run(){
 			break;
 	}
 	runtime++;
+	logger->addData((double)curDistance);
+    logger->addData((double)preCol);
+    logger->send();
 	return end;
 }
 
@@ -99,7 +103,7 @@ bool SBarcode::calcBarcode(){
 		}
 		switch(dis){
 			case 3:
-				pcolor = ~pcolor;
+				pcolor = ~pcolor & 0x01;
 				break;
 			case 6:
 				for(; curbp < 1; curbp++){

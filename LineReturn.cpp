@@ -1,13 +1,14 @@
 
 #include "LineReturn.h"
 
-SBarcode::SBarcode(LineTracer *lt, Observer *ob, Drive *dr){
+LineReturn::LineReturn(LineTracer *lt, Observer *ob, Drive *dr){
 	lineTracer = lt;
 	observer = ob;
 	drive = dr;
+	runtime = 0;
 }
 
-bool SBarcode::run(){
+bool LineReturn::run(){
 	bool end = false;
 	switch(phase){
 		case 0:

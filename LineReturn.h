@@ -14,4 +14,5 @@ private:
 	LineTracer *lineTracer;
 	Observer *observer;
 	Drive *drive;
+	int runtime;
 };
