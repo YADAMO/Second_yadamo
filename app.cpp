@@ -47,7 +47,7 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
-#include "SL1.h"
+#include "Curve.h"
 
 // その他
 #include "LineTracer.h"
@@ -99,7 +99,7 @@ Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
 SBarcode barcode(&lineTracer, &observer, &drive);
-SL1 sl1(&drive, &observer, &frontMotor);
+Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
@@ -107,7 +107,7 @@ void miri_cyc(intptr_t exinf){
 
 void yadamo_task(intptr_t exinf){
   observer.update();
-    // if(sl1.run(-20, -55, -400, 100)){
+    // if(curve.run(-20, -55, -400, 100)){
     if (ev3_button_is_pressed(BACK_BUTTON)) {
     // if(observer.getDistance() > 200){
         wup_tsk(MAIN_TASK);  // バックボタン押下
@@ -133,16 +133,22 @@ void yadamo_task(intptr_t exinf){
     //         ev3_lcd_draw_string(ar, 0, 56); 
         switch(phase){
         case 0:
-            lineTracer.traceFfixed(15, RIGHT, 0);
-            if(observer.getDistance() > 470){
+            // curve.run();
+            // lineTracer.traceFfixed(20, RIGHT, 0);
+            // if(observer.getDistance() > 490){
+                // phase++;
+            // }
+            if(curve.runPid(35, -470, 70, R)){
                 phase++;
+
             }
         break;
         case 1:
-            if(sl1.run(-15, -50, -509, 50))    phase++;
+            wup_tsk(MAIN_TASK);
+            // if(curve.run(-15, -50, -400, 70))    phase++;
         break;
         case 2:
-            lineTracer.traceFfixed(15, RIGHT, 0);
+            lineTracer.traceFfixed(20, RIGHT, 0);
         break;
             }
         }
@@ -170,7 +176,7 @@ void logging(){
 
     logger.addData((double)color.getReflect());
     // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
-    logger.addData((double)gyro.getAngle());
+    logger.addData((double)observer.getSpeed());
     
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
@@ -185,8 +191,8 @@ void destroy(){
         // leftMotor.setSpeed(0);
         logger.end();
         frontMotor.setRotate(observer.Fangle, 100, true);
-        rightMotor.setRotate(rightMotor.getAngle(), 15, false);
-        leftMotor.setRotate(leftMotor.getAngle(), 15, false);
+        // rightMotor.setRotate(rightMotor.getAngle(), 15, false);
+        // leftMotor.setRotate(leftMotor.getAngle(), 15, false);
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){

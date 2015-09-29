@@ -35,7 +35,7 @@ bool Calibration::doCalibration() {
 
     //追加キャリブレーション
     //それっぽいスタート位置に走行体をセットしたらうるさくなる
-    if(touchCount == 4 && color->getReflect() >= target + 6 && color->getReflect() < target + 10){
+    if(touchCount == 4 && color->getReflect() >= target - 3 && color->getReflect() <= target + 3){
       if(cali_time % 200 == 0){
         ev3_speaker_play_tone(NOTE_C4, 100);
         cali_time = 0;
@@ -102,18 +102,21 @@ void Calibration::drawLCD(){
     char gra[64] = "";
     char gre[64] = "";
     char tar[64] = "";
+    char bat[64] = "";
     
     sprintf(w, "white = %d", white);
     sprintf(b, "black = %d", black);
     sprintf(gra, "gray = %d", gray);
     sprintf(gre, "green = %d", green);
     sprintf(tar, "target = %d", target);
+    sprintf(bat, "battery = %d", ev3_battery_voltage_mV());
 
     ev3_lcd_draw_string(w, 0, 0);
     ev3_lcd_draw_string(b, 0, 8);
     ev3_lcd_draw_string(gra, 0, 16);
     ev3_lcd_draw_string(gre, 0, 24);
     ev3_lcd_draw_string(tar, 0, 32);
+    ev3_lcd_draw_string(bat, 0, 40);
 }
 
 

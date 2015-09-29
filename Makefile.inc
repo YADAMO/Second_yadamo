@@ -32,7 +32,7 @@ APPL_CXXOBJS += \
 	Observer.o \
 	Stepper.o \
 	LineReturn.o \
-	SL1.o
+	Curve.o
 
 SRCLANG := c++
 

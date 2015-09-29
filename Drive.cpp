@@ -21,8 +21,8 @@ int Drive::calcSteerAngle(int8_t right, int8_t left){
 
 int Drive::calcSteerAngleFfixed(int8_t right, int8_t left){
   int angle = right - left;
-  if(angle >= 10)  angle = 10;
-  if(angle <= -10) angle = -10;
+  if(angle >= 50)  angle = 50;
+  if(angle <= -50) angle = -50;
 
   return angle*4;
 }
