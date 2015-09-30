@@ -5,9 +5,9 @@
 #include "LineTracer.h"
 #include "Observer.h"
 
-class LineReturn : public ScenarioController{
+class Choilie : public ScenarioController{
 public:
-	LineReturn(LineTracer *lt, Observer *ob, Drive *dr);
+	Choilie(LineTracer *lt, Observer *ob, Drive *dr);
     virtual bool run();
 
 private:

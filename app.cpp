@@ -98,7 +98,7 @@ Observer observer(&color, &obstacleJudge, &touchJudge, &distanceMeter, &rightMot
 Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
-SBarcode barcode(&lineTracer, &observer, &drive);
+SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
 
 void miri_cyc(intptr_t exinf){
