@@ -21,6 +21,9 @@ public:
 	int calcSteerAngle(int8_t right, int8_t left);
 	int calcSteerAngleFfixed(int8_t right, int8_t left);
 	void curve(int right, int left);
+	bool turn(double angle, char d, int speed);
+	void turnReset();
+	void opeF(int angle);
 private:
 
 	Motor *Rmotor;
@@ -31,4 +34,8 @@ private:
 	PID *anglePid = new PID(0.05, 0.005, 0.005);
 	int steerAngle;
 	int32_t rightOffset, leftOffset;
+	char turnPhase;
+	int turnRuntime;
+	int32_t turnrightOffset;
+	int32_t turnleftOffset;
 };

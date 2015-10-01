@@ -118,19 +118,17 @@ void yadamo_task(intptr_t exinf){
         }else{
 
     //        logging();
-    //         char br[64] = "";
-    //         char tr[64] = "";
-    //         char ar[64] = "";
+            // char br[64] = "";
+            // char tr[64] = "";
+            // char ar[64] = "";
 
-    //         sprintf(br, "%d", (int)rightMotor.getAngle());
-    //         sprintf(tr, "%d", (int)leftMotor.getAngle());
-    //         sprintf(ar, "%d", (int)frontMotor.getAngle());
+            // sprintf(br, "%d", (int)rightMotor.getAngle());
+            // sprintf(tr, "%d", (int)leftMotor.getAngle());
+            // sprintf(ar, "%d", (int)frontMotor.getAngle());
 
-    //         // ev3_lcd_draw_string("            ", 0, 40);
-    //         // ev3_lcd_draw_string("            ", 0, 48); 
-    //         ev3_lcd_draw_string(br, 0, 40);
-    //         ev3_lcd_draw_string(tr, 0, 48);            
-    //         ev3_lcd_draw_string(ar, 0, 56); 
+            // ev3_lcd_draw_string(br, 0, 48);
+            // ev3_lcd_draw_string(tr, 0, 56);            
+            // ev3_lcd_draw_string(ar, 0, 64); 
         switch(phase){
         case 0:
             // curve.run();
@@ -138,9 +136,8 @@ void yadamo_task(intptr_t exinf){
             // if(observer.getDistance() > 490){
                 // phase++;
             // }
-            if(curve.runPid(35, -470, 70, R)){
+            if(drive.turn(45, 1, 8)){
                 phase++;
-
             }
         break;
         case 1:
@@ -148,7 +145,7 @@ void yadamo_task(intptr_t exinf){
             // if(curve.run(-15, -50, -400, 70))    phase++;
         break;
         case 2:
-            lineTracer.traceFfixed(20, RIGHT, 0);
+            //lineTracer.traceFfixed(20, RIGHT, 0);
         break;
             }
         }

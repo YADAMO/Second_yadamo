@@ -8,7 +8,10 @@ Drive::Drive(Motor *rm, Motor *lm, Motor *fm, Observer *ob){
 	observer = ob;
 	rightOffset = 0;
 	leftOffset = 0;
-
+	turnPhase = 0;
+	turnRuntime = 0;
+	turnrightOffset = 0;
+	turnleftOffset = 0;
 }
 
 int Drive::calcSteerAngle(int8_t right, int8_t left){
@@ -191,4 +194,68 @@ void Drive::straight(int speed){
 void Drive::curve(int right, int left){
 	Rmotor->setSpeed(right);
 	Lmotor->setSpeed(left);
+}
+
+bool Drive::turn(double angle, char d, int speed){
+	static double const k = 1.6;
+	switch(turnPhase){
+		case 0:{
+			if(turnRuntime < 1500){
+				opeF(72*d);
+				Lmotor->setSpeed(0);
+				Rmotor->setSpeed(0);
+			}else{
+				turnPhase++;
+				turnleftOffset = Lmotor->getAngle();
+				turnrightOffset = Rmotor->getAngle();
+				turnRuntime = 0;ev3_speaker_play_tone(NOTE_C4, 100);
+			}
+			break;
+		}
+		case 1:{
+			int32_t leftdistance = turnleftOffset - Lmotor->getAngle();
+			int32_t rightdistance = turnrightOffset - Rmotor->getAngle();
+			if(leftdistance < (int32_t)(angle*k) && rightdistance < (int32_t)(angle*k)){
+				opeF(72*d);
+				if(d == 1){
+					Lmotor->setSpeed(-speed);
+					Rmotor->setSpeed(0);
+				}else{
+					Lmotor->setSpeed(0);
+					Rmotor->setSpeed(-speed);
+				}
+			}else{
+				turnPhase++;
+				turnRuntime = 0;
+				Lmotor->setSpeed(0);
+				Rmotor->setSpeed(0);ev3_speaker_play_tone(NOTE_C4, 100);
+			}
+			break;
+		}
+		case 2:{
+			turnPhase = 0;
+			turnRuntime = 0;
+			return true;
+			break;
+		}
+
+	}
+	turnRuntime++;
+	return false;
+}
+
+void Drive::turnReset(){
+	turnPhase = 0;
+	turnRuntime = 0;
+}
+
+void Drive::opeF(int angle){
+	int tarCount = (int)700*((double)angle/90.0);
+	if(tarCount > observer->Fangle){
+		Fmotor->setSpeed(100);
+	}else if(tarCount < observer->Fangle){
+		Fmotor->setSpeed(-100);
+	}else{
+		Fmotor->setSpeed(0);
+	}
 }
