@@ -22,6 +22,18 @@ int LineTracer::trace(double speed, int edge, int target){
 	return angle;
 }
 
+int LineTracer::traceReturn(double speed, int edge, int target){
+	// int bright = calcCorrection();
+	bright = color->getReflect();
+	// int angle = brightPid->calc(target, bright);
+	int angle = brightPid->calc(this->target, bright);
+	if(angle > 15)	angle = 15;
+	else if(angle < -30)	angle = -30;
+
+	drive->_drive(angle* edge, (int)speed);
+	return angle;
+}
+
 int LineTracer::traceFfixed(double speed, int edge, int target){
 	// int bright = calcCorrection();
 	bright = color->getReflect();
