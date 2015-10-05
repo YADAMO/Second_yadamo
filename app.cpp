@@ -48,6 +48,7 @@
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
 #include "Curve.h"
+#include "LCourse.h"
 
 // その他
 #include "LineTracer.h"
@@ -74,6 +75,7 @@ using namespace std;
 
 void destroy();
 void logging();
+void display();
 
 bool calibration_flag = false;
 int phase = 0;
@@ -100,6 +102,7 @@ LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
+LCourse lcorse(&lineTracer, &curve, &observer);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
@@ -107,53 +110,49 @@ void miri_cyc(intptr_t exinf){
 
 void yadamo_task(intptr_t exinf){
   observer.update();
-    // if(curve.run(-20, -55, -400, 100)){
     if (ev3_button_is_pressed(BACK_BUTTON)) {
     // if(observer.getDistance() > 200){
-        wup_tsk(MAIN_TASK);  // バックボタン押下
+        wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
         if(!calibration_flag){
 
             calibration_flag = calibration.doCalibration();
         }else{
 
-    //        logging();
-            // char br[64] = "";
-            // char tr[64] = "";
-            // char ar[64] = "";
+           logging();
 
-            // sprintf(br, "%d", (int)rightMotor.getAngle());
-            // sprintf(tr, "%d", (int)leftMotor.getAngle());
-            // sprintf(ar, "%d", (int)frontMotor.getAngle());
+           if(lcorse.run()){
+                wup_tsk(MAIN_TASK);
+           }
 
-            // ev3_lcd_draw_string(br, 0, 48);
-            // ev3_lcd_draw_string(tr, 0, 56);            
-            // ev3_lcd_draw_string(ar, 0, 64); 
-        switch(phase){
-        case 0:
-            // curve.run();
-            // lineTracer.traceFfixed(20, RIGHT, 0);
-            // if(observer.getDistance() > 490){
-                // phase++;
-            // }
-            if(drive.turn(45, 1, 8)){
-                phase++;
-            }
-        break;
-        case 1:
-            wup_tsk(MAIN_TASK);
-            // if(curve.run(-15, -50, -400, 70))    phase++;
-        break;
-        case 2:
-            //lineTracer.traceFfixed(20, RIGHT, 0);
-        break;
-            }
+        // switch(phase){
+        // case 0:
+        //     // curve.run();
+        //     // lineTracer.traceFfixed(20, RIGHT, 0);
+        //     // if(observer.getDistance() > 490){
+        //         // phase++;
+        //     // }
+        //     // if(drive.turn(45, 1, 8)){
+        //     // if(curve.run(-15, -20, -450, 5000)){
+        //     if(curve.runPid(10, -450, 65, R)){
+        //         phase++;
+        //     }
+        // break;
+        // case 1:
+        //     wup_tsk(MAIN_TASK);
+        //     // if(curve.run(-15, -50, -400, 70))    phase++;
+        // break;
+        // case 2:
+        //     //lineTracer.traceFfixed(20, RIGHT, 0);
+        // break;
+        //     }
         }
     }
 
 
     ext_tsk();
 }
+
 
 void main_task(intptr_t unused) {
     ev3_sta_cyc(MIRI_CYC);
@@ -172,7 +171,7 @@ void logging(){
 
 
     logger.addData((double)color.getReflect());
-    // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
+    // logger.addData((double)curve.runPid(35, -470, 70, R));
     logger.addData((double)observer.getSpeed());
     
     // logger.addData((double)lineTracer.trace(5, LEFT));
@@ -182,14 +181,16 @@ void logging(){
 
 
 void destroy(){
-
-        
-        // rightMotor.setSpeed(0);
-        // leftMotor.setSpeed(0);
-        logger.end();
-        frontMotor.setRotate(observer.Fangle, 100, true);
-        // rightMotor.setRotate(rightMotor.getAngle(), 15, false);
-        // leftMotor.setRotate(leftMotor.getAngle(), 15, false);
+    logger.end();
+    bool back = false;
+    frontMotor.setRotate(observer.Fangle, 100, true);
+    if(back){
+        rightMotor.setRotate(rightMotor.getAngle(), 25, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 25, false);
+    }else{
+        rightMotor.setSpeed(0);
+        leftMotor.setSpeed(0);
+    }       
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){
@@ -197,23 +198,20 @@ void destroy(){
         }
 
     }
-    // delete rightMotor;
-    // delete leftMotor;
-    // delete frontMotor;
-    // delete gyro;
-    // delete color;
-    // delete touch;
-    // delete sonic;
-    // delete whiteJudge;
-    // delete blackJudge;
-    // delete greenJudge;
-    // delete touchJudge;
-    // delete obstacleJudge;
-    // delete distanceMeter;
-    // delete logger;
-    // delete observer;
-    // delete drive;
-    // delete lineTracer;
-    // delete calibration;
+}
 
+void display(){
+    char br[64] = "";
+    char tr[64] = "";
+    char ar[64] = "";
+
+    sprintf(br, "%d", (int)rightMotor.getAngle());
+    sprintf(tr, "%d", (int)leftMotor.getAngle());
+    sprintf(ar, "%d", (int)frontMotor.getAngle());
+
+    ev3_lcd_draw_string("            ", 0, 40);
+    ev3_lcd_draw_string("            ", 0, 48); 
+    ev3_lcd_draw_string(br, 0, 40);
+    ev3_lcd_draw_string(tr, 0, 48);            
+    ev3_lcd_draw_string(ar, 0, 56); 
 }
