@@ -18,13 +18,14 @@ bool LCourse::run(){
 		break;
 
 		case 1:
-			if(curve->runPid(10, -465, 76, R)){
+			if(curve->runPid(10, -465, 77, R)){
 				changeScenario();
+				lineTracer->changeGain(1.5, 0, 0.02);
 			}
 		break;
 
 		case 2:
-			lineTracer->traceFfixed(20, RIGHT, 0);
+			lineTracer->trace(20, RIGHT, 0);
 			if(observer->getDistance() > 800){
 				changeScenario();
 			}
