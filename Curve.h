@@ -15,7 +15,7 @@ class Curve{
 public:
 	Curve(Drive *dr, Observer *ob, Motor *fm, Motor *rm, Motor *lm , Color *cl, LineTracer *ln);
 	bool run(int ri, int lf, int32_t fr, int32_t dis);
-	bool runPid(int sp, int32_t fr, int32_t dis, int dir);
+	bool runPid(int dif, int32_t fr, int32_t dis, int dir);
 
 private:
 	Drive *drive;
@@ -31,4 +31,5 @@ private:
 	int right, left ,front;
 	int phase;
 	int bright, turn;
+	int curveSP;
 };
