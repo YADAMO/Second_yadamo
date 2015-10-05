@@ -24,7 +24,7 @@ Observer::Observer(Color *cl,
 	speed = 0;
 
 	for(int i = 0; i < 5; i++){
-		buffer[i] = 0.0;
+		buffer[i] = i;
 		RangleBuf[i] = 0;
 		LangleBuf[i] = 0;
 	}
@@ -49,18 +49,22 @@ void Observer::update(){
 	distance = -distanceMeter->getDistance();
 	speed = speedMeter->calcSpeed(distance);
 
-	for(int i = 0; i < 4; i++){
+	Fangle = Fmotor->getAngle();
+
+	if(runtime % 5 == 0){
+		for(int i = 0; i < 4; i++){
 		buffer[i] = buffer[i+1];
 		RangleBuf[i] = RangleBuf[i+1];
 		LangleBuf[i] = LangleBuf[i+1];
-	}
-	buffer[4] = distance;
-	RangleBuf[4] = Rmotor->getAngle();
-	LangleBuf[4] = Lmotor->getAngle();
-	Fangle = Fmotor->getAngle();
+		}
+		buffer[4] = distance;
+		RangleBuf[4] = Rmotor->getAngle();
+		LangleBuf[4] = Lmotor->getAngle();
+		// 段差判定
+		is_Step = (buffer[0] == buffer[4]);
 
-	// 段差判定
-	is_Step = (buffer[0] == buffer[4]);
+	}
+
 
 }
 
