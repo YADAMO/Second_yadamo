@@ -49,6 +49,7 @@
 #include "SUndetermined.h" 
 #include "Curve.h"
 #include "LCourse.h"
+#include "Tyoiri.h"
 
 // その他
 #include "LineTracer.h"
@@ -102,7 +103,11 @@ LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
-LCourse lcorse(&lineTracer, &curve, &observer);
+Tyoiri tyoiri(&drive, &observer);
+STwinBridge bridge(&lineTracer, &observer, &drive, &tyoiri);
+
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
+
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
@@ -122,6 +127,7 @@ void yadamo_task(intptr_t exinf){
            logging();
 
            if(lcorse.run()){
+           // if(bridge.run()){
                 wup_tsk(MAIN_TASK);
            }
 

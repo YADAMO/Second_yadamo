@@ -168,7 +168,7 @@ int Drive::calcRear(int angle){
 void Drive::init(){
 	rightOffset = Rmotor->getAngle();
 	leftOffset = Lmotor->getAngle();
-
+	Fmotor->setRotate(observer->Fangle, 100, true);
 }
 
 void Drive::straight(int speed){
