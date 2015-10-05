@@ -41,3 +41,7 @@ int LineTracer::calcCorrection(){
 int LineTracer::getBright(){
 	return bright;
 }
+
+void LineTracer::changeGain(float p, float i, float d){
+	brightPid->changeGain(p, i, d);
+}
