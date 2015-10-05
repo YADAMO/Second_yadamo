@@ -125,9 +125,7 @@ void yadamo_task(intptr_t exinf){
         }else{
 
            logging();
-
            if(lcorse.run()){
-           // if(bridge.run()){
                 wup_tsk(MAIN_TASK);
            }
 
