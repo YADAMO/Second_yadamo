@@ -12,7 +12,7 @@ bool LCourse::run(){
 	switch(phase){
 		case 0:
 			lineTracer->traceFfixed(20, RIGHT, 0);
-			if(observer->getDistance() > 477){
+			if(observer->getDistance() > 480){
 				changeScenario();
 			}
 		break;
