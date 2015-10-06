@@ -16,7 +16,7 @@ bool Tyoiri::run(){
 
 		case 1:
 			drive->curve(100, 100);
-			if(distance - observer->getDistance() > 17){
+			if(distance - observer->getDistance() > 18){
 				changeScenario();
 				distance = observer->getDistance();
 			}
@@ -24,7 +24,7 @@ bool Tyoiri::run(){
 
 		case 2:
 			drive->curve(-100, -100);
-			if(observer->getDistance() - distance > 17){
+			if(observer->getDistance() - distance > 18){
 				changeScenario();
 			}
 		break;
