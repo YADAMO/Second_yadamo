@@ -125,6 +125,7 @@ void yadamo_task(intptr_t exinf){
         }else{
 
            logging();
+<<<<<<< HEAD
            if(bridge.run()){
                 wup_tsk(MAIN_TASK);
            }
@@ -150,6 +151,36 @@ void yadamo_task(intptr_t exinf){
         //     //lineTracer.traceFfixed(20, RIGHT, 0);
         // break;
         //     }
+=======
+    //         char br[64] = "";
+    //         char tr[64] = "";
+    //         char ar[64] = "";
+
+    //         sprintf(br, "%d", (int)rightMotor.getAngle());
+    //         sprintf(tr, "%d", (int)leftMotor.getAngle());
+    //         sprintf(ar, "%d", (int)frontMotor.getAngle());
+
+    //         // ev3_lcd_draw_string("            ", 0, 40);
+    //         // ev3_lcd_draw_string("            ", 0, 48); 
+    //         ev3_lcd_draw_string(br, 0, 40);
+    //         ev3_lcd_draw_string(tr, 0, 48);            
+    //         ev3_lcd_draw_string(ar, 0, 56); 
+        switch(phase){
+        case 0:
+            lineTracer.traceFfixed(20, RIGHT, 0);
+            if(observer.getDistance() > 300){
+                phase++;
+            }
+        break;
+        case 1:
+        wup_tsk(MAIN_TASK);
+            // if(sl1.run(-15, -50, -509, 50))    phase++;
+        break;
+        case 2:
+            lineTracer.traceFfixed(15, RIGHT, 0);
+        break;
+            }
+>>>>>>> Ffixed
         }
     }
 
@@ -175,8 +206,13 @@ void logging(){
 
 
     logger.addData((double)color.getReflect());
+<<<<<<< HEAD
     // logger.addData((double)curve.runPid(35, -470, 70, R));
     logger.addData((double)observer.getSpeed());
+=======
+    // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
+    logger.addData((double)observer.Fangle);
+>>>>>>> Ffixed
     
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
@@ -185,6 +221,7 @@ void logging(){
 
 
 void destroy(){
+<<<<<<< HEAD
     logger.end();
     bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
@@ -195,6 +232,16 @@ void destroy(){
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
     }       
+=======
+
+        
+        // rightMotor.setSpeed(0);
+        // leftMotor.setSpeed(0);
+        logger.end();
+        frontMotor.setRotate(observer.Fangle, 100, true);
+        rightMotor.setRotate(rightMotor.getAngle(), 50, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 50, false);
+>>>>>>> Ffixed
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){
