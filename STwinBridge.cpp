@@ -44,15 +44,17 @@ bool STwinBridge::run(){
 
 		case 3:
 			drive->curve(-15, -15);
-			if(observer->isStep()){
+			if(observer->isStep() && runtime > 500){
 				changeScenario();
 				distance = observer->getDistance();
+				runtime = 0;
 			}
+			runtime++;
 		break;
 
 		case 4:
 			drive->curve(10, 10);
-			if(distance - observer->getDistance() > 5.5){
+			if(distance - observer->getDistance() > 11){
 				changeScenario();
 				distance = observer->getDistance();
 			}
@@ -75,16 +77,26 @@ bool STwinBridge::run(){
 			}
 			runtime++;
 			break;
+
 		case 7:
+			lineTracer->trace(20, RIGHT, 0);
+			if(observer->getDistance() - distance > 10){
+				changeScenario();
+				drive->init();
+				distance = observer->getDistance();
+			}
+		break;
+
+		case 8:
 			// ライントレース
-			lineTracer->trace(70, RIGHT, 0);
-			if(observer->getDistance() - distance > 30){
+			drive->curve(-80, -80);
+			if(observer->getDistance() - distance > 20){
 				changeScenario();
 
 			}
 			break;
 
-		case 8:
+		case 9:
 			return true;
 		break;
 		default:
