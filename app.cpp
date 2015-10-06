@@ -117,7 +117,7 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
 
-    //        logging();
+           logging();
     //         char br[64] = "";
     //         char tr[64] = "";
     //         char ar[64] = "";
@@ -133,13 +133,14 @@ void yadamo_task(intptr_t exinf){
     //         ev3_lcd_draw_string(ar, 0, 56); 
         switch(phase){
         case 0:
-            lineTracer.traceFfixed(15, RIGHT, 0);
-            if(observer.getDistance() > 470){
+            lineTracer.traceFfixed(20, RIGHT, 0);
+            if(observer.getDistance() > 300){
                 phase++;
             }
         break;
         case 1:
-            if(sl1.run(-15, -50, -509, 50))    phase++;
+        wup_tsk(MAIN_TASK);
+            // if(sl1.run(-15, -50, -509, 50))    phase++;
         break;
         case 2:
             lineTracer.traceFfixed(15, RIGHT, 0);
@@ -170,7 +171,7 @@ void logging(){
 
     logger.addData((double)color.getReflect());
     // logger.addData((double)lineTracer.trace(20, RIGHT, 0));
-    logger.addData((double)gyro.getAngle());
+    logger.addData((double)observer.Fangle);
     
     // logger.addData((double)lineTracer.trace(5, LEFT));
     // logger.addData((double)sonic.getDistance());
@@ -185,8 +186,8 @@ void destroy(){
         // leftMotor.setSpeed(0);
         logger.end();
         frontMotor.setRotate(observer.Fangle, 100, true);
-        rightMotor.setRotate(rightMotor.getAngle(), 15, false);
-        leftMotor.setRotate(leftMotor.getAngle(), 15, false);
+        rightMotor.setRotate(rightMotor.getAngle(), 50, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 50, false);
 
     while(1){
         if(ev3_button_is_pressed(BACK_BUTTON)){

@@ -4,7 +4,7 @@
 LineTracer::LineTracer(Drive *dr, Color *col){
 	drive = dr;
 	color = col;
-	brightPid = new PID(1.8, 0.03, 0.0025); // speed = 40
+	brightPid = new PID(1.5, 0.026, 0.0); // speed = 40
 	// brightPid = new PID(4, 0, 0);
 	black = 0;
 	white = 0;
