@@ -125,31 +125,12 @@ void yadamo_task(intptr_t exinf){
         }else{
 
            logging();
-           if(bridge.run()){
+           // lineTracer.changeGain(0.55, 0.05, 0.03);
+           // lineTracer.fastrace(45, RIGHT, 0);
+           // if(observer.getDistance() > 485){
+           if(lcorse.run()){
                 wup_tsk(MAIN_TASK);
            }
-
-        // switch(phase){
-        // case 0:
-        //     // curve.run();
-        //     // lineTracer.traceFfixed(20, RIGHT, 0);
-        //     // if(observer.getDistance() > 490){
-        //         // phase++;
-        //     // }
-        //     // if(drive.turn(45, 1, 8)){
-        //     // if(curve.run(-15, -20, -450, 5000)){
-        //     if(curve.runPid(10, -450, 65, R)){
-        //         phase++;
-        //     }
-        // break;
-        // case 1:
-        //     wup_tsk(MAIN_TASK);
-        //     // if(curve.run(-15, -50, -400, 70))    phase++;
-        // break;
-        // case 2:
-        //     //lineTracer.traceFfixed(20, RIGHT, 0);
-        // break;
-        //     }
         }
     }
 
@@ -189,8 +170,8 @@ void destroy(){
     bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
     if(back){
-        rightMotor.setRotate(rightMotor.getAngle(), 25, false);
-        leftMotor.setRotate(leftMotor.getAngle(), 25, false);
+        rightMotor.setRotate(rightMotor.getAngle(), 35, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 35, false);
     }else{
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
