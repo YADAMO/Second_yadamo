@@ -12,8 +12,8 @@ bool LCourse::run(){
 	switch(phase){
 		case 0:
 			// lineTracer->traceFfixed(20, RIGHT, 0);
-			lineTracer->changeGain(0.5, 0.05, 0.03);
-            lineTracer->fastrace(25, RIGHT, 0);
+			lineTracer->changeGain(0.7, 0.05, 0.03);
+            lineTracer->fastrace(30, RIGHT, 0);
 			if(observer->getDistance() - distance > LSTART){
 				changeScenario();
 				distance = observer->getDistance();
@@ -30,6 +30,7 @@ bool LCourse::run(){
 		break;
 
 		case 2:
+		return true;
 			if(curve->runPid(10, -465, LC1, R)){
 				changeScenario();
 				lineTracer->changeGain(1.5, 0, 0.02);

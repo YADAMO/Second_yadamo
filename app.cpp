@@ -116,27 +116,20 @@ void miri_cyc(intptr_t exinf){
 void yadamo_task(intptr_t exinf){
   observer.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
-    // if(observer.getDistance() > 200){
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
         if(!calibration_flag){
-
             calibration_flag = calibration.doCalibration();
         }else{
-
            logging();
-           // lineTracer.changeGain(0.55, 0.05, 0.03);
-           // lineTracer.fastrace(45, RIGHT, 0);
-           // if(observer.getDistance() > 485){
-           if(lcorse.run()){
-                wup_tsk(MAIN_TASK);
+            if(lcorse.run()){
+            wup_tsk(MAIN_TASK);
            }
-        }
-    }
-
-
+       }
+   }
     ext_tsk();
 }
+
 
 
 void main_task(intptr_t unused) {
@@ -153,14 +146,9 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
-
-
     logger.addData((double)color.getReflect());
-    // logger.addData((double)curve.runPid(35, -470, 70, R));
     logger.addData((double)observer.getSpeed());
-    
-    // logger.addData((double)lineTracer.trace(5, LEFT));
-    // logger.addData((double)sonic.getDistance());
+    logger.addData((double)observer.Fangle);
     logger.send();
 }
 
@@ -175,13 +163,6 @@ void destroy(){
     }else{
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
-    }       
-
-    while(1){
-        if(ev3_button_is_pressed(BACK_BUTTON)){
-            break;
-        }
-
     }
 }
 
