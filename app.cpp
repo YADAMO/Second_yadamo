@@ -130,21 +130,6 @@ void yadamo_task(intptr_t exinf){
            if(bridge.run()){
                 wup_tsk(MAIN_TASK);
            }
-
-        switch(phase){
-        case 0:
-            if(drive.turn(45, 1, 8)){
-                phase++;
-            }
-        break;
-        case 1:
-            wup_tsk(MAIN_TASK);
-            // if(curve.run(-15, -50, -400, 70))    phase++;
-        break;
-        case 2:
-            //lineTracer.traceFfixed(20, RIGHT, 0);
-        break;
-            }
         }
     }
 
@@ -170,11 +155,7 @@ void logging(){
 
 
     logger.addData((double)color.getReflect());
-    // logger.addData((double)curve.runPid(35, -470, 70, R));
     logger.addData((double)observer.getSpeed());
-    
-    // logger.addData((double)lineTracer.trace(5, LEFT));
-    // logger.addData((double)sonic.getDistance());
     logger.send();
 }
 
@@ -189,13 +170,6 @@ void destroy(){
     }else{
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
-    }       
-
-    while(1){
-        if(ev3_button_is_pressed(BACK_BUTTON)){
-            break;
-        }
-
     }
 }
 

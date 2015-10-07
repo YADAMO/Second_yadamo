@@ -35,7 +35,7 @@ bool Calibration::doCalibration() {
 
     //追加キャリブレーション
     //それっぽいスタート位置に走行体をセットしたらうるさくなる
-    if(touchCount == 4 && color->getReflect() >= target - 3 && color->getReflect() <= target + 3){
+    if(touchCount == 4 && color->getReflect() >= target && color->getReflect() < target + 7){
       if(cali_time % 200 == 0){
         ev3_speaker_play_tone(NOTE_C4, 100);
         cali_time = 0;
