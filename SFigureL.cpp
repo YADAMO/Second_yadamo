@@ -1,12 +1,13 @@
 
 #include "SFigureL.h"
 
-SFigureL::SFigureL(Drive *dr, LineTracer *lt, Observer *ob, Stepper *st, Curve *cv){
+SFigureL::SFigureL(Drive *dr, LineTracer *lt, Observer *ob, Stepper *st, Curve *cv, BlackDetecter *bd){
 	drive = dr;
 	lineTracer = lt;
 	observer = ob;
 	stepper = st;
 	curve = cv;
+	blackDetecter = bd;
 	phase = 0;
 	runtime = 0;
 	distance = 0;
@@ -16,46 +17,87 @@ bool SFigureL::run(){
 	switch(phase) {
 		case 0:
 			lineTracer->changeGain(1.5, 0, 0.02);
-			lineTracer->trace(20, LEFT, 0);
+			lineTracer->trace(20, RIGHT, 0);
 			if(observer->isStep() && runtime > 800){
-				changeScenario();
-				runtime = 0;
-			}
-			runtime++;
-		break;
-
-		case 1:
-			if(stepper->run(-1)){
-				changeScenario();
-			}
-		break;
-
-		case 2:
-			lineTracer->trace(20, LEFT, 0);
-			if(observer->getDistance() - distance > 30){
-				changeScenario();
-			}
-		break;
-
-		case 3:
-			if(curve->run(-10, -15, -480, 18)){
 				changeScenario();
 			}
 			
 		break;
 
+		case 1:
+			if(stepper->run(1)){
+				changeScenario();
+				lineTracer->changeTarget(5);
+			}
+		break;
+
+		case 2:
+			lineTracer->changeGain(1.5, 0, 0.02);
+			lineTracer->trace(20, RIGHT, 0);
+			if(observer->getDistance() - distance > 25){
+				changeScenario();
+			
+			}
+		break;
+
+		case 3:
+			lineTracer->changeGain(0.5, 0, 0.02);
+			lineTracer->fastrace(7, RIGHT, 0);
+			if(observer->getDistance() - distance > 10){
+				changeScenario();
+				drive->init(true);
+			}
+		break;
+
 		case 4:
-			lineTracer->trace(20, LEFT, 0);
-			if(observer->getDistance() - distance > 30){
+			drive->curve(0, 0);
+			if(runtime > 1000){
 				changeScenario();
 			}
 		break;
 
 		case 5:
+			drive->curve(-1, -1);
+			if(blackDetecter->onBlack()){
+				changeScenario();
+				drive->init(false);
+				lineTracer->backTarget();
+			}
+		break;
+
+		case 6:
+			drive->curve(2, 2);
+			if(distance - observer->getDistance() > 3){
+				changeScenario();
+			}
+		break;
+
+		case 7:
+			drive->curve(0, 0);
+			if(runtime > 1000){
+				changeScenario();
+			}
+		break;
+
+		case 8:
+			if(curve->run(-7, -15, -650, 9)){
+				changeScenario();
+			}
+			
+		break;
+
+		case 9:
+			lineTracer->trace(20, RIGHT, 0);
+			if(observer->getDistance() - distance > 100){
+				changeScenario();
+			}
+		break;
+
+		case 10:
 			return true;
 		break;
 	}
-
+	runtime++;
 	return false;
 }
 

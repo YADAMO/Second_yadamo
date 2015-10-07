@@ -33,7 +33,8 @@ APPL_CXXOBJS += \
 	Curve.o \
 	LCourse.o \
 	RCourse.o \
-	Choilie.o
+	Choilie.o \
+	BlackDetecter.o
 
 SRCLANG := c++
 

@@ -32,6 +32,7 @@
 #include "GreenJudge.h"
 #include "TouchJudge.h"
 #include "ObstacleJudge.h"
+#include "BlackDetecter.h"
 
 // 計測器系
 #include "DistanceMeter.h"
@@ -109,13 +110,15 @@ Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &li
 Choilie choilie(&drive, &observer);
 STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
 Stepper stepper(&drive, &lineTracer, &observer);
-SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve);
+BlackDetecter blackDetecter(&color);
+SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
 RCourse rcorse(&lineTracer, &curve, &observer);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
+  blackDetecter.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
@@ -124,6 +127,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            logging();
            // if(lcorse.run()){
+           
            if(sfigureL.run()){
                 wup_tsk(MAIN_TASK);
            }

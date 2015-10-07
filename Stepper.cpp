@@ -27,14 +27,14 @@ bool Stepper::run(int edge){
 		case 1:
 			drive->curve(10, 10);
 
-			if(distance - observer->getDistance() > 10){
+			if(distance - observer->getDistance() > 7){
 				changeFhase();
 			}
 		break;
 
 		case 2:
-			drive->curve(-100, -100);
-			if(observer->getDistance() - distance > 30){
+			drive->curve(-30, -30);
+			if(observer->getDistance() - distance > 20){
 				changeFhase();
 			}
 		break;

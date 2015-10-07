@@ -21,8 +21,11 @@ public:
 	uint8_t black;
 	uint8_t white;
 	uint8_t target;
+	uint8_t target2;
 	int bright;
 	int getBright();
+	void changeTarget(int diff);
+	void backTarget();
 
 private:
 	PID *brightPid;

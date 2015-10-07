@@ -259,3 +259,7 @@ void Drive::opeF(int angle){
 		Fmotor->setSpeed(0);
 	}
 }
+
+void Drive::init(bool lock){
+	Fmotor->setRotate(observer->Fangle, 100, lock);
+}
