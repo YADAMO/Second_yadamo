@@ -38,8 +38,8 @@
 #include "SpeedMeter.h"
 
 // シナリオ系
-#include "IN.h"
-#include "OUT.h"
+#include "LCourse.h"
+#include "RCourse.h"
 #include "SBarcode.h"
 #include "SFigureL.h"
 #include "SLoopLine.h"
@@ -48,7 +48,6 @@
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
 #include "Curve.h"
-#include "LCourse.h"
 #include "Choilie.h"
 
 // その他
@@ -107,7 +106,7 @@ Choilie choilie(&drive, &observer);
 STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-
+RCourse rcorse(&lineTracer, &curve, &observer);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
