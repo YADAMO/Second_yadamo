@@ -125,62 +125,9 @@ void yadamo_task(intptr_t exinf){
         }else{
 
            logging();
-<<<<<<< HEAD
            if(bridge.run()){
                 wup_tsk(MAIN_TASK);
            }
-
-        // switch(phase){
-        // case 0:
-        //     // curve.run();
-        //     // lineTracer.traceFfixed(20, RIGHT, 0);
-        //     // if(observer.getDistance() > 490){
-        //         // phase++;
-        //     // }
-        //     // if(drive.turn(45, 1, 8)){
-        //     // if(curve.run(-15, -20, -450, 5000)){
-        //     if(curve.runPid(10, -450, 65, R)){
-        //         phase++;
-        //     }
-        // break;
-        // case 1:
-        //     wup_tsk(MAIN_TASK);
-        //     // if(curve.run(-15, -50, -400, 70))    phase++;
-        // break;
-        // case 2:
-        //     //lineTracer.traceFfixed(20, RIGHT, 0);
-        // break;
-        //     }
-=======
-    //         char br[64] = "";
-    //         char tr[64] = "";
-    //         char ar[64] = "";
-
-    //         sprintf(br, "%d", (int)rightMotor.getAngle());
-    //         sprintf(tr, "%d", (int)leftMotor.getAngle());
-    //         sprintf(ar, "%d", (int)frontMotor.getAngle());
-
-    //         // ev3_lcd_draw_string("            ", 0, 40);
-    //         // ev3_lcd_draw_string("            ", 0, 48); 
-    //         ev3_lcd_draw_string(br, 0, 40);
-    //         ev3_lcd_draw_string(tr, 0, 48);            
-    //         ev3_lcd_draw_string(ar, 0, 56); 
-        switch(phase){
-        case 0:
-            lineTracer.traceFfixed(20, RIGHT, 0);
-            if(observer.getDistance() > 300){
-                phase++;
-            }
-        break;
-        case 1:
-        wup_tsk(MAIN_TASK);
-            // if(sl1.run(-15, -50, -509, 50))    phase++;
-        break;
-        case 2:
-            lineTracer.traceFfixed(15, RIGHT, 0);
-        break;
-            }
->>>>>>> Ffixed
         }
     }
 
