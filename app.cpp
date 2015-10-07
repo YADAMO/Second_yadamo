@@ -115,23 +115,19 @@ void miri_cyc(intptr_t exinf){
 void yadamo_task(intptr_t exinf){
   observer.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
-    // if(observer.getDistance() > 200){
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
         if(!calibration_flag){
-
             calibration_flag = calibration.doCalibration();
         }else{
-
            if(rcorse.run()){
                 wup_tsk(MAIN_TASK);
            }
         }
     }
-
-
     ext_tsk();
 }
+
 
 
 void main_task(intptr_t unused) {
@@ -148,8 +144,6 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
-
-
     logger.addData((double)color.getReflect());
     logger.addData((double)observer.getSpeed());
     logger.send();
@@ -161,8 +155,8 @@ void destroy(){
     bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
     if(back){
-        rightMotor.setRotate(rightMotor.getAngle(), 25, false);
-        leftMotor.setRotate(leftMotor.getAngle(), 25, false);
+        rightMotor.setRotate(rightMotor.getAngle(), 35, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 35, false);
     }else{
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
