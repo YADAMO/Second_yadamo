@@ -123,8 +123,7 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
 
-           logging();
-           if(bridge.run()){
+           if(rcorse.run()){
                 wup_tsk(MAIN_TASK);
            }
         }
