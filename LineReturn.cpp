@@ -10,26 +10,47 @@ LineReturn::LineReturn(LineTracer *lt, Observer *ob, Drive *dr){
 
 bool LineReturn::run(){
 	bool end = false;
+	colorid_t color = observer->judgeColor();
 	switch(phase){
 		case 0:
-			//色検出もーどで色検知
-			//左に旋回する
-				//もしラインがあったならケース1へ
-				//ラインがなかったならケース2へ
+			if(drive->turn(45, -1, 5)){
+				if(color == COLOR_BLACK){
+					phase = 1;
+					drive->turnReset();
+				}
+			}else{
+				phase = 2;
+				drive->turnReset();
+			}
 			break;
 		case 1:
-			//ある程度右へ旋回する　その後ケース4へ
+			if(drive->turn(10, -1, -8)){
+			}else{
+				phase = 4;
+				drive->turnReset();
+			}
 			break;
 		case 2:
-			//色検出モードで色検知
-			//右旋回する
-				//ラインがあったならケース3へ
+			if(drive->turn(90, -1, -5)){
+				if(color == COLOR_BLACK){
+					phase = 3;
+					drive->turnReset();
+				}
+			}else{
+				phase = 0;
+				drive->turnReset();
+			}
 			break;
 		case 3:
-			//ある程度←へ旋回する　その後ケース4へ
+			if(drive->turn(10, -1, 8)){
+			}else{
+				phase = 4;
+				drive->turnReset();
+				end = true;
+			}
 			break;
 		case 4:
-			//ライントレースする
+
 			break;
 		default:
 			break;

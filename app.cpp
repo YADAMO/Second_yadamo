@@ -50,6 +50,7 @@
 #include "Curve.h"
 #include "LCourse.h"
 #include "Tyoiri.h"
+#include "LineReturn.h"
 
 // その他
 #include "LineTracer.h"
@@ -105,6 +106,7 @@ SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
 Tyoiri tyoiri(&drive, &observer);
 STwinBridge bridge(&lineTracer, &observer, &drive, &tyoiri);
+LineReturn lineReturn(&lineTracer, &observer, &drive);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
 
@@ -129,27 +131,20 @@ void yadamo_task(intptr_t exinf){
                 wup_tsk(MAIN_TASK);
            }
 
-        // switch(phase){
-        // case 0:
-        //     // curve.run();
-        //     // lineTracer.traceFfixed(20, RIGHT, 0);
-        //     // if(observer.getDistance() > 490){
-        //         // phase++;
-        //     // }
-        //     // if(drive.turn(45, 1, 8)){
-        //     // if(curve.run(-15, -20, -450, 5000)){
-        //     if(curve.runPid(10, -450, 65, R)){
-        //         phase++;
-        //     }
-        // break;
-        // case 1:
-        //     wup_tsk(MAIN_TASK);
-        //     // if(curve.run(-15, -50, -400, 70))    phase++;
-        // break;
-        // case 2:
-        //     //lineTracer.traceFfixed(20, RIGHT, 0);
-        // break;
-        //     }
+        switch(phase){
+        case 0:
+            if(drive.turn(45, 1, 8)){
+                phase++;
+            }
+        break;
+        case 1:
+            wup_tsk(MAIN_TASK);
+            // if(curve.run(-15, -50, -400, 70))    phase++;
+        break;
+        case 2:
+            //lineTracer.traceFfixed(20, RIGHT, 0);
+        break;
+            }
         }
     }
 

@@ -1,4 +1,14 @@
-
+/*
+COLOR_NONE 	無色
+COLOR_BLACK 黒
+COLOR_BLUE 	青
+COLOR_GREEN 緑
+COLOR_YELLOW 黄
+COLOR_RED 	赤
+COLOR_WHITE 白
+COLOR_BROWN 茶
+TNUM_COLOR 	識別できるカラーの数
+*/
 
 #include "Observer.h"
 
