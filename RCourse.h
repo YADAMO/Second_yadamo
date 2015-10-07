@@ -7,9 +7,9 @@
 #include "SParkingP.h"
 
 #define RSTART 340
-#define RBC1 70
-#define RC1 85
-#define RAC1 100
+#define RBC1 85
+#define RC1 63
+#define RAC1 200
 
 class RCourse : public ScenarioController{
 public:

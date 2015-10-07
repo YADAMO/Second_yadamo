@@ -16,8 +16,8 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob){
 bool RCourse::run(){
 	switch(phase){
 		case 0:
-			lineTracer->changeGain(0.5, 0.04, 0.03);
-            lineTracer->fastrace(30, LEFT, 0);
+			lineTracer->changeGain(0.7, 0.01, 0.02);
+            lineTracer->fastrace(15, LEFT, 0);
 			if(observer->getDistance() - distance > RSTART){
 				changeScenario();
 				distance = observer->getDistance();
@@ -34,7 +34,7 @@ bool RCourse::run(){
 		break;
 
 		case 2:
-			if(curve->runPid(10, 465, RC1, L)){
+			if(curve->runPid(9, 385, RC1, L)){
 				changeScenario();
 				lineTracer->changeGain(1.5, 0, 0.02);
 				distance = observer->getDistance();
@@ -42,8 +42,8 @@ bool RCourse::run(){
 		break;
 
 		case 3:
-			lineTracer->traceReturn(20, LEFT, 0);
-			if(observer->getDistance() > RAC1){
+			lineTracer->traceReturn(15, LEFT, 0);
+			if(observer->getDistance() - distance > RAC1){
 				changeScenario();
 			}
 		break;

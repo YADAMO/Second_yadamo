@@ -106,7 +106,7 @@ Choilie choilie(&drive, &observer);
 STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-RCourse rcorse(&lineTracer, &curve, &observer);
+RCourse rcourse(&lineTracer, &curve, &observer);
 
 void miri_cyc(intptr_t exinf){
     act_tsk(YADAMO_TASK);
@@ -120,7 +120,7 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           if(rcorse.run()){
+           if(rcourse.run()){
                 wup_tsk(MAIN_TASK);
            }
         }
