@@ -22,7 +22,7 @@ double DistanceMeter::getDistance(){
 	lDistance = Lmotor->getAngle() - lOffset;
 
 	distance = (rDistance + lDistance)/2;
-	distance = distance * DPOD;
+	distance = distance * DPOD * 3;
 
 	return distance;
 }

@@ -38,8 +38,8 @@
 #include "SpeedMeter.h"
 
 // シナリオ系
-#include "IN.h"
-#include "OUT.h"
+#include "LCourse.h"
+#include "RCourse.h"
 #include "SBarcode.h"
 #include "SFigureL.h"
 #include "SLoopLine.h"
@@ -47,13 +47,11 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
-<<<<<<< Updated upstream
-=======
+
 #include "Curve.h"
 #include "LCourse.h"
 #include "Choilie.h"
 #include "Stepper.h"
->>>>>>> Stashed changes
 
 // その他
 #include "LineTracer.h"
@@ -77,6 +75,13 @@
 #endif
 
 using namespace std;
+
+void destroy();
+void logging();
+void display();
+
+bool calibration_flag = false;
+int phase = 0;
 
 // オブジェクトの定義
 Motor rightMotor(EV3_PORT_B);
@@ -107,11 +112,7 @@ Stepper stepper(&drive, &lineTracer, &observer);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-
-
-void miri_cyc(intptr_t exinf){
-    act_tsk(YADAMO_TASK);
-}
+RCourse rcorse(&lineTracer, &curve, &observer);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
@@ -131,11 +132,15 @@ void yadamo_task(intptr_t exinf){
     ext_tsk();
 }
 
-
+void miri_cyc(intptr_t exinf){
+    act_tsk(YADAMO_TASK);
+}
 
 void main_task(intptr_t unused) {
+    ev3_sta_cyc(MIRI_CYC);
 
-    
+    slp_tsk();  // バックボタンが押されるまで待つ
+
     // 周期ハンドラ停止
     ev3_stp_cyc(MIRI_CYC);
 
@@ -144,9 +149,15 @@ void main_task(intptr_t unused) {
     ext_tsk();
 }
 
+void logging(){
+    logger.addData((double)color.getReflect());
+    logger.addData((double)observer.getSpeed());
+    logger.send();
+}
+
 void destroy(){
     logger.end();
-    bool back = true;
+    bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
     if(back){
         rightMotor.setRotate(rightMotor.getAngle(), 35, false);
@@ -155,4 +166,20 @@ void destroy(){
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
     }
+}
+
+void display(){
+    char br[64] = "";
+    char tr[64] = "";
+    char ar[64] = "";
+
+    sprintf(br, "%d", (int)rightMotor.getAngle());
+    sprintf(tr, "%d", (int)leftMotor.getAngle());
+    sprintf(ar, "%d", (int)frontMotor.getAngle());
+
+    ev3_lcd_draw_string("            ", 0, 40);
+    ev3_lcd_draw_string("            ", 0, 48); 
+    ev3_lcd_draw_string(br, 0, 40);
+    ev3_lcd_draw_string(tr, 0, 48);            
+    ev3_lcd_draw_string(ar, 0, 56); 
 }

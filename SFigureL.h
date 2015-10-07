@@ -20,7 +20,7 @@ private:
 	Stepper *stepper;
 	Curve *curve;
 
-	int phase;
 	int runtime;
 	double distance;
+	int phase;
 };

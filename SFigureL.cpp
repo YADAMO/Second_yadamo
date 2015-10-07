@@ -32,13 +32,13 @@ bool SFigureL::run(){
 
 		case 2:
 			lineTracer->trace(20, LEFT, 0);
-			if(observer->getDistance() - distance > 25){
+			if(observer->getDistance() - distance > 30){
 				changeScenario();
 			}
 		break;
 
 		case 3:
-			if(curve->runPid(10, -490, 30, R)){
+			if(curve->run(-10, -15, -480, 18)){
 				changeScenario();
 			}
 			
@@ -55,6 +55,7 @@ bool SFigureL::run(){
 			return true;
 		break;
 	}
+
 	return false;
 }
 

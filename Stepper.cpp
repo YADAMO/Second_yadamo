@@ -1,5 +1,6 @@
 #include "Stepper.h"
 
+
 Stepper::Stepper(Drive *dr, LineTracer *lt, Observer *obs){
 	drive = dr;
 	lineTracer = lt;
@@ -14,7 +15,7 @@ bool Stepper::run(int edge){
 	switch(phase){
 		case 0:
 			lineTracer->changeGain(1.5, 0, 0.02);
-			lineTracer->trace(20, edge, 0);
+			lineTracer->trace(10, edge, 0);
 
 			if(observer->isStep() && runtime > 800){
 				drive->init();
@@ -33,7 +34,6 @@ bool Stepper::run(int edge){
 
 		case 2:
 			drive->curve(-100, -100);
-
 			if(observer->getDistance() - distance > 30){
 				changeFhase();
 			}
@@ -50,6 +50,4 @@ void Stepper::changeFhase(){
 	phase++;
 	runtime = 0;
 	distance = observer->getDistance();
-
-
 }

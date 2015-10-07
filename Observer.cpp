@@ -2,13 +2,16 @@
 
 #include "Observer.h"
 
-Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm){
-	whiteJudge = wj;
-	blackJudge = bj;
-	greenJudge = gj;
+Observer::Observer(Color *cl,
+	ObstacleJudge *oj, TouchJudge *tj, DistanceMeter *dm,
+	Motor *rm, Motor *lm, Motor *fm){
+	color = cl;
 	obstacleJudge = oj;
 	touchJudge = tj;
 	distanceMeter = dm;
+	Rmotor = rm;
+	Lmotor = lm;
+	Fmotor = fm;
 
 	is_Step = false;
 	is_Black = false;
@@ -21,26 +24,18 @@ Observer::Observer(WhiteJudge *wj, BlackJudge *bj, GreenJudge *gj, ObstacleJudge
 	speed = 0;
 
 	for(int i = 0; i < 5; i++){
-		buffer[i] = 0.0;
+		buffer[i] = i;
+		RangleBuf[i] = 0;
+		LangleBuf[i] = 0;
 	}
 
 	runtime = 0;
+	Fangle = Fmotor->getAngle();;
 
 }
 
 void Observer::update(){
-	runtime++;
-	if(runtime % whiteJudge->getInterval() == 0){
-		is_White = whiteJudge->judge();
-	}
-
-	if(runtime % blackJudge->getInterval() == 0){
-		is_Black = blackJudge->judge();
-	}
-
-	if(runtime % greenJudge->getInterval() == 0){
-		is_Green = greenJudge->judge();
-	}
+	runtime += 1;
 
 	if(runtime % obstacleJudge->getInterval() == 0){
 		is_Obstacle = obstacleJudge->judge();
@@ -49,23 +44,32 @@ void Observer::update(){
 	if(runtime % touchJudge->getInterval() == 0){
 		is_Touch = touchJudge->judge();
 	}
+	
+	// 毎回値入れる系
+	distance = -distanceMeter->getDistance();
+	speed = speedMeter->calcSpeed(distance);
 
-	if(runtime % obstacleJudge->getInterval() == 0){
-		is_Obstacle = obstacleJudge->judge();
-	}
+	Fangle = Fmotor->getAngle();
 
-	if(runtime % 1 == 0){
-		distance = distanceMeter->getDistance();
-		speed = speedMeter->calcSpeed(distance);
-
+	if(runtime % 5 == 0){
 		for(int i = 0; i < 4; i++){
-			buffer[i] = buffer[i+1];
+		buffer[i] = buffer[i+1];
+		RangleBuf[i] = RangleBuf[i+1];
+		LangleBuf[i] = LangleBuf[i+1];
 		}
 		buffer[4] = distance;
+		RangleBuf[4] = Rmotor->getAngle();
+		LangleBuf[4] = Lmotor->getAngle();
+		// 段差判定
 		is_Step = (buffer[0] == buffer[4]);
+
 	}
 
 
+}
+
+colorid_t Observer::judgeColor(){
+	return color->getColor();
 }
 
 bool Observer::isStep(){
