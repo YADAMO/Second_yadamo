@@ -47,6 +47,13 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
+<<<<<<< Updated upstream
+=======
+#include "Curve.h"
+#include "LCourse.h"
+#include "Choilie.h"
+#include "Stepper.h"
+>>>>>>> Stashed changes
 
 // その他
 #include "LineTracer.h"
@@ -87,66 +94,65 @@ TouchJudge touchJudge(&touch);
 ObstacleJudge obstacleJudge(&sonic);
 DistanceMeter distanceMeter(&rightMotor, &leftMotor);
 Logger logger;
-Observer observer(&whiteJudge, &blackJudge, &greenJudge, &obstacleJudge, &touchJudge, &distanceMeter);
-// Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
-// Drive drive(&rightMotor, &leftMotor, &frontMotor);
-Calibration calibration(&color, &touchJudge);
-// LineTracer lineTracer(&drive, &color, &calibration);
 
-memfile_t *pfile;
-const char *fname = "/ev3rt/app/y1.wav";
-void loggging_cyc(intptr_t exinf){
-    // logger.addData(1.00);
-    // logger.addData(2.00);
-    // logger.addData(3.00);
-    // logger.addData(4.00);
-    // logger.addData(5.00);
-    // logger.addData(6.00);
-    // logger.addData(7.00);
-    // logger.addData(8.00);
-    // logger.addData(9.00);
-    // logger.addData(10.00);
-    // logger.addData(11.00);
-    // logger.addData(12.00);
-    // logger.addData(13.00);
-    // logger.addData(14.00);
-    // logger.addData(15.00);
-    // logger.addData(16.00);
+Observer observer(&color, &obstacleJudge, &touchJudge, &distanceMeter, &rightMotor, &leftMotor, &frontMotor);
+Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
+LineTracer lineTracer(&drive, &color);
+Calibration calibration(&color, &touchJudge, &lineTracer);
+SBarcode barcode(&lineTracer, &observer, &drive, &logger);
+Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
+Choilie choilie(&drive, &observer);
+STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
+Stepper stepper(&drive, &lineTracer, &observer);
+SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve);
 
-    // logger.send();
-    char bright[64] = "";
-    char ambient[64] = "";
-    char mA[64] = "";
-    char V[64] = "";
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
 
 
-    sprintf(bright, "bright = %d", color.getReflect());
-    sprintf(ambient, "ambient = %d", color.getAmbient());
-    sprintf(mA, "%d mA", getBatteryCurrent());
-    sprintf(V, "%d V", getBatteryVoltage());
-
-    ev3_lcd_draw_string(bright, 0, 8);
-    ev3_lcd_draw_string(ambient, 0, 24);
-    ev3_lcd_draw_string(mA, 0, 40);
-    ev3_lcd_draw_string(V, 0, 56);
-    // logger.addData((double)color.getReflect());
-    // logger.send();
-    // lineTracer.trace(10, RIGHT);
-    // drive.drive(15,30);     
+void miri_cyc(intptr_t exinf){
+    act_tsk(YADAMO_TASK);
 }
 
+void yadamo_task(intptr_t exinf){
+  observer.update();
+    if (ev3_button_is_pressed(BACK_BUTTON)) {
+        wup_tsk(MAIN_TASK);  // メインタスクを起こす
+    }else{
+        if(!calibration_flag){
+            calibration_flag = calibration.doCalibration();
+        }else{
+           logging();
+           // if(lcorse.run()){
+           if(sfigureL.run()){
+                wup_tsk(MAIN_TASK);
+           }
+        }
+    }
+    ext_tsk();
+}
+
+
+
 void main_task(intptr_t unused) {
-    calibration.doCalibration();  
-    if( ev3_button_is_pressed(UP_BUTTON) )
-    {
-        ev3_memfile_load(fname, pfile);
-        ev3_speaker_play_file(pfile, 5000);
 
+    
+    // 周期ハンドラ停止
+    ev3_stp_cyc(MIRI_CYC);
 
+    destroy();
+
+    ext_tsk();
+}
+
+void destroy(){
+    logger.end();
+    bool back = true;
+    frontMotor.setRotate(observer.Fangle, 100, true);
+    if(back){
+        rightMotor.setRotate(rightMotor.getAngle(), 35, false);
+        leftMotor.setRotate(leftMotor.getAngle(), 35, false);
+    }else{
         rightMotor.setSpeed(0);
         leftMotor.setSpeed(0);
-        frontMotor.setSpeed(0);
     }
-    ev3_sta_cyc(LOGGING_CYC);
-
 }
