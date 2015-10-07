@@ -1,11 +1,11 @@
 
 #include "STwinBridge.h"
 
-STwinBridge::STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Tyoiri *ty){
+STwinBridge::STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch){
 	lineTracer = lt;
 	observer = ob;
 	drive = dr;
-	tyoiri = ty;
+	choilie = ch;
 	runtime = 0;
 	distance = 0;
 }
@@ -25,7 +25,7 @@ bool STwinBridge::run(){
 		
 		case 1:
 			// チョイリーする
-			if(tyoiri->run()){
+			if(choilie->run()){
 				changeScenario();
 				distance = observer->getDistance();
 				drive->curve(0, 0);
