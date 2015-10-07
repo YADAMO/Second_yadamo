@@ -122,11 +122,12 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            logging();
-            if(lcorse.run()){
-            wup_tsk(MAIN_TASK);
+
+           if(lcorse.run()){
+                wup_tsk(MAIN_TASK);
            }
-       }
-   }
+        }
+    }
     ext_tsk();
 }
 
@@ -148,7 +149,6 @@ void main_task(intptr_t unused) {
 void logging(){
     logger.addData((double)color.getReflect());
     logger.addData((double)observer.getSpeed());
-    logger.addData((double)observer.Fangle);
     logger.send();
 }
 
