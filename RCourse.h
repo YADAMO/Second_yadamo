@@ -6,6 +6,11 @@
 #include "Curve.h"
 #include "SParkingP.h"
 
+#define RSTART 340
+#define RBC1 70
+#define RC1 85
+#define RAC1 100
+
 class RCourse : public ScenarioController{
 public:
 	RCourse(LineTracer *lt, Curve *cv, Observer *ob);
@@ -22,6 +27,4 @@ private:
 	//SLoopLine *loopline;
 	//SParking *parking;
 	double distance;
-
-
 };

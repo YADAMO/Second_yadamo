@@ -120,9 +120,7 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           logging();
-
-           if(lcorse.run()){
+           if(rcorse.run()){
                 wup_tsk(MAIN_TASK);
            }
         }
