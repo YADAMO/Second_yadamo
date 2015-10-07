@@ -18,7 +18,7 @@ public:
 	int calcRear(int angle);
 	void straight(int speed);
 	void init();
-	int calcSteerAngle(int8_t right, int8_t left);
+	int calcSteerAngle(int turn);
 	int calcSteerAngleFfixed(int8_t right, int8_t left);
 	void curve(int right, int left);
 	bool turn(double angle, char d, int speed);

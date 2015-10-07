@@ -7,6 +7,7 @@ PID::PID(double p, double i, double d){
 	kp = p;
 	ki = i;
 	kd = d;
+	integral = 0;
 }
 
 void PID::changeGain(float p, float i, float d){

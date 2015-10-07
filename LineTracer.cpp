@@ -35,10 +35,10 @@ int LineTracer::traceReturn(double speed, int edge, int target){
 int LineTracer::fastrace(double speed, int edge, int target){
 	bright = color->getReflect();
 	int angle = brightPid->calc(this->target, bright);
-	if(angle > 5)	angle = 5;
-	else if(angle < -5)	angle = -5;
+	if(angle > 9)	angle = 9;
+	else if(angle < -9)	angle = -9;
 
-	drive->_drive(angle* edge, (int)speed);
+	drive->_drive(angle * edge, (int)speed);
 	return angle;
 }
 

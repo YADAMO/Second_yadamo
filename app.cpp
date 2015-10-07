@@ -152,7 +152,7 @@ void logging(){
 
 void destroy(){
     logger.end();
-    bool back = false;
+    bool back = true;
     frontMotor.setRotate(observer.Fangle, 100, true);
     if(back){
         rightMotor.setRotate(rightMotor.getAngle(), 35, false);

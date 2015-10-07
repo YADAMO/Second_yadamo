@@ -14,12 +14,8 @@ Drive::Drive(Motor *rm, Motor *lm, Motor *fm, Observer *ob){
 	turnleftOffset = 0;
 }
 
-int Drive::calcSteerAngle(int8_t right, int8_t left){
-  int angle = right - left;
-  if(angle >= 100)  angle = 100;
-  if(angle <= -100) angle = -100;
-
-  return angle*4;
+int Drive::calcSteerAngle(int turn){
+  return -9*turn;
 }
 
 int Drive::calcSteerAngleFfixed(int8_t right, int8_t left){
@@ -59,7 +55,7 @@ void Drive::_drive(int turn, int speed){
   Rmotor->setSpeed(right);
  
   // Fmotor->setSpeed(calcFront(turn));
-  steerAngle = calcSteerAngle(right, left);
+  steerAngle = calcSteerAngle(turn);
   if(turn > 0){//左旋回  steerAngle負
     if(count > steerAngle){
 	  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
