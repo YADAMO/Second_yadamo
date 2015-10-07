@@ -2,17 +2,15 @@
 
 #include "ScenarioController.h"
 #include "Drive.h"
-#include "LineTracer.h"
 #include "Observer.h"
 
 class Choilie : public ScenarioController{
 public:
-	Choilie(LineTracer *lt, Observer *ob, Drive *dr);
-    virtual bool run();
+	Choilie(Drive *dr, Observer *ob);
+	virtual bool run();
 
 private:
-	LineTracer *lineTracer;
-	Observer *observer;
 	Drive *drive;
-	int runtime;
+	Observer *observer;
+	double distance;
 };

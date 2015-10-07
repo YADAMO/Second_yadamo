@@ -34,7 +34,7 @@ APPL_CXXOBJS += \
 	LineReturn.o \
 	Curve.o \
 	LCourse.o \
-	Tyoiri.o
+	Choilie.o
 
 SRCLANG := c++
 

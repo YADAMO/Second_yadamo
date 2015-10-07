@@ -49,7 +49,7 @@
 #include "SUndetermined.h" 
 #include "Curve.h"
 #include "LCourse.h"
-#include "Tyoiri.h"
+#include "Choilie.h"
 
 // その他
 #include "LineTracer.h"
@@ -103,8 +103,8 @@ LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
-Tyoiri tyoiri(&drive, &observer);
-STwinBridge bridge(&lineTracer, &observer, &drive, &tyoiri);
+Choilie choilie(&drive, &observer);
+STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
 

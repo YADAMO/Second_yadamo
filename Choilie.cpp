@@ -1,31 +1,38 @@
-
 #include "Choilie.h"
 
-Choilie::Choilie(LineTracer *lt, Observer *ob, Drive *dr){
-	lineTracer = lt;
-	observer = ob;
+Choilie::Choilie(Drive *dr, Observer *ob){
 	drive = dr;
-	runtime = 0;
+	observer = ob;
+	distance = 0;
 }
 
 bool Choilie::run(){
-	bool end = false;
 	switch(phase){
 		case 0:
-			//段差まで低速ライントレースしたらケース1へ
-			break;
+			distance = observer->getDistance();
+			drive->init();
+			changeScenario();
+		break;
+
 		case 1:
-			//少しバックしたらケース2へ
-			break;
+			drive->curve(100, 100);
+			if(distance - observer->getDistance() > 18){
+				changeScenario();
+				distance = observer->getDistance();
+			}
+		break;
+
 		case 2:
-			//段差昇るまで高速前進したらケース3へ
-			break;
+			drive->curve(-100, -100);
+			if(observer->getDistance() - distance > 18){
+				changeScenario();
+			}
+		break;
+
 		case 3:
-			//終わり
-			break;
-		default:
-			break;
+			return true;
+		break;
 	}
-	runtime++;
-	return end;
+
+	return false;
 }
