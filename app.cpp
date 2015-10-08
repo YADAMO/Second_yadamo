@@ -105,13 +105,13 @@ Observer observer(&color, &obstacleJudge, &touchJudge, &distanceMeter, &rightMot
 Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
-SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
 Choilie choilie(&drive, &observer);
 STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
 Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
+SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
 RCourse rcorse(&lineTracer, &curve, &observer);

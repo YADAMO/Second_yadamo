@@ -16,7 +16,6 @@ bool Stepper::run(int edge){
 		case 0:
 			lineTracer->changeGain(0.9, 0, 0.02);
 			lineTracer->trace(14, edge, 0);
-
 			if(observer->isStep() && runtime > 800){
 				drive->init();
 				changeFhase();
