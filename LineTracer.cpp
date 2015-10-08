@@ -16,7 +16,7 @@ int LineTracer::trace(double speed, int edge, int target){
 	// int bright = calcCorrection();
 	bright = color->getReflect();
 	// int angle = brightPid->calc(target, bright);
-	int angle = brightPid->calc(this->target, bright);
+	int angle = brightPid->calc(this->target2, bright);
 
 	drive->_drive(angle* edge, (int)speed);
 	return angle;
@@ -24,7 +24,7 @@ int LineTracer::trace(double speed, int edge, int target){
 
 int LineTracer::traceReturn(double speed, int edge, int target){
 	bright = color->getReflect();
-	int angle = brightPid->calc(this->target, bright);
+	int angle = brightPid->calc(this->target2, bright);
 	if(angle > 15)	angle = 15;
 	else if(angle < -30)	angle = -30;
 
@@ -34,7 +34,7 @@ int LineTracer::traceReturn(double speed, int edge, int target){
 
 int LineTracer::fastrace(double speed, int edge, int target){
 	bright = color->getReflect();
-	int angle = brightPid->calc(this->target, bright);
+	int angle = brightPid->calc(this->target2, bright);
 	if(angle > 5)	angle = 5;
 	else if(angle < -5)	angle = -5;
 
@@ -44,7 +44,7 @@ int LineTracer::fastrace(double speed, int edge, int target){
 
 int LineTracer::traceFfixed(double speed, int edge, int target){
 	bright = color->getReflect();
-	int angle = brightPid->calc(this->target, bright);
+	int angle = brightPid->calc(this->target2, bright);
 
 	drive->driveFfixed(angle* edge, (int)speed);
 	return angle;
@@ -62,4 +62,13 @@ int LineTracer::getBright(){
 
 void LineTracer::changeGain(float p, float i, float d){
 	brightPid->changeGain(p, i, d);
+}
+
+void LineTracer::changeTarget(int diff){
+	target2 = target;
+	target2 += diff;
+}
+
+void LineTracer::backTarget(){
+	target2 = target;
 }
