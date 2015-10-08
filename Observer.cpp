@@ -53,7 +53,7 @@ void Observer::update(){
 
 
 
-	if(runtime % 5 == 0){
+	if(runtime % 100 == 0){
 		for(int i = 0; i < 4; i++){
 		buffer[i] = buffer[i+1];
 		RangleBuf[i] = RangleBuf[i+1];
