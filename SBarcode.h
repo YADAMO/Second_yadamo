@@ -5,17 +5,20 @@
 #include "LineTracer.h"
 #include "Observer.h"
 #include "Logger.h"
+#include "Stepper.h"
 
 class SBarcode : public ScenarioController{
 public:
-	SBarcode(LineTracer *lt, Observer *ob, Drive *dr, Logger *lg);
+	SBarcode(LineTracer *lt, Observer *ob, Drive *dr, Logger *lg, Stepper *st);
     virtual bool run();
+	void changeScenario();
 
 private:
 	LineTracer *lineTracer;
 	Observer *observer;
 	Drive *drive;
 	Logger *logger;
+	Stepper *stepper;
 	double distance;
 	colorid_t preCol;
 	int runtime;

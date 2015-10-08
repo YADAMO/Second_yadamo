@@ -24,6 +24,7 @@ public:
 	bool turn(double angle, char d, int speed);
 	void turnReset();
 	void opeF(int angle);
+	void init(bool lock);
 private:
 
 	Motor *Rmotor;

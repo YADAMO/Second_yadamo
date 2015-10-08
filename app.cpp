@@ -32,14 +32,15 @@
 #include "GreenJudge.h"
 #include "TouchJudge.h"
 #include "ObstacleJudge.h"
+#include "BlackDetecter.h"
 
 // 計測器系
 #include "DistanceMeter.h"
 #include "SpeedMeter.h"
 
 // シナリオ系
-#include "IN.h"
-#include "OUT.h"
+#include "LCourse.h"
+#include "RCourse.h"
 #include "SBarcode.h"
 #include "SFigureL.h"
 #include "SLoopLine.h"
@@ -47,9 +48,11 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
+
 #include "Curve.h"
 #include "LCourse.h"
-#include "Tyoiri.h"
+#include "Choilie.h"
+#include "Stepper.h"
 
 // その他
 #include "LineTracer.h"
@@ -97,33 +100,34 @@ TouchJudge touchJudge(&touch);
 ObstacleJudge obstacleJudge(&sonic);
 DistanceMeter distanceMeter(&rightMotor, &leftMotor);
 Logger logger;
+
 Observer observer(&color, &obstacleJudge, &touchJudge, &distanceMeter, &rightMotor, &leftMotor, &frontMotor);
 Drive drive(&rightMotor, &leftMotor, &frontMotor, &observer);
 LineTracer lineTracer(&drive, &color);
 Calibration calibration(&color, &touchJudge, &lineTracer);
-SBarcode barcode(&lineTracer, &observer, &drive, &logger);
 Curve curve(&drive, &observer, &frontMotor, &rightMotor, &leftMotor, &color, &lineTracer);
-Tyoiri tyoiri(&drive, &observer);
-STwinBridge bridge(&lineTracer, &observer, &drive, &tyoiri);
+Choilie choilie(&drive, &observer);
+STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
+Stepper stepper(&drive, &lineTracer, &observer);
+BlackDetecter blackDetecter(&color);
+SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
+SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-
-
-void miri_cyc(intptr_t exinf){
-    act_tsk(YADAMO_TASK);
-}
+RCourse rcorse(&lineTracer, &curve, &observer);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
+  blackDetecter.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           logging();
-
-           if(lcorse.run()){
+           // logging();
+           // if(lcorse.run()){   
+           if(sfigureL.run()){
                 wup_tsk(MAIN_TASK);
            }
         }
@@ -131,7 +135,9 @@ void yadamo_task(intptr_t exinf){
     ext_tsk();
 }
 
-
+void miri_cyc(intptr_t exinf){
+    act_tsk(YADAMO_TASK);
+}
 
 void main_task(intptr_t unused) {
     ev3_sta_cyc(MIRI_CYC);
@@ -147,13 +153,14 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
+    logger.addData((double)observer.getRuntime());
+    logger.addData((double)observer.Fangle);
     logger.addData((double)color.getReflect());
-    logger.addData((double)observer.getSpeed());
     logger.send();
 }
 
-
 void destroy(){
+    ev3_speaker_play_tone(NOTE_G4, 1000);
     logger.end();
     bool back = true;
     frontMotor.setRotate(observer.Fangle, 100, true);

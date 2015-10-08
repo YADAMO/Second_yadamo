@@ -8,8 +8,8 @@
 #include "PID.h"
 #include "LineTracer.h"
 
-#define R 1
 #define L -1
+#define R 1
 
 class Curve{
 public:

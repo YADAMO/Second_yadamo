@@ -4,18 +4,18 @@
 #include "Drive.h"
 #include "LineTracer.h"
 #include "Observer.h"
-#include "Tyoiri.h"
+#include "Choilie.h"
 
 class STwinBridge : public ScenarioController{
 public:
-	STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Tyoiri *ty);
+	STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch);
     virtual bool run();
 
 private:
 	LineTracer *lineTracer;
 	Observer *observer;
 	Drive *drive;
-	Tyoiri *tyoiri;
+	Choilie *choilie;
 	int runtime;
 	double distance;
 };

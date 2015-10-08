@@ -57,6 +57,7 @@ bool Calibration::doCalibration() {
           lineTracer->black = black;
           target = (white + black)/2;
           lineTracer->target = target;
+          lineTracer->target2 = target;
           ev3_speaker_play_tone(NOTE_D4, 100);
           touchCount++;
         break;
@@ -109,7 +110,7 @@ void Calibration::drawLCD(){
     sprintf(gra, "gray = %d", gray);
     sprintf(gre, "green = %d", green);
     sprintf(tar, "target = %d", target);
-    sprintf(bat, "battery = %d", ev3_battery_voltage_mV());
+    sprintf(bat, "battery = %d %%", (int)((double)ev3_battery_voltage_mV() / 9400.0 * 100.0));
 
     ev3_lcd_draw_string(w, 0, 0);
     ev3_lcd_draw_string(b, 0, 8);

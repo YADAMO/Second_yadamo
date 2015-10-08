@@ -21,8 +21,6 @@ APPL_CXXOBJS += \
 	SLoopLine.o \
 	SParkingP.o \
 	SParkingL.o \
-	IN.o \
-	OUT.o \
 	Calibration.o \
 	Drive.o \
 	PID.o\
@@ -34,7 +32,9 @@ APPL_CXXOBJS += \
 	LineReturn.o \
 	Curve.o \
 	LCourse.o \
-	Tyoiri.o
+	RCourse.o \
+	Choilie.o \
+	BlackDetecter.o
 
 SRCLANG := c++
 
