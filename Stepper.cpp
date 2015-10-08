@@ -14,8 +14,8 @@ Stepper::Stepper(Drive *dr, LineTracer *lt, Observer *obs){
 bool Stepper::run(int edge){
 	switch(phase){
 		case 0:
-			lineTracer->changeGain(1.5, 0, 0.02);
-			lineTracer->trace(8, edge, 0);
+			lineTracer->changeGain(0.9, 0, 0.02);
+			lineTracer->trace(14, edge, 0);
 
 			if(observer->isStep() && runtime > 800){
 				drive->init();
@@ -32,7 +32,7 @@ bool Stepper::run(int edge){
 		break;
 
 		case 2:
-			drive->curve(-28, -28);
+			drive->curve(-25, -25);
 			if(observer->getDistance() - distance > 20){
 				changeFhase();
 			}

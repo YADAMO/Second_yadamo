@@ -16,24 +16,15 @@ SFigureL::SFigureL(Drive *dr, LineTracer *lt, Observer *ob, Stepper *st, Curve *
 bool SFigureL::run(){
 	switch(phase) {
 		case 0:
-			lineTracer->changeGain(1.5, 0, 0.02);
-			lineTracer->trace(20, RIGHT, 0);
-			if(observer->isStep() && runtime > 800){
-				changeScenario();
-			}
-			
-		break;
-
-		case 1:
 			if(stepper->run(1)){
 				changeScenario();
 				lineTracer->changeTarget(5);
 			}
 		break;
 
-		case 2:
-			lineTracer->changeGain(1.5, 0, 0.02);
-			lineTracer->trace(20, RIGHT, 0);
+		case 1:
+			lineTracer->changeGain(1.2, 0, 0.02);
+			lineTracer->trace(15, RIGHT, 0);
 			if(observer->getDistance() - distance > 15){
 				changeScenario();
 				drive->init(true);
@@ -41,31 +32,35 @@ bool SFigureL::run(){
 			}
 		break;
 
-		case 3:
-			drive->curve(0, 0);
-			if(runtime > 1000){
+		// case 2:
+		// 	drive->curve(0, 0);
+		// 	if(runtime > 1000){
+		// 		changeScenario();
+		// 	}
+		// break;
+
+		case 2:
+			lineTracer->changeGain(0.5, 0, 0.02);
+			lineTracer->fastrace(6, RIGHT, 0);
+			if(observer->getDistance() - distance > 14){
 				changeScenario();
+				drive->init(true);
 			}
 		break;
 
 		case 3:
-			lineTracer->changeGain(0.5, 0, 0.02);
-			lineTracer->fastrace(7, RIGHT, 0);
-			if(observer->getDistance() - distance > 10){
+			drive->curve(0, 0);
+			if(runtime > 1000){
 				changeScenario();
-				
 			}
 		break;
 
 		case 4:
-			drive->curve(0, 0);
-			if(runtime > 1000){
-				changeScenario();
+			if(runtime % 3 == 0){
+				drive->curve(-1, -1);	
+			}else{
+				drive->curve(0, 0);
 			}
-		break;
-
-		case 5:
-			drive->curve(-1, -1);
 			if(blackDetecter->onBlack()){
 				changeScenario();
 				// drive->init(false);
@@ -73,36 +68,53 @@ bool SFigureL::run(){
 			}
 		break;
 
-		case 6:
+		case 5:
 			drive->curve(2, 2);
 			if(distance - observer->getDistance() > 4){
 				changeScenario();
 			}
 		break;
 
-		case 7:
+		case 6:
 			drive->curve(0, 0);
 			if(runtime > 1000){
 				changeScenario();
 			}
 		break;
 
-		case 8:
-			if(curve->run(-7, -15, -600, 11)){
+		case 7:
+			if(curve->run(-7, -15, -625, 17)){
 				changeScenario();
-				// drive->init(true);
+				drive->init(true);
 			}
 			
 		break;
 
+		case 8:
+			drive->curve(0, 0);
+			if(runtime > 1000){
+				changeScenario();
+			}
+		break;
+
 		case 9:
-			drive->curve(8,8);
+			lineTracer->changeGain(1.2, 0, 0.02);
+			lineTracer->trace(15, RIGHT, 0);
+			if(observer->getDistance() - distance > 15){
+				changeScenario();
+				drive->init(true);
+			}
+
+		break;
+
+		case 10:
+			drive->curve(6,6);
 			if(observer->isStep() && runtime > 1000){
 				changeScenario();
 			}
 		break;
 
-		case 10:
+		case 11:
 			return true;
 		break;
 	}
