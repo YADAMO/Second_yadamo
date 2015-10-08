@@ -67,7 +67,7 @@ bool SFigureL::run(){
 
 		case 6:
 			drive->curve(2, 2);
-			if(distance - observer->getDistance() > 3){
+			if(distance - observer->getDistance() > 4){
 				changeScenario();
 			}
 		break;
@@ -80,15 +80,16 @@ bool SFigureL::run(){
 		break;
 
 		case 8:
-			if(curve->run(-7, -15, -650, 9)){
+			if(curve->run(-7, -15, -600, 11)){
 				changeScenario();
+				drive->init(true);
 			}
 			
 		break;
 
 		case 9:
-			lineTracer->trace(20, RIGHT, 0);
-			if(observer->getDistance() - distance > 100){
+			drive->curve(8,8);
+			if(observer->isStep() && runtime > 1000){
 				changeScenario();
 			}
 		break;
