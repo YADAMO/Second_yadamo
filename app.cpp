@@ -126,9 +126,8 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
-           // if(lcorse.run()){
-           
-           if(barcode.run()){
+           // if(lcorse.run()){   
+           if(sfigureL.run()){
                 wup_tsk(MAIN_TASK);
                 drive.init(true);
            }
@@ -155,12 +154,14 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
+    logger.addData((double)observer.getRuntime());
+    logger.addData((double)observer.Fangle);
     logger.addData((double)color.getReflect());
-    logger.addData((double)observer.getSpeed());
     logger.send();
 }
 
 void destroy(){
+    ev3_speaker_play_tone(NOTE_G4, 1000);
     logger.end();
     bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
