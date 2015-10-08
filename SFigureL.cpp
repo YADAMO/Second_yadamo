@@ -34,9 +34,17 @@ bool SFigureL::run(){
 		case 2:
 			lineTracer->changeGain(1.5, 0, 0.02);
 			lineTracer->trace(20, RIGHT, 0);
-			if(observer->getDistance() - distance > 25){
+			if(observer->getDistance() - distance > 15){
 				changeScenario();
+				drive->init(true);
 			
+			}
+		break;
+
+		case 3:
+			drive->curve(0, 0);
+			if(runtime > 1000){
+				changeScenario();
 			}
 		break;
 
@@ -45,7 +53,7 @@ bool SFigureL::run(){
 			lineTracer->fastrace(7, RIGHT, 0);
 			if(observer->getDistance() - distance > 10){
 				changeScenario();
-				drive->init(true);
+				
 			}
 		break;
 
@@ -60,7 +68,7 @@ bool SFigureL::run(){
 			drive->curve(-1, -1);
 			if(blackDetecter->onBlack()){
 				changeScenario();
-				drive->init(false);
+				// drive->init(false);
 				lineTracer->backTarget();
 			}
 		break;
@@ -82,7 +90,7 @@ bool SFigureL::run(){
 		case 8:
 			if(curve->run(-7, -15, -600, 11)){
 				changeScenario();
-				drive->init(true);
+				// drive->init(true);
 			}
 			
 		break;
