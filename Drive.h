@@ -25,6 +25,7 @@ public:
 	void turnReset();
 	void opeF(int angle);
 	void init(bool lock);
+	void opeFRL(int f, int r, int l);
 private:
 
 	Motor *Rmotor;

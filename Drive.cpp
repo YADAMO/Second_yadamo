@@ -263,3 +263,16 @@ void Drive::opeF(int angle){
 void Drive::init(bool lock){
 	Fmotor->setRotate(observer->Fangle, 100, lock);
 }
+
+void Drive::opeFRL(int f, int r, int l){
+	int tarCount = (int)700*((double)f/90.0);
+	if(tarCount > observer->Fangle){
+		Fmotor->setSpeed(100);
+	}else if(tarCount < observer->Fangle){
+		Fmotor->setSpeed(-100);
+	}else{
+		Fmotor->setSpeed(0);
+	}
+	Rmotor->setSpeed(r);
+	Lmotor->setSpeed(l);
+}

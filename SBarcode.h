@@ -22,12 +22,14 @@ private:
 	double distance;
 	colorid_t preCol;
 	int runtime;
-	double whiteStack[4];
+	double whiteStack[15];
 	int wp;
-	double blackStack[4];
+	double blackStack[15];
 	int bp;
 	int bitArray[8];
 	bool calcend;
 	bool calcBarcode();
 	unsigned char getBitArray();
+	double startbitdistance;
+	double barcodedistance;
 };

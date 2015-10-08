@@ -130,6 +130,7 @@ void yadamo_task(intptr_t exinf){
            
            if(barcode.run()){
                 wup_tsk(MAIN_TASK);
+                drive.init(true);
            }
         }
     }
