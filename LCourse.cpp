@@ -11,8 +11,8 @@ LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st){
 bool LCourse::run(){
 	switch(phase){
 		case 0:
-			lineTracer->changeGain(0.4, 0.0, 0.02);
-            lineTracer->fastrace(50, RIGHT, 0);
+			lineTracer->changeGain(0.2, 0.01, 0.25);
+            lineTracer->fastrace(95, RIGHT, 0);
 			if(observer->getDistance() - distance > LSTART){
 				changeScenario();
 				distance = observer->getDistance();
@@ -20,9 +20,8 @@ bool LCourse::run(){
 		break;
 
 		case 1:
-		return true;
-			// lineTracer->changeGain(0.8, 0.045, 0.08);
-            lineTracer->fastrace(15, RIGHT, 0);
+			lineTracer->changeGain(0.8, 0.045, 0.08);
+            lineTracer->fastrace(25, RIGHT, 0);
             if(observer->getDistance() - distance > LBC1){
 				changeScenario();
 				distance = observer->getDistance();

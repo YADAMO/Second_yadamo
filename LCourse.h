@@ -6,8 +6,8 @@
 #include "Observer.h"
 #include "STwinBridge.h"
 
-#define LSTART 410
-#define LBC1 75
+#define LSTART 400
+#define LBC1 85
 #define LC1 77
 #define LAC1 100
 
