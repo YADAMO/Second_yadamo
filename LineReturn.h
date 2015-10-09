@@ -9,6 +9,7 @@ class LineReturn : public ScenarioController{
 public:
 	LineReturn(LineTracer *lt, Observer *ob, Drive *dr);
     virtual bool run();
+    bool run(int dir);
 
 private:
 	LineTracer *lineTracer;

@@ -1,11 +1,11 @@
 #include "LCourse.h"
 
-LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st){
+LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineReturn *lr){
 	lineTracer = lt;
 	curve = cv;
 	observer = ob;
 	bridge = st;
-
+	lineReturn = lr;
 	distance = 0;
 	phase = 0;
 }
@@ -58,8 +58,8 @@ bool LCourse::run(){
 
 		case 3:
 		// return true;
-			lineTracer->traceReturn(15, RIGHT, 0);
-			if(observer->getDistance() > LAC1){
+			// lineTracer->traceReturn(15, RIGHT, 0);
+			if(lineReturn->run(1)){
 				changeScenario();
 			}
 		break;

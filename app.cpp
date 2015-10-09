@@ -53,6 +53,7 @@
 #include "LCourse.h"
 #include "Choilie.h"
 #include "Stepper.h"
+#include "LineReturn.h"
 
 // その他
 #include "LineTracer.h"
@@ -113,7 +114,9 @@ BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
+LineReturn lineReturn(&lineTracer, &observer, &drive);
+
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
 RCourse rcorse(&lineTracer, &curve, &observer);
 
 void yadamo_task(intptr_t exinf){
@@ -127,7 +130,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
 
-           if(sfigureL.run()){
+           if(lcorse.run()){
                 wup_tsk(MAIN_TASK);
            }
         }

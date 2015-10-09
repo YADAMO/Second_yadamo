@@ -13,14 +13,14 @@ STwinBridge::STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch){
 bool STwinBridge::run(){
 	switch(phase){
 		case 0:
-			lineTracer->changeTarget(-6);
+			lineTracer->changeTarget(-5);
 			changeScenario();
 		break;
 
 		case 1:
 			//ぶつかるまで前へ
 			lineTracer->changeGain(1.5, 0, 0.02);
-			lineTracer->trace(20, RIGHT, 0);
+			lineTracer->trace(16, RIGHT, 0);
 			if(observer->isStep() && runtime > 800){
 				changeScenario();
 			}
