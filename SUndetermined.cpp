@@ -15,105 +15,98 @@ SUndetermined::SUndetermined(SBarcode *bc, Drive *dri, Observer *obs, LineReturn
 }
 
 
-// bool SUndetermined::run(){
-//     switch(phase)
-//     {
-//         case 0:
-//             //line復帰
-//             break;
-//         case 1:
-//             //段差検知
-//             //if(!段差検知)
-//             //drive(back);
-//             break;
-//         case 2:
-//             int tmp_distance = 21.5;
-//             if(start_position == 1) tmp_distance += 19;
-//             else if(start_position == 2) tmp_distance += 45;
-//             else if(start_position == 3) tmp_distance += 71;
-//             else if(start_position == 4) tmp_distance += 97;
-//             //start_positionまで移動
-//             if(observer->getDistance() > tmp_distance)
-//                 drive->straight();
-//             break;
-//         case 3:
-//             drive->turn(90);
-//             break;
-//         case 4:
-//             if(!observer->isObstacle())
-//                 drive->straight();
-//             break;
-//         case :
-//             //昇段
-//             break;
-//         case 4:
-//             //pattern_走行
+bool SUndetermined::run(){
+    switch(phase)
+    {
+        case 0:
+            drive->opeFRL(0, 2, 2);
+			if(distance - observer->getDistance() > 3){
+				changeScenario();
+			}
+            break;
+        case 1:
+            //段差検知
+            //if(!段差検知)
+            //drive(back);
+            break;
+        case 2:
+            int tmp_distance = 21.5;
+            if(start_position == 1) tmp_distance += 19;
+            else if(start_position == 2) tmp_distance += 45;
+            else if(start_position == 3) tmp_distance += 71;
+            else if(start_position == 4) tmp_distance += 97;
+            //start_positionまで移動
+            if(observer->getDistance() > tmp_distance)
+                drive->straight();
+            break;
+        case 3:
+            drive->turn(90);
+            break;
+        case 4:
+            if(!observer->isObstacle())
+                drive->straight();
+            break;
+        case :
+            //昇段
+            break;
+        case 4:
+            //pattern_走行
 
-//         case
+        case
 
-//     }
-//         // switch pattern
+    }
+        // switch pattern
 
-//     // {
-//     // int r = 1;
-//     // int l = -1;
-//     // case 1:
+    // {
+    // int r = 1;
+    // int l = -1;
+    // case 1:
 
-//     //  Straight();
-//     //  Turn(90,r);
-//     //  Straight();
-//     //  Turn(90,l);
-//     //  Straight();
-//     //  break;
-//     // case 2:
-//     //  Straight();
-//     //  Turn(90,l);
-//     //  Straight();
-//     //  Turn(90,r);
-//     //  Straight();
-//     //  break;
-//     // case 3:
-//     //  Straight();
-//     //  Turn(45,l);
-//     //  Straight();
-//     //  Turn(45,r);
-//     //  Straight();
-//     //  break;
-//     // case 4:
-//     //  Straight();
-//     //  Turn(45,r);
-//     //  Straight();
-//     //  Turn(45,l);
-//     //  Straight();
-//     //  break;
-//     // case 5:
-//     //  Straight();
-//     //  Turn(90,r);
-//     //  Straight();
-//     //  Turn(90,l);
-//     //  Straight();
-//     //  break;
-//     // case 6:
-//     //  Straight();
-//     //  Turn(90,l);
-//     //  Straight();
-//     //  Turn(90,r);
-//     //  Straight();
-//     //  break;
-//     // }
+    //  Straight();
+    //  Turn(90,r);
+    //  Straight();
+    //  Turn(90,l);
+    //  Straight();
+    //  break;
+    // case 2:
+    //  Straight();
+    //  Turn(90,l);
+    //  Straight();
+    //  Turn(90,r);
+    //  Straight();
+    //  break;
+    // case 3:
+    //  Straight();
+    //  Turn(45,l);
+    //  Straight();
+    //  Turn(45,r);
+    //  Straight();
+    //  break;
+    // case 4:
+    //  Straight();
+    //  Turn(45,r);
+    //  Straight();
+    //  Turn(45,l);
+    //  Straight();
+    //  break;
+    // case 5:
+    //  Straight();
+    //  Turn(90,r);
+    //  Straight();
+    //  Turn(90,l);
+    //  Straight();
+    //  break;
+    // case 6:
+    //  Straight();
+    //  Turn(90,l);
+    //  Straight();
+    //  Turn(90,r);
+    //  Straight();
+    //  break;
+    // }
 
-// 	return false;
-// }
-
-
-
-// int SUndetermined::getRunPattern(std::vector<int> bit_array)
-// {
-//     std::vector<Point2> bottles_pos = bitary2BottlesPos(bit_array);
-//     int k = decide_k(bottles_pos);
-//     int pattern = checkRoutePattern(bottles_pos[k-1],bottles_pos[k]);
-//     return pattern;
-// }
+	return false;
+}
 
 
 //getRunPattern
