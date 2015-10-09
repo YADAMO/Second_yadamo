@@ -87,3 +87,41 @@ bool Curve::runPid(int dif, int32_t fr, int32_t dis, int dir){
 void Curve::changeGain(float p, float i, float d){
 	pid->changeGain(p, i, d);
 }
+
+bool Curve::runPid(int dif, int32_t fr, int32_t dis, int dir, int sp){
+	switch(phase){
+		case 0:
+			disOffset = observer->getDistance();
+			Lmotor->setSpeed(0);
+			Rmotor->setSpeed(0);
+			Fmotor->setRotate((observer->Fangle + fr), 100, true);
+			phase++;
+		break;
+
+		case 1:
+			bright = color->getReflect();
+			turn = dir * pid->calc(lineTracer->target, bright);
+			if(dir == R){
+				Lmotor->setSpeed(-sp);
+				Rmotor->setSpeed(-sp + dif - turn);
+
+			}else{
+				Rmotor->setSpeed(-sp);
+				Lmotor->setSpeed(-sp + dif - turn);
+			}
+
+			if((observer->getDistance() - disOffset) > dis){
+				phase++;
+			}
+		break;
+
+		case 2:
+			Lmotor->setSpeed(0);
+			Rmotor->setSpeed(0);
+			Fmotor->setRotate(observer->Fangle, 100, true);
+			phase = 0;
+		return true;
+		break;
+	}
+	return false;
+}

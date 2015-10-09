@@ -7,6 +7,7 @@ LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st){
 	bridge = st;
 
 	distance = 0;
+	phase = 0;
 }
 
 bool LCourse::run(){
@@ -17,11 +18,14 @@ bool LCourse::run(){
 	
 
 			// lineTracer->changeGain(0.14, 0.032, 0.4);
-   //          lineTracer->fastrace(40, RIGHT, 0);
+            // lineTracer->fastrace(40, RIGHT, 0);
 
-   			lineTracer->changeGain(0.125, 0.025, 0.5);
+   			// lineTracer->changeGain(0.125, 0.025, 0.5);
             // lineTracer->changeGain(0.28, 0.032, 0.4);
-            lineTracer->fastrace(25, RIGHT, 0);
+            // lineTracer->fastrace(25, RIGHT, 0);
+
+			lineTracer->changeGain(0.9, 0, 0.02);
+			lineTracer->trace(25, RIGHT, 0);
 
 
 			if(observer->getDistance() - distance > LSTART){
@@ -31,9 +35,11 @@ bool LCourse::run(){
 		break;
 
 		case 1:
-			lineTracer->changeGain(0.125, 0.025, 0.5);
+			lineTracer->changeGain(0.9, 0, 0.02);
+			lineTracer->trace(25, RIGHT, 0);
+			// lineTracer->changeGain(0.125, 0.025, 0.5);
             // lineTracer->changeGain(0.28, 0.032, 0.4);
-            lineTracer->fastrace(25, RIGHT, 0);
+            // lineTracer->fastrace(25, RIGHT, 0);
             if(observer->getDistance() - distance > LBC1){
 				changeScenario();
 				distance = observer->getDistance();
@@ -41,8 +47,9 @@ bool LCourse::run(){
 		break;
 
 		case 2:
-		return true;
-			if(curve->run(-5, -15, -500, LC1)){
+		// return true;
+		curve->changeGain(1.5, 0, 0);
+			if(curve->runPid(3, -495, LC1, R, 10)){
 				changeScenario();
 				lineTracer->changeGain(1.5, 0, 0.02);
 				distance = observer->getDistance();
@@ -50,6 +57,7 @@ bool LCourse::run(){
 		break;
 
 		case 3:
+		// return true;
 			lineTracer->traceReturn(15, RIGHT, 0);
 			if(observer->getDistance() > LAC1){
 				changeScenario();

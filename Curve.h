@@ -16,6 +16,7 @@ public:
 	Curve(Drive *dr, Observer *ob, Motor *fm, Motor *rm, Motor *lm , Color *cl, LineTracer *ln);
 	bool run(int ri, int lf, int32_t fr, int32_t dis);
 	bool runPid(int dif, int32_t fr, int32_t dis, int dir);
+	bool runPid(int dif, int32_t fr, int32_t dis, int dir, int sp);
 	void changeGain(float p, float i, float d);
 
 private:

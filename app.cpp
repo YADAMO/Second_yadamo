@@ -125,12 +125,14 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           // // logging();
-           // if(lcorse.run()){   
+           // logging();
+           if(lcorse.run()){   
            // if(sfigureL.run()){
-                // wup_tsk(MAIN_TASK);
-           // }
-            drive._drive(0, 25);
+            // if(observer.getDistance() > 300){
+                wup_tsk(MAIN_TASK);
+           }
+           // lineTracer.changeGain(0.25, 0, 0);
+           // lineTracer.calitrace(20, RIGHT);
         }
     }
     ext_tsk();
@@ -155,15 +157,15 @@ void main_task(intptr_t unused) {
 
 void logging(){
     logger.addData((double)observer.getRuntime());
-    logger.addData((double)observer.Fangle);
-    logger.addData((double)color.getReflect());
+    logger.addData((double)rightMotor.getAngle());
+    logger.addData((double)leftMotor.getAngle());
     logger.send();
 }
 
 void destroy(){
     ev3_speaker_play_tone(NOTE_G4, 1000);
     logger.end();
-    bool back = true;
+    bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
     rightMotor.setSpeed(0);
     leftMotor.setSpeed(0);
