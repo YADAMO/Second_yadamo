@@ -38,7 +38,7 @@ int LineTracer::fastrace(double speed, int edge, int target){
 	if(angle > 5)	angle = 5;
 	else if(angle < -5)	angle = -5;
 
-	drive->_drive(angle* edge, (int)speed);
+	drive->_drive(angle * edge, (int)speed);
 	return angle;
 }
 

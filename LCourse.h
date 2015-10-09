@@ -5,16 +5,17 @@
 #include "Curve.h"
 #include "Observer.h"
 #include "STwinBridge.h"
+#include "LineReturn.h"
 
-#define LSTART 410
-#define LBC1 75
-#define LC1 77
+#define LSTART 300
+#define LBC1 172
+#define LC1 72
 #define LAC1 100
 
 
 class LCourse : public ScenarioController{
 public:
-	LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st);
+	LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineReturn *lr);
 	virtual bool run();
 
 private:
@@ -22,6 +23,8 @@ private:
 	Curve *curve;
 	Observer *observer;
 	STwinBridge *bridge;
+	LineReturn *lineReturn;
+
 	double distance;
 
 

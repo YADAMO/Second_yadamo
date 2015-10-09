@@ -53,6 +53,7 @@
 #include "LCourse.h"
 #include "Choilie.h"
 #include "Stepper.h"
+#include "LineReturn.h"
 
 // その他
 #include "LineTracer.h"
@@ -114,7 +115,9 @@ SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetect
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
+LineReturn lineReturn(&lineTracer, &observer, &drive);
+
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
 RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
 
 void yadamo_task(intptr_t exinf){
@@ -127,8 +130,8 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
-           // if(lcorse.run()){   
-           if(loopLine.run()){
+           if(lcorse.run()){
+
                 wup_tsk(MAIN_TASK);
            }
         }
@@ -155,6 +158,8 @@ void main_task(intptr_t unused) {
 
 void logging(){
     logger.addData((double)observer.getRuntime());
+    logger.addData((double)rightMotor.getAngle());
+    logger.addData((double)leftMotor.getAngle());
     logger.addData((double)observer.Fangle);
     logger.addData((double)color.getReflect());
     logger.send();
@@ -165,6 +170,17 @@ void destroy(){
     logger.end();
     bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
+    rightMotor.setSpeed(0);
+    leftMotor.setSpeed(0);
+    int count = 0;
+
+    while(1){
+        if(count > 100000){
+            break;
+        }
+        count++;
+    }
+
     if(back){
         rightMotor.setRotate(rightMotor.getAngle(), 35, false);
         leftMotor.setRotate(leftMotor.getAngle(), 35, false);
