@@ -126,13 +126,10 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
-           if(lcorse.run()){   
-           // if(sfigureL.run()){
-            // if(observer.getDistance() > 300){
+
+           if(sfigureL.run()){
                 wup_tsk(MAIN_TASK);
            }
-           // lineTracer.changeGain(0.25, 0, 0);
-           // lineTracer.calitrace(20, RIGHT);
         }
     }
     ext_tsk();
@@ -159,6 +156,8 @@ void logging(){
     logger.addData((double)observer.getRuntime());
     logger.addData((double)rightMotor.getAngle());
     logger.addData((double)leftMotor.getAngle());
+    logger.addData((double)observer.Fangle);
+    logger.addData((double)color.getReflect());
     logger.send();
 }
 

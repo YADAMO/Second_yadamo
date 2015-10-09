@@ -25,7 +25,7 @@ public:
 	void turnReset();
 	void opeF(int angle);
 	void init(bool lock);
-	void calidrive(int sp, int turn);
+
 private:
 
 	Motor *Rmotor;
