@@ -6,10 +6,16 @@
 #include "Curve.h"
 #include "SParkingP.h"
 
-#define RSTART 340
-#define RBC1 85
-#define RC1 63
-#define RAC1 200
+#define RST1 390 	//最初の直線
+#define RBC1 40 	//１番目カーブ前の減速
+#define RC1 70 		//１番目カーブ
+#define RAC1 50 	//１番目カーブ後のライン復帰
+#define RST2 80 	//１番目カーブ後の直線
+#define RC2A 60 	//２番目カーブの前半 左カーブ
+#define RC2B 45 	//２番目カーブの後半 右カーブ
+#define RAC2 30 	//２番目カーブ後半のライン復帰
+#define RST3 100 	//２番目カーブ後の直線
+
 
 class RCourse : public ScenarioController{
 public:

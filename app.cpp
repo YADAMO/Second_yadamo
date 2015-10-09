@@ -120,9 +120,10 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           if(rcourse.run()){
+            if(rcourse.run()){
                 wup_tsk(MAIN_TASK);
-           }
+            }
+            //logging();
         }
     }
     ext_tsk();
@@ -144,15 +145,20 @@ void main_task(intptr_t unused) {
 }
 
 void logging(){
-    logger.addData((double)color.getReflect());
-    logger.addData((double)observer.getSpeed());
+    logger.addData((double)observer.getRuntime());
+    logger.addData((double)rightMotor.getAngle());
+    logger.addData((double)leftMotor.getAngle());
+    rightMotor.setSpeed(100);
+    leftMotor.setSpeed(100);
+    //lineTracer.changeGain(0.75, 0.0, 0.0);
+    //logger.addData((double)lineTracer.fastrace(15, LEFT, 0));
     logger.send();
 }
 
 
 void destroy(){
     logger.end();
-    bool back = true;
+    bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
     if(back){
         rightMotor.setRotate(rightMotor.getAngle(), 35, false);
