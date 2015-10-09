@@ -12,6 +12,7 @@ public:
 	SBarcode(LineTracer *lt, Observer *ob, Drive *dr, Logger *lg, Stepper *st);
     virtual bool run();
 	void changeScenario();
+	unsigned char getBitArray();
 
 private:
 	LineTracer *lineTracer;
@@ -29,7 +30,6 @@ private:
 	int bitArray[8];
 	bool calcend;
 	bool calcBarcode();
-	unsigned char getBitArray();
 	double startbitdistance;
 	double barcodedistance;
 };

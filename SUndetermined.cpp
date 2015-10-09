@@ -1,17 +1,20 @@
 
 #include "SUndetermined.h"
 
-SUndetermined::SUndetermined(SBarcode *bc, Drive *dri, Observer *obs, LineReturn *lr, LineTrace *lt)
+SUndetermined::SUndetermined(SBarcode *bc, Drive *dri, Observer *obs, LineReturn *lr, LineTracer *lt, Stepper *st)
 {
     barCode = bc;
     drive = dri;
     observer = obs;
     lineReturn = lr;
-    lineTrace = lt;
+    lineTracer = lt;
+    stepper = st;
 
     phase = 0;
     run_on_board_pattern = 0;
     start_position = 0;
+    runtime = 0;
+    distance = 0;
 }
 
 
@@ -20,39 +23,44 @@ bool SUndetermined::run(){
     {
         case 0:
             drive->opeFRL(0, 2, 2);
-			if(distance - observer->getDistance() > 3){
+			if(observer->isStep() && runtime > 800){
 				changeScenario();
+				run_on_board_pattern = getRunPattern(barCode->getBitArray());
 			}
             break;
         case 1:
-            //段差検知
-            //if(!段差検知)
-            //drive(back);
+        	drive->opeFRL(0, 0, 0);
+			if(runtime > 1000){
+				tmp_distance = 21.5;
+	            if(start_position == 1) tmp_distance += 19;
+	            else if(start_position == 2) tmp_distance += 45;
+	            else if(start_position == 3) tmp_distance += 71;
+	            else if(start_position == 4) tmp_distance += 97;
+				changeScenario();
+			}
             break;
         case 2:
-            int tmp_distance = 21.5;
-            if(start_position == 1) tmp_distance += 19;
-            else if(start_position == 2) tmp_distance += 45;
-            else if(start_position == 3) tmp_distance += 71;
-            else if(start_position == 4) tmp_distance += 97;
             //start_positionまで移動
-            if(observer->getDistance() > tmp_distance)
-                drive->straight();
+            if(observer->getDistance() - distance > tmp_distance)
+        		drive->opeFRL(0, -5, -5);
+				changeScenario();
             break;
         case 3:
-            drive->turn(90);
+            if(drive->turn(90, -1, 0)){
+            	changeScenario();
+            }
             break;
         case 4:
-            if(!observer->isObstacle())
-                drive->straight();
+            if(stepper->sRun())
+            	changeScenario();
             break;
-        case :
-            //昇段
+        case 5:
+            return true;
             break;
-        case 4:
-            //pattern_走行
+        // case 4:
+        //     //pattern_走行
 
-        case
+        // case
 
     }
         // switch pattern
@@ -104,8 +112,14 @@ bool SUndetermined::run(){
     //  Straight();
     //  break;
     // }
-
+    runtime++;
 	return false;
+}
+
+void SUndetermined::changeScenario(){
+	phase++;
+	runtime = 0;
+	distance = observer->getDistance();
 }
 
 

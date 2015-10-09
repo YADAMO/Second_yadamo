@@ -1,10 +1,13 @@
 #include "LCourse.h"
 
-LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st){
+LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, SBarcode *bar, SUndetermined *und){
 	lineTracer = lt;
 	curve = cv;
 	observer = ob;
 	bridge = st;
+	barcode = bar;
+	undetermined = und;
+	phase = 5;
 	distance = 0;
 }
 
@@ -50,7 +53,19 @@ bool LCourse::run(){
 		break;
 
 		case 5:
-		return true;
+			if(barcode->run()){
+				changeScenario();
+			}
+		break;
+
+		case 6:
+			if(undetermined->run()){
+				changeScenario();
+			}
+		break;
+
+		case 7:
+			return true;
 		break;
 	}
 

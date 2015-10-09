@@ -48,6 +48,7 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
+#include "LineReturn.h"
 
 #include "Curve.h"
 #include "LCourse.h"
@@ -112,8 +113,10 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
+LineReturn lineReturn(&lineTracer, &observer, &drive);
+SUndetermined undetermined(&barcode, &drive, &observer, &lineReturn, &lineTracer, &stepper);
 
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &barcode, &undetermined);
 RCourse rcorse(&lineTracer, &curve, &observer);
 
 void yadamo_task(intptr_t exinf){
@@ -127,7 +130,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
            // if(lcorse.run()){   
-           if(barcode.run()){
+           if(lcorse.run()){
                 wup_tsk(MAIN_TASK);
                 drive.init(true);
            }
