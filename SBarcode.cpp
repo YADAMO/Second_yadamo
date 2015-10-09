@@ -22,28 +22,33 @@ bool SBarcode::run(){
 	double curDistance = 0;
 	switch(phase){
 		case 0:
-			if(stepper->run(RIGHT)){
-				if(runtime > 2000){
-					changeScenario();
-         			ev3_speaker_play_tone(NOTE_C4, 100);
-					distance = observer->getDistance();
-				}
+			if(stepper->gRun(RIGHT)){
+				changeScenario();
+       			ev3_speaker_play_tone(NOTE_C4, 100);
+				distance = observer->getDistance();
 				drive->opeFRL(0, 0, 0);
-				runtime++;
 			}
 			break;
 		case 1:
+			if(runtime > 2000){
+				changeScenario();
+     			ev3_speaker_play_tone(NOTE_C4, 100);
+				distance = observer->getDistance();
+			}
+			drive->opeFRL(0, 0, 0);
+			runtime++;
+			break;
+		case 2:
 			drive->opeFRL(0, 2, 2);
 			if(distance - observer->getDistance() > 3){
 				changeScenario();
 			}
 			break;
-		case 2:
-			if(lineTracer->getBright() > 45){
+		case 3:
+			if(lineTracer->getBright() > 47){
 				if(runtime > 2000){
 					changeScenario();
 	     			ev3_speaker_play_tone(NOTE_E4, 100);
-					preCol = COLOR_WHITE;
 					distance = observer->getDistance();
 					startbitdistance = distance;
 				}
@@ -53,10 +58,28 @@ bool SBarcode::run(){
 				lineTracer->trace(7,RIGHT,0);
 			}
 			break;
-		case 3:{
+		case 4:
+			drive->opeFRL(0, 2, 2);
+			if(distance - observer->getDistance() > 3){
+				changeScenario();
+			}
+			break;
+		case 5:{
+			colorid_t curCol = observer->judgeColor();
+			drive->opeFRL(0, -4, -4);
+			if(curCol == COLOR_WHITE){
+				changeScenario();
+				preCol = COLOR_WHITE;
+     			ev3_speaker_play_tone(NOTE_E4, 100);
+				distance = observer->getDistance();
+				startbitdistance = distance;
+			}
+			break;
+		}
+		case 6:{
 			curDistance = observer->getDistance();
 			colorid_t curCol = observer->judgeColor();
-			if(curCol == COLOR_BROWN){
+			if(curCol == COLOR_BROWN && curDistance - distance > 10){
 				changeScenario();
    			    ev3_speaker_play_tone(NOTE_E4, 100);
 				blackStack[bp] = curDistance - distance;
@@ -83,7 +106,7 @@ bool SBarcode::run(){
    			logger->send();
 			break;
 		}
-		case 4:
+		case 7:
 			curDistance = observer->getDistance();
 			if(curDistance - distance > 30){
 				if(runtime > 1000){
@@ -106,7 +129,7 @@ bool SBarcode::run(){
    			logger->send();
 			
 			break;
-		case 5:
+		case 8:
 			drive->opeFRL(0, 0, 0);
 			end = true;
 			logger->addData((double)curDistance);

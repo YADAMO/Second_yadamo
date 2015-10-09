@@ -266,9 +266,9 @@ void Drive::init(bool lock){
 
 void Drive::opeFRL(int f, int r, int l){
 	int tarCount = (int)700*((double)f/90.0);
-	if(tarCount > observer->Fangle){
+	if(tarCount - 5 > observer->Fangle){
 		Fmotor->setSpeed(100);
-	}else if(tarCount < observer->Fangle){
+	}else if(tarCount + 5 < observer->Fangle){
 		Fmotor->setSpeed(-100);
 	}else{
 		Fmotor->setSpeed(0);
