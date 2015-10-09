@@ -72,7 +72,7 @@ bool LineReturn::run(int dir){
 		break;
 
 		case 1:
-			drive->_drive(-15*dir, 10);
+			drive->_drive(-15*dir, 15);
 			if(color == COLOR_WHITE){
 				phase++;
 				drive->curve(0, 0);
