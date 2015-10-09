@@ -125,11 +125,12 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           // logging();
+           // // logging();
            // if(lcorse.run()){   
-           if(sfigureL.run()){
-                wup_tsk(MAIN_TASK);
-           }
+           // if(sfigureL.run()){
+                // wup_tsk(MAIN_TASK);
+           // }
+            drive._drive(0, 25);
         }
     }
     ext_tsk();
@@ -164,6 +165,17 @@ void destroy(){
     logger.end();
     bool back = true;
     frontMotor.setRotate(observer.Fangle, 100, true);
+    rightMotor.setSpeed(0);
+    leftMotor.setSpeed(0);
+    int count = 0;
+
+    while(1){
+        if(count > 100000){
+            break;
+        }
+        count++;
+    }
+
     if(back){
         rightMotor.setRotate(rightMotor.getAngle(), 35, false);
         leftMotor.setRotate(leftMotor.getAngle(), 35, false);

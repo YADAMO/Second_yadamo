@@ -6,9 +6,9 @@
 #include "Observer.h"
 #include "STwinBridge.h"
 
-#define LSTART 400
-#define LBC1 85
-#define LC1 77
+#define LSTART 300
+#define LBC1 175
+#define LC1 85
 #define LAC1 100
 
 
@@ -22,6 +22,7 @@ private:
 	Curve *curve;
 	Observer *observer;
 	STwinBridge *bridge;
+
 	double distance;
 
 
