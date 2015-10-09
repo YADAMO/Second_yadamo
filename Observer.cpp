@@ -44,14 +44,16 @@ void Observer::update(){
 	if(runtime % touchJudge->getInterval() == 0){
 		is_Touch = touchJudge->judge();
 	}
-	
+
 	// 毎回値入れる系
 	distance = -distanceMeter->getDistance();
 	speed = speedMeter->calcSpeed(distance);
 
 	Fangle = Fmotor->getAngle();
 
-	if(runtime % 5 == 0){
+
+
+	if(runtime % 100 == 0){
 		for(int i = 0; i < 4; i++){
 		buffer[i] = buffer[i+1];
 		RangleBuf[i] = RangleBuf[i+1];

@@ -57,6 +57,7 @@ bool Calibration::doCalibration() {
           lineTracer->black = black;
           target = (white + black)/2;
           lineTracer->target = target;
+          lineTracer->target2 = target;
           ev3_speaker_play_tone(NOTE_D4, 100);
           touchCount++;
         break;

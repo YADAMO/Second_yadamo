@@ -1,25 +1,28 @@
 #pragma once
 
-
-#include "DistanceMeter.h"
 #include "Drive.h"
 #include "LineTracer.h"
 #include "Observer.h"
 #include "ScenarioController.h"
 #include "Stepper.h"
+#include "Curve.h"
+#include "BlackDetecter.h"
 
 class SFigureL : public ScenarioController{
 public:
-	SFigureL(DistanceMeter *dm, Drive *dr, LineTracer *lt, Observer *ob);
-    virtual bool run() = 0;
+	SFigureL(Drive *dr, LineTracer *lt, Observer *ob, Stepper *st, Curve *cv, BlackDetecter *bd);
+    virtual bool run();
+    void changeScenario();
 
 private:
-	
-	DistanceMeter *distanceMeter;
 	Drive *drive;
 	LineTracer *lineTracer;
 	Observer *observer;
 	Stepper *stepper;
+	Curve *curve;
+	BlackDetecter *blackDetecter;
 
+	int runtime;
+	double distance;
 	int phase;
 };

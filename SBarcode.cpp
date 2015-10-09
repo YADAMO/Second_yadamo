@@ -1,48 +1,61 @@
 
 #include "SBarcode.h"
 
-SBarcode::SBarcode(LineTracer *lt, Observer *ob, Drive *dr, Logger *lg){
+SBarcode::SBarcode(LineTracer *lt, Observer *ob, Drive *dr, Logger *lg, Stepper *st){
 	lineTracer = lt;
 	observer = ob;
 	drive = dr;
 	logger = lg;
+	stepper = st;
 	distance = 0;
 	preCol = COLOR_NONE;
 	runtime = 0;
 	wp = 0;
 	bp = 0;
 	calcend = false;
+	phase = 1;
 }
 
 bool SBarcode::run(){
 	bool end = false;
 	double curDistance = 0;
 	switch(phase){
-		case 0:
-			if(lineTracer->getBright() > 20){
-				if(runtime > 1000){
+		case 1:
+			if(stepper->run(RIGHT)){
+				if(runtime > 2000){
 					changeScenario();
-					runtime = 0;
+         			 ev3_speaker_play_tone(NOTE_C4, 100);
 				}
-				distance = observer->getDistance();
-				preCol = observer->judgeColor();
-				drive->straight(0);
-			}else{
-				lineTracer->trace(5,1,15);
+				drive->init(true);
+				drive->curve(0, 0);
+				runtime++;
 			}
 			break;
-		case 1:
+		case 2:
+			if(lineTracer->getBright() > 45){
+				if(runtime > 1000){
+					changeScenario();
+     			     ev3_speaker_play_tone(NOTE_D4, 100);
+				}
+				preCol = observer->judgeColor();
+				drive->curve(0, 0);
+				runtime++;
+			}else{
+				lineTracer->trace(7,RIGHT,0);
+			}
+			break;
+		case 3:
 			curDistance = observer->getDistance();
 			if(curDistance - distance > 30){
 				if(runtime > 1000){
 					changeScenario();
-					runtime = 0;
+    			      ev3_speaker_play_tone(NOTE_C4, 100);
 				}
 				blackStack[bp] = curDistance - distance;
-				distance = observer->getDistance();
-				drive->straight(0);
+				drive->curve(0, 0);
+				runtime++;
 			}else{
-				drive->straight(15);
+				drive->curve(-2, -2);
 				colorid_t curCol = observer->judgeColor();
 
 				if(preCol != curCol){
@@ -57,35 +70,39 @@ bool SBarcode::run(){
 				}
 			}
 			break;
-		case 2:
+		case 4:
 			curDistance = observer->getDistance();
 			if(curDistance - distance > 300){
 				if(runtime > 1000){
 					changeScenario();
-					runtime = 0;
 					end = true;
 				}
-				distance = observer->getDistance();
-				drive->straight(0);
+				drive->curve(0, 0);
 				if(!calcend){
 					calcend = calcBarcode();
 				}
+				runtime++;
 			}else{
-				drive->straight(15);
+				drive->curve(-5, -5);
 			}
 			break;
-		case 3:
-			drive->straight(0);
+		case 5:
+			drive->curve(0, 0);
 			end = true;
 			break;
 		default:
 			break;
 	}
-	runtime++;
-	logger->addData((double)curDistance);
-    logger->addData((double)preCol);
-    logger->send();
+	// logger->addData((double)curDistance);
+ //    logger->addData((double)preCol);
+ //    logger->send();
 	return end;
+}
+
+void SBarcode::changeScenario(){
+	phase++;
+	runtime = 0;
+	distance = observer->getDistance();
 }
 
 bool SBarcode::calcBarcode(){

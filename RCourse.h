@@ -5,6 +5,7 @@
 #include "SLoopLine.h"
 #include "Curve.h"
 #include "SParkingP.h"
+#include "BlackDetecter"
 
 #define RST1 390 	//最初の直線
 #define RBC1 40 	//１番目カーブ前の減速
