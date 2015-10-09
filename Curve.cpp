@@ -83,3 +83,7 @@ bool Curve::runPid(int dif, int32_t fr, int32_t dis, int dir){
 	}
 	return false;
 }
+
+void Curve::changeGain(float p, float i, float d){
+	pid->changeGain(p, i, d);
+}

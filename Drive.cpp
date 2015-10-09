@@ -18,6 +18,13 @@ int Drive::calcSteerAngle(int turn){
   return -9*turn;
 }
 
+void Drive::calidrive(int sp, int turn){
+
+	Fmotor->setSpeed((turn / (-turn)) * 100);
+	Rmotor->setSpeed(-sp);
+	Lmotor->setSpeed(-sp);
+}
+
 int Drive::calcSteerAngleFfixed(int8_t right, int8_t left){
   int angle = right - left;
   if(angle >= 50)  angle = 50;

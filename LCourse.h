@@ -7,8 +7,8 @@
 #include "STwinBridge.h"
 
 #define LSTART 300
-#define LBC1 175
-#define LC1 85
+#define LBC1 180
+#define LC1 77
 #define LAC1 100
 
 
