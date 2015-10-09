@@ -112,9 +112,10 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
+SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-RCourse rcorse(&lineTracer, &curve, &observer);
+RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
@@ -127,7 +128,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
            // if(lcorse.run()){   
-           if(sfigureL.run()){
+           if(loopLine.run()){
                 wup_tsk(MAIN_TASK);
            }
         }
