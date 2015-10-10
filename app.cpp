@@ -113,13 +113,13 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
-SLoopLine sloopLine(&lineTracer, &observer, &drive, &stepper, &curve);
-SParkingP sparkingP();
+SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
+SParkingP parkingP(&observer, &drive, &curve);
 
 LineReturn lineReturn(&lineTracer, &observer, &drive);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
-RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &sloopLine, &sparkingP, &lineReturn);
+RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &loopLine, &parkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
