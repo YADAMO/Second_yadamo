@@ -194,6 +194,7 @@ void Drive::curve(int right, int left){
 
 bool Drive::turn(double angle, int d, int speed){
 	static double const k = 1.51;
+	turnRuntime++;
 	switch(turnPhase){
 		case 0:{
 			if(turnRuntime > 1500){
@@ -223,6 +224,7 @@ bool Drive::turn(double angle, int d, int speed){
 			}else{
 				turnPhase++;
 				turnRuntime = 0;
+				Fmotor->setSpeed(0);
 				Lmotor->setSpeed(0);
 				Rmotor->setSpeed(0);
 				ev3_speaker_play_tone(NOTE_C4, 100);
@@ -237,7 +239,7 @@ bool Drive::turn(double angle, int d, int speed){
 		}
 
 	}
-	turnRuntime++;
+	
 	return false;
 }
 
@@ -277,4 +279,8 @@ void Drive::opeFRL(int f, int r, int l){
 void Drive::stop(bool brake){
 	Rmotor->stop(brake);
 	Lmotor->stop(brake);
+}
+
+void Drive::Frotate(int angle){
+	Fmotor->setRotate(angle, 100, true);
 }

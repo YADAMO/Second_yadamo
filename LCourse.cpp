@@ -1,6 +1,6 @@
 #include "LCourse.h"
 
-LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineReturn *lr, SBarcode *bar, SUndetermined *und){
+LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineReturn *lr, SBarcode *bar, SUndetermined *und, Drive *dr){
 	lineTracer = lt;
 	curve = cv;
 	observer = ob;
@@ -8,6 +8,7 @@ LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineR
 	barcode = bar;
 	undetermined = und;
 	lineReturn = lr;
+	drive = dr;
 	distance = 0;
 	phase = 0;
 }
@@ -31,7 +32,6 @@ bool LCourse::run(){
 
 			if(observer->getDistance() - distance > LSTART){
 				changeScenario();
-				distance = observer->getDistance();
 			}
 		break;
 
@@ -43,7 +43,6 @@ bool LCourse::run(){
             // lineTracer->fastrace(25, RIGHT, 0);
             if(observer->getDistance() - distance > LBC1){
 				changeScenario();
-				distance = observer->getDistance();
 			}
 		break;
 
@@ -68,26 +67,55 @@ bool LCourse::run(){
 		case 4:
 			if(bridge->run()){
 				changeScenario();
+				drive->init(true);
 			}
 		break;
 
 		case 5:
-			if(barcode->run()){
+
+			drive->curve(-5, -5);
+			if(observer->getDistance() - distance > LACC){
 				changeScenario();
 			}
 		break;
 
 		case 6:
+
+			if(curve->run(-15, -5, 370, LCC)){
+				changeScenario();
+				drive->curve(0, 0);
+				drive->init(true);
+			}
+		break;
+
+		case 7:
+			if(lineReturn->run2(1)){
+				changeScenario();
+			}
+		break;
+
+		case 8:
+			if(barcode->run()){
+				changeScenario();
+			}
+		break;
+
+		case 9:
 			if(undetermined->run()){
 				changeScenario();
 			}
 		break;
 
-		case 7:
+		case 10:
 			return true;
 		break;
 	}
 
 	return false;
 
+}
+
+void LCourse::changeScenario(){
+	phase++;
+	distance = observer->getDistance();
 }
