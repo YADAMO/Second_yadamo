@@ -19,28 +19,31 @@ bool SLoopLine::run(){
 	bool end = false;
 	switch(phase){
 		case 0:
+			changeScenario();
+		break;
+		case 1:
 			//フィギュアLの段差を降り、後輪を段差にぶつけた状態からスタート
 			//環状線に近づくために、ある程度ライントレースしたらケース1へ
 			lineTracer->trace(10, RIGHT, 0);
-			if(observer->getDistance() > 10){
+			if(observer->getDistance() - distance > 10){
 				drive->curve(0, 0);
 				drive->init(true);
 				changeScenario();
 			}
-		case 1:
+		case 2:
 			//超音波が反応するまで、一定周期で少しづつライントレースをし、反応したらケース2へ
 			if(observer->isObstacle()){
 				changeScenario();
 			}
 			break;
-		case 2:
+		case 3:
 			//段差のぼったらケース3へ
 			if(stepper->run(1)){
 				changeScenario();
 				// lineTracer->changeTarget(5);
 			}
 			break;
-		case 3:
+		case 4:
 			//ある程度ライントレースしたらケース4へ
 			lineTracer->trace(10, RIGHT, 0);
 			if(observer->getDistance() - distance > 30){
@@ -49,25 +52,25 @@ bool SLoopLine::run(){
 				changeScenario();
 			}
 			break;
-		case 4:
+		case 5:
 			//超音波が反応したらケース5へ
 			if(observer->isObstacle()){
 				changeScenario();
 			}
 			break;
-		case 5:
+		case 6:
 			//ある程度左に曲がったらケース6へ
 			if(curve->runPid(10, 300, 55, R)){
 				changeScenario();
 			}
 			break;
-		case 6:
+		case 7:
 			//ある程度右に曲がったらケース7へ
 			if(curve->runPid(-10, -350, 30, L)){
 				changeScenario();
 			}
 			break;
-		case 7:
+		case 8:
 			//ライン上に乗るよう、少し戻って終了
 			drive->curve(9,9);
 			if(distance - observer->getDistance() > 25){
