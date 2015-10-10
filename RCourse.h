@@ -28,6 +28,7 @@
 
 class RCourse : public ScenarioController{
 public:
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr);
 =======
@@ -35,6 +36,9 @@ public:
 >>>>>>> master
 	//フル実装版
 	//RCourse(LineTracer *lt, Curve *cv, Observer *ob, SFigureL *sf, SLoopLine *sl, SParking *sp);
+=======
+	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr, SFigureL *st, SLoopLine *sl, SParking *sp);
+>>>>>>> Stashed changes
 
 	virtual bool run();
 

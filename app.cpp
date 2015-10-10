@@ -117,6 +117,7 @@ SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 
 <<<<<<< HEAD
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
+<<<<<<< Updated upstream
 RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive);
 =======
 LineReturn lineReturn(&lineTracer, &observer, &drive);
@@ -124,6 +125,9 @@ LineReturn lineReturn(&lineTracer, &observer, &drive);
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
 RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
 >>>>>>> master
+=======
+RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &sloopline, &s&parking);
+>>>>>>> Stashed changes
 
 void yadamo_task(intptr_t exinf){
   observer.update();
