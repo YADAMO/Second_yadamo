@@ -17,5 +17,7 @@ private:
 public:
 	Stepper(Drive *dr, LineTracer *lt, Observer *obs);
 	bool run(int edge);
+	bool gRun(int edge);
+	bool sRun();
 
 };

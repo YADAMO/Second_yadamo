@@ -192,27 +192,28 @@ void Drive::curve(int right, int left){
 	Lmotor->setSpeed(left);
 }
 
-bool Drive::turn(double angle, char d, int speed){
-	static double const k = 1.6;
+bool Drive::turn(double angle, int d, int speed){
+	static double const k = 1.51;
+	turnRuntime++;
 	switch(turnPhase){
 		case 0:{
-			if(turnRuntime < 1500){
-				opeF(72*d);
-				Lmotor->setSpeed(0);
-				Rmotor->setSpeed(0);
-			}else{
+			if(turnRuntime > 1500){
 				turnPhase++;
 				turnleftOffset = Lmotor->getAngle();
 				turnrightOffset = Rmotor->getAngle();
-				turnRuntime = 0;ev3_speaker_play_tone(NOTE_C4, 100);
+				turnRuntime = 0;
+				ev3_speaker_play_tone(NOTE_C4, 100);
 			}
+			opeF(70*d);
+			Lmotor->setSpeed(0);
+			Rmotor->setSpeed(0);
 			break;
 		}
 		case 1:{
-			int32_t leftdistance = turnleftOffset - Lmotor->getAngle();
-			int32_t rightdistance = turnrightOffset - Rmotor->getAngle();
+			int32_t leftdistance  = speed > 0 ? turnleftOffset - Lmotor->getAngle() : Lmotor->getAngle() - turnleftOffset;
+			int32_t rightdistance = speed > 0 ? turnrightOffset - Rmotor->getAngle() : Rmotor->getAngle() - turnrightOffset;
 			if(leftdistance < (int32_t)(angle*k) && rightdistance < (int32_t)(angle*k)){
-				opeF(72*d);
+				opeF(70*d);
 				if(d == 1){
 					Lmotor->setSpeed(-speed);
 					Rmotor->setSpeed(0);
@@ -223,8 +224,10 @@ bool Drive::turn(double angle, char d, int speed){
 			}else{
 				turnPhase++;
 				turnRuntime = 0;
+				Fmotor->setSpeed(0);
 				Lmotor->setSpeed(0);
-				Rmotor->setSpeed(0);ev3_speaker_play_tone(NOTE_C4, 100);
+				Rmotor->setSpeed(0);
+				ev3_speaker_play_tone(NOTE_C4, 100);
 			}
 			break;
 		}
@@ -236,7 +239,7 @@ bool Drive::turn(double angle, char d, int speed){
 		}
 
 	}
-	turnRuntime++;
+	
 	return false;
 }
 
@@ -258,4 +261,26 @@ void Drive::opeF(int angle){
 
 void Drive::init(bool lock){
 	Fmotor->setRotate(observer->Fangle, 100, lock);
+}
+
+void Drive::opeFRL(int f, int r, int l){
+	int tarCount = (int)700*((double)f/90.0);
+	if(tarCount - 5 > observer->Fangle){
+		Fmotor->setSpeed(100);
+	}else if(tarCount + 5 < observer->Fangle){
+		Fmotor->setSpeed(-100);
+	}else{
+		Fmotor->setSpeed(0);
+	}
+	Rmotor->setSpeed(r);
+	Lmotor->setSpeed(l);
+}
+
+void Drive::stop(bool brake){
+	Rmotor->stop(brake);
+	Lmotor->stop(brake);
+}
+
+void Drive::Frotate(int angle){
+	Fmotor->setRotate(angle, 100, true);
 }

@@ -48,6 +48,7 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
+#include "LineReturn.h"
 
 #include "Curve.h"
 #include "LCourse.h"
@@ -113,16 +114,18 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
-SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
-
 LineReturn lineReturn(&lineTracer, &observer, &drive);
+SUndetermined undetermined(&barcode, &drive, &observer, &lineReturn, &lineTracer, &stepper);
+SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
+SParkingP parkingP(&observer, &drive, &curve);
+SParkingL parkingL(&lineTracer, &observer, &drive);
 
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
-RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn, &barcode, &undetermined, &drive);
+RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &loopLine, &parkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
-  blackDetecter.update();
+  // blackDetecter.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
@@ -130,9 +133,9 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
-           if(lcorse.run()){
-
+           if(parkingL.run()){
                 wup_tsk(MAIN_TASK);
+                // drive.init(true);
            }
         }
     }
