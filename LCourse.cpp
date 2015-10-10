@@ -48,7 +48,7 @@ bool LCourse::run(){
 
 		case 2:
 		// return true;
-		curve->changeGain(1.5, 0, 0);
+				curve->changeGain(1.65, 0, 0);
 			if(curve->curve(5, 50, LC1, R, 10, R)){
 				changeScenario();
 				lineTracer->changeGain(1.5, 0, 0.02);
