@@ -6,7 +6,7 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Dri
 	observer = ob;
 	blackdetecter = bd;
 	drive = dr;
-	phase = 9;
+	phase = -1;
 	lineReturn = lr;
 	figureL = fl;
 	loopLine = ll;
@@ -16,16 +16,23 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Dri
 
 void RCourse::changeScenario(){
 	phase++;
+	ev3_speaker_play_tone(NOTE_C4, 100);
+	runtime = observer->getRuntime();
 	distance = observer->getDistance();
 }
 
 bool RCourse::run(){
 	switch(phase){
+		case -1:
+			lineTracer->changeGain(0.9, 0.0, 0.02);
+            changeScenario();
+		break;
+
 		//最初の直線
 		case 0:
-			lineTracer->changeGain(0.4, 0.0, 0.02);
-            lineTracer->trace(15, LEFT, 0);
+            lineTracer->trace(25, LEFT, 0);
 			if(observer->getDistance() - distance > RST1){
+				lineTracer->changeGain(1.5, 0.0, 0.02);
 				changeScenario();
 			}
 		break;
@@ -33,15 +40,16 @@ bool RCourse::run(){
 		//１番目カーブ前の減速
 		case 1:
 			// lineTracer->changeGain(0.8, 0.045, 0.08);
-            lineTracer->trace(15, LEFT, 0);
+            lineTracer->trace(16, LEFT, 0);
             if(observer->getDistance() - distance > RBC1){
+            	lineTracer->changeGain(1.5, 0.0, 0.02);
 				changeScenario();
 			}
 		break;
 
 		//１番目カーブ
 		case 2:
-			if(curve->runPid(7, 380, RC1, L, 10)){
+			if(curve->runPid(3, 395, RC1, L, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -49,7 +57,8 @@ bool RCourse::run(){
 
 		//１番目カーブ後のライン復帰
 		case 3:
-			if(lineReturn->run(-1)){
+			lineTracer->trace(10, LEFT, 0);
+			if(observer->getDistance() - distance > RST2){
 				changeScenario();
 			}
 		break;
@@ -64,7 +73,7 @@ bool RCourse::run(){
 
 		//２番目カーブの前半 左カーブ
 		case 5:
-			if(curve->runPid(7, 330, RC2A, L, 10)){
+			if(curve->runPid(3, 330, RC2A, L, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -72,7 +81,7 @@ bool RCourse::run(){
 
 		//２番目カーブの後半 右カーブ
 		case 6:
-			if(curve->runPid(7, -365, RC2B, R, 10)){
+			if(curve->runPid(3, -365, RC2B, R, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -80,7 +89,8 @@ bool RCourse::run(){
 
 		//２番目カーブ後のライン復帰
 		case 7:
-			if(lineReturn->run(-1)){
+			lineTracer->trace(8, LEFT, 0);
+			if(observer->getDistance() - distance > RST2){
 				changeScenario();
 			}
 		break;
@@ -128,8 +138,8 @@ bool RCourse::run(){
 
 		//３番目カーブ後のライン復帰
 		case 13:
-			if(lineReturn->run(1)){
-				lineTracer->changeGain(0.48, 0.0, 0.023);
+			lineTracer->trace(8, LEFT, 0);
+			if(observer->getDistance() - distance > RST2){
 				changeScenario();
 			}
 		break;

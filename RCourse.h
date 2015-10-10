@@ -10,11 +10,11 @@
 #include "Drive.h"
 #include "LineReturn.h"
 
-#define RST1 390 	//最初の直線
+#define RST1 375 	//最初の直線
 #define RBC1 40 	//１番目カーブ前の減速
-#define RC1 70 		//１番目カーブ
-#define RAC1 50 	//１番目カーブ後のライン復帰
-#define RST2 80 	//１番目カーブ後の直線
+#define RC1 68 		//１番目カーブ
+#define RAC1 20 	//１番目カーブ後のライン復帰
+#define RST2 110 	//１番目カーブ後の直線
 
 #define RC2A 60 	//２番目カーブの前半 左カーブ
 #define RC2B 45 	//２番目カーブの後半 右カーブ
@@ -59,5 +59,6 @@ private:
 	SLoopLine *loopLine;
 	SParkingP *parkingP;
 	LineReturn *lineReturn;
+	int runtime;
 	double distance;
 };

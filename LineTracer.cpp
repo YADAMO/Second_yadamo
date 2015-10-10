@@ -22,6 +22,7 @@ int LineTracer::trace(double speed, int edge, int target){
 	return angle;
 }
 
+
 int LineTracer::traceReturn(double speed, int edge, int target){
 	bright = color->getReflect();
 	int angle = brightPid->calc(this->target, bright);

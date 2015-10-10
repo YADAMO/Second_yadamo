@@ -12,6 +12,7 @@ class LineTracer{
 public:
 	LineTracer(Drive *dr, Color *col);
 	int trace(double speed, int edge, int target);
+	bool traceCurve(double speed, int edge, int target, int angle);
 	int traceFfixed(double speed, int edge, int target);
 	int traceReturn(double speed, int edge, int target);
 	int fastrace(double speed, int edge, int target);
