@@ -10,6 +10,7 @@ public:
 	ER setRotate(int degree, int speed, bool isBlock);
 	int getSpeed();
 	int32_t getAngle();
+	void stop(bool brake);
 
 private:
 	motor_port_t port;

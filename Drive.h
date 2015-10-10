@@ -21,10 +21,12 @@ public:
 	int calcSteerAngle(int turn);
 	int calcSteerAngleFfixed(int8_t right, int8_t left);
 	void curve(int right, int left);
-	bool turn(double angle, char d, int speed);
+	bool turn(double angle, int d, int speed);
 	void turnReset();
 	void opeF(int angle);
 	void init(bool lock);
+	void opeFRL(int f, int r, int l);
+	void stop(bool brake);
 
 private:
 
