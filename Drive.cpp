@@ -14,12 +14,8 @@ Drive::Drive(Motor *rm, Motor *lm, Motor *fm, Observer *ob){
 	turnleftOffset = 0;
 }
 
-int Drive::calcSteerAngle(int8_t right, int8_t left){
-  int angle = right - left;
-  if(angle >= 100)  angle = 100;
-  if(angle <= -100) angle = -100;
-
-  return angle*4;
+int Drive::calcSteerAngle(int turn){
+  return -9*turn;
 }
 
 int Drive::calcSteerAngleFfixed(int8_t right, int8_t left){
@@ -59,7 +55,7 @@ void Drive::_drive(int turn, int speed){
   Rmotor->setSpeed(right);
  
   // Fmotor->setSpeed(calcFront(turn));
-  steerAngle = calcSteerAngle(right, left);
+  steerAngle = calcSteerAngle(turn);
   if(turn > 0){//左旋回  steerAngle負
     if(count > steerAngle){
 	  if(-turn - TURN_BASE_SPEED <= -100)	Fmotor->setSpeed(-100);
@@ -196,25 +192,25 @@ void Drive::curve(int right, int left){
 	Lmotor->setSpeed(left);
 }
 
-bool Drive::turn(double angle, char d, int speed){
-	static double const k = 1.6;
+bool Drive::turn(double angle, int d, int speed){
+	static double const k = 1.55;
 	switch(turnPhase){
 		case 0:{
-			if(turnRuntime < 1500){
-				opeF(72*d);
-				Lmotor->setSpeed(0);
-				Rmotor->setSpeed(0);
-			}else{
+			if(turnRuntime > 1500){
 				turnPhase++;
 				turnleftOffset = Lmotor->getAngle();
 				turnrightOffset = Rmotor->getAngle();
-				turnRuntime = 0;ev3_speaker_play_tone(NOTE_C4, 100);
+				turnRuntime = 0;
+				ev3_speaker_play_tone(NOTE_C4, 100);
 			}
+			opeF(72*d);
+			Lmotor->setSpeed(0);
+			Rmotor->setSpeed(0);
 			break;
 		}
 		case 1:{
-			int32_t leftdistance = turnleftOffset - Lmotor->getAngle();
-			int32_t rightdistance = turnrightOffset - Rmotor->getAngle();
+			int32_t leftdistance  = speed > 0 ? turnleftOffset - Lmotor->getAngle() : Lmotor->getAngle() - turnleftOffset;
+			int32_t rightdistance = speed > 0 ? turnrightOffset - Rmotor->getAngle() : Rmotor->getAngle() - turnrightOffset;
 			if(leftdistance < (int32_t)(angle*k) && rightdistance < (int32_t)(angle*k)){
 				opeF(72*d);
 				if(d == 1){
@@ -228,7 +224,8 @@ bool Drive::turn(double angle, char d, int speed){
 				turnPhase++;
 				turnRuntime = 0;
 				Lmotor->setSpeed(0);
-				Rmotor->setSpeed(0);ev3_speaker_play_tone(NOTE_C4, 100);
+				Rmotor->setSpeed(0);
+				ev3_speaker_play_tone(NOTE_C4, 100);
 			}
 			break;
 		}
@@ -275,4 +272,9 @@ void Drive::opeFRL(int f, int r, int l){
 	}
 	Rmotor->setSpeed(r);
 	Lmotor->setSpeed(l);
+}
+
+void Drive::stop(bool brake){
+	Rmotor->stop(brake);
+	Lmotor->stop(brake);
 }
