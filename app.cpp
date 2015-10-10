@@ -114,7 +114,7 @@ SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetect
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-RCourse rcourse(&lineTracer, &curve, &observer);
+RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
