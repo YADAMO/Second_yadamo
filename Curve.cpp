@@ -162,3 +162,54 @@ bool Curve::runPid(int dif, int32_t fr, int32_t dis, int dir, int sp){
 	}
 	return false;
 }
+
+bool Curve::curve(int dif, int angle, int dis, int dir, int sp){
+	switch(phase){
+		case 0:
+			disOffset = observer->getDistance();
+			Lmotor->setSpeed(0);
+			Rmotor->setSpeed(0);
+			Fmotor->setRotate((observer->Fangle + (int)700*((double)angle/90.0)), 100, true);
+			phase++;
+		break;
+
+		case 1:
+			bright = color->getReflect();
+			turn = dir * pid->calc(lineTracer->target, bright);
+			Fan = dir*angle - turn;
+			if(dir == R){
+				Lmotor->setSpeed(-sp);
+				Rmotor->setSpeed(-sp + dif - (turn / 10));
+				if(dir*angle+20 < Fan){
+					Fan = angle + 20;
+				}else if(dir*angle-20 > Fan){
+					Fan = angle - 20;
+				}
+				drive->opeF(Fan);
+			}else{
+				Rmotor->setSpeed(-sp);
+				Lmotor->setSpeed(-sp + dif - (turn / 10));
+				if(dir*angle-20 > Fan){
+					Fan = -angle - 20;
+				}else if(dir*angle + 20 < Fan){
+					Fan = -angle + 20;
+				}
+				drive->opeF(Fan);
+
+			}
+
+			if((observer->getDistance() - disOffset) > dis){
+				phase++;
+			}
+		break;
+
+		case 2:
+			Lmotor->setSpeed(0);
+			Rmotor->setSpeed(0);
+			Fmotor->setRotate(observer->Fangle, 100, true);
+			phase = 0;
+		return true;
+		break;
+	}
+	return false;
+}
