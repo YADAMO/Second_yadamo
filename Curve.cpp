@@ -53,7 +53,6 @@ bool Curve::run(int dif, int32_t fr, int32_t dis, int dir, int sp){
 			phase++;
 		break;
 		case 1:
-			if(sp < dif) dif = sp;
 			if(dir == R){
 				Lmotor->setSpeed(-sp);
 				Rmotor->setSpeed(-sp + dif);
