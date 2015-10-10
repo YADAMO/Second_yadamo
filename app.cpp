@@ -113,21 +113,13 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
-SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
+SLoopLine sloopLine(&lineTracer, &observer, &drive, &stepper, &curve);
+SParkingP sparkingP();
 
-<<<<<<< HEAD
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
-<<<<<<< Updated upstream
-RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive);
-=======
 LineReturn lineReturn(&lineTracer, &observer, &drive);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
-RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
->>>>>>> master
-=======
-RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &sloopline, &s&parking);
->>>>>>> Stashed changes
+RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &sloopLine, &sparkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
@@ -138,13 +130,7 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-<<<<<<< HEAD
             if(rcourse.run()){
-=======
-           // logging();
-           if(lcorse.run()){
-
->>>>>>> master
                 wup_tsk(MAIN_TASK);
             }
             //logging();
@@ -174,15 +160,8 @@ void logging(){
     logger.addData((double)observer.getRuntime());
     logger.addData((double)rightMotor.getAngle());
     logger.addData((double)leftMotor.getAngle());
-<<<<<<< HEAD
-    rightMotor.setSpeed(100);
-    leftMotor.setSpeed(100);
-    //lineTracer.changeGain(0.75, 0.0, 0.0);
-    //logger.addData((double)lineTracer.fastrace(15, LEFT, 0));
-=======
     logger.addData((double)observer.Fangle);
     logger.addData((double)color.getReflect());
->>>>>>> master
     logger.send();
 }
 

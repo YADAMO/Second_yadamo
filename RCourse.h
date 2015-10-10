@@ -8,6 +8,7 @@
 #include "SParkingP.h"
 #include "BlackDetecter.h"
 #include "Drive.h"
+#include "LineReturn.h"
 
 #define RST1 390 	//最初の直線
 #define RBC1 40 	//１番目カーブ前の減速
@@ -28,17 +29,7 @@
 
 class RCourse : public ScenarioController{
 public:
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr);
-=======
-	RCourse(LineTracer *lt, Curve *cv, Observer *ob, SLoopLine *sl);
->>>>>>> master
-	//フル実装版
-	//RCourse(LineTracer *lt, Curve *cv, Observer *ob, SFigureL *sf, SLoopLine *sl, SParking *sp);
-=======
-	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr, SFigureL *st, SLoopLine *sl, SParking *sp);
->>>>>>> Stashed changes
+	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr, SFigureL *fl, SLoopLine *ll, SParkingP *pp, LineReturn *lr);
 
 	virtual bool run();
 
@@ -48,8 +39,9 @@ private:
 	Observer *observer;
 	BlackDetecter *blackdetecter;
 	Drive *drive;
-	//SFigureL *figureL;
+	SFigureL *figureL;
 	SLoopLine *loopLine;
-	//SParking *parking;
+	SParkingP *parkingP;
+	LineReturn *lineReturn;
 	double distance;
 };
