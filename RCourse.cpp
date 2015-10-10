@@ -6,13 +6,15 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Dri
 	observer = ob;
 	blackdetecter = bd;
 	drive = dr;
-	phase = 4;
+	phase = -1;
 	lineReturn = lr;
 	figureL = fl;
 	loopLine = ll;
 	parkingP = pp;
 	distance = 0;
 }
+
+//curve.curve(5, 40, 50, -1, 10)
 
 void RCourse::changeScenario(){
 	phase++;
@@ -42,14 +44,14 @@ bool RCourse::run(){
 			// lineTracer->changeGain(0.8, 0.045, 0.08);
             lineTracer->trace(16, LEFT, 0);
             if(observer->getDistance() - distance > RBC1){
-            	lineTracer->changeGain(1.5, 0.0, 0.02);
+            	lineTracer->changeGain(1.5, 0.0, 0.0);
 				changeScenario();
 			}
 		break;
 
 		//１番目カーブ
 		case 2:
-			if(curve->runPid(4, 390, RC1, L, 11)){
+			if(curve->curve(5, 55, RC1, -1, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -148,6 +150,8 @@ bool RCourse::run(){
 		case 14:
 			if(figureL->run()){
 				changeScenario();
+				distance = observer->getDistance();
+				ev3_speaker_play_tone(NOTE_C4, 100);
 			}
 		break;
 

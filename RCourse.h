@@ -10,7 +10,7 @@
 #include "Drive.h"
 #include "LineReturn.h"
 
-#define RST1 380 	//最初の直線
+#define RST1 390 	//最初の直線
 #define RBC1 40 	//１番目カーブ前の減速
 #define RC1 65 		//１番目カーブ
 #define RAC1 20 	//１番目カーブ後のライン復帰
