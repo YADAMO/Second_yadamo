@@ -27,7 +27,7 @@ public:
 	void init(bool lock);
 	void opeFRL(int f, int r, int l);
 	void stop(bool brake);
-
+	void Frotate(int angle);
 private:
 
 	Motor *Rmotor;

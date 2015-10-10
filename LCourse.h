@@ -15,7 +15,7 @@
 #define LC1 72
 #define LAC1 100
 #define LACC 10
-#define LCC 60
+#define LCC 62
 
 
 class LCourse : public ScenarioController{

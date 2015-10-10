@@ -125,7 +125,7 @@ RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigure
 
 void yadamo_task(intptr_t exinf){
   observer.update();
-  blackDetecter.update();
+  // blackDetecter.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
@@ -134,9 +134,8 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
            if(lcorse.run()){
-
                 wup_tsk(MAIN_TASK);
-                drive.init(true);
+                // drive.init(true);
            }
         }
     }

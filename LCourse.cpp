@@ -10,7 +10,7 @@ LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineR
 	lineReturn = lr;
 	drive = dr;
 	distance = 0;
-	phase = 5;
+	phase = 0;
 }
 
 bool LCourse::run(){
@@ -81,7 +81,7 @@ bool LCourse::run(){
 
 		case 6:
 
-			if(curve->run(-15, -5, 380, LCC)){
+			if(curve->run(-15, -5, 370, LCC)){
 				changeScenario();
 				drive->curve(0, 0);
 				drive->init(true);
@@ -89,7 +89,7 @@ bool LCourse::run(){
 		break;
 
 		case 7:
-			if(lineReturn->run()){
+			if(lineReturn->run2(1)){
 				changeScenario();
 			}
 		break;
