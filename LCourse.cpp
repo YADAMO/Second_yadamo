@@ -27,7 +27,6 @@ bool LCourse::run(){
 			lineTracer->changeGain(0.9, 0, 0.02);
 			lineTracer->trace(25, RIGHT, 0);
 
-
 			if(observer->getDistance() - distance > LSTART){
 				changeScenario();
 				distance = observer->getDistance();

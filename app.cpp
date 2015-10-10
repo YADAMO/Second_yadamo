@@ -114,11 +114,12 @@ BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
+SParkingP parkingP(&observer, &drive, &curve);
 
 LineReturn lineReturn(&lineTracer, &observer, &drive);
 
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
-RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
+RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &loopLine, &parkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
@@ -129,11 +130,10 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-           // logging();
-           if(lcorse.run()){
-
+            if(rcourse.run()){
                 wup_tsk(MAIN_TASK);
-           }
+            }
+            //logging();
         }
     }
     ext_tsk();
