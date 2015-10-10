@@ -6,7 +6,7 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Dri
 	observer = ob;
 	blackdetecter = bd;
 	drive = dr;
-	phase = 9;
+	phase = 11;
 	lineReturn = lr;
 	figureL = fl;
 	loopLine = ll;
@@ -123,6 +123,7 @@ bool RCourse::run(){
 			if(figureL->run()){
 				changeScenario();
 				distance = observer->getDistance();
+				ev3_speaker_play_tone(NOTE_C4, 100);
 			}
 		break;
 

@@ -112,9 +112,9 @@ Choilie choilie(&drive, &observer);
 STwinBridge bridge(&lineTracer, &observer, &drive, &choilie);
 Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
-SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 LineReturn lineReturn(&lineTracer, &observer, &drive);
+SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SUndetermined undetermined(&barcode, &drive, &observer, &lineReturn, &lineTracer, &stepper);
 SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 SParkingP parkingP(&observer, &drive, &curve);
@@ -125,7 +125,6 @@ RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigure
 
 void yadamo_task(intptr_t exinf){
   observer.update();
-  // blackDetecter.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
@@ -133,7 +132,7 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
-           if(parkingL.run()){
+           if(rcourse.run()){
                 wup_tsk(MAIN_TASK);
                 // drive.init(true);
            }
