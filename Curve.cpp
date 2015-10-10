@@ -169,7 +169,11 @@ bool Curve::curve(int dif, int angle, int dis, int dir, int sp, int edge){
 			disOffset = observer->getDistance();
 			Lmotor->setSpeed(0);
 			Rmotor->setSpeed(0);
-			Fmotor->setRotate((observer->Fangle + (int)700*((double)angle/90.0)), 100, true);
+			if(dir == R){
+				Fmotor->setRotate((observer->Fangle + (-1)*(int)700*((double)angle/90.0)), 100, true);
+			}else{
+				Fmotor->setRotate((observer->Fangle + (int)700*((double)angle/90.0)), 100, true);
+			}
 			phase++;
 		break;
 
