@@ -30,7 +30,7 @@
 class RCourse : public ScenarioController{
 public:
 	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr, SFigureL *fl, SLoopLine *ll, SParkingP *pp, LineReturn *lr);
-
+	void changeScenario();
 	virtual bool run();
 
 private:
