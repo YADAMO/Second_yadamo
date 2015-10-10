@@ -4,7 +4,7 @@
 ObstacleJudge::ObstacleJudge(Sonic *son){
 	this->sonic = son;
 	interval = 1;
-	obstacledistance = 20; //障害物判定閾値[cm]
+	obstacledistance = 30; //障害物判定閾値[cm]
 }
 
 bool ObstacleJudge::judge(){
