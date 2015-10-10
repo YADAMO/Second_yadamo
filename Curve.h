@@ -18,7 +18,7 @@ public:
 	bool run(int dif, int32_t fr, int32_t dis, int dir, int sp);
 	bool runPid(int dif, int32_t fr, int32_t dis, int dir);
 	bool runPid(int dif, int32_t fr, int32_t dis, int dir, int sp);
-	bool curve(int dif, int angle, int dis, int dir, int sp);
+	bool curve(int dif, int angle, int dis, int dir, int sp, int edge);
 	void changeGain(float p, float i, float d);
 
 private:

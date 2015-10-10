@@ -133,6 +133,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
            if(rcourse.run()){
+
                 wup_tsk(MAIN_TASK);
                 // drive.init(true);
            }

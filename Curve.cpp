@@ -163,7 +163,7 @@ bool Curve::runPid(int dif, int32_t fr, int32_t dis, int dir, int sp){
 	return false;
 }
 
-bool Curve::curve(int dif, int angle, int dis, int dir, int sp){
+bool Curve::curve(int dif, int angle, int dis, int dir, int sp, int edge){
 	switch(phase){
 		case 0:
 			disOffset = observer->getDistance();

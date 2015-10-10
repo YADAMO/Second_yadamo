@@ -26,7 +26,7 @@ void RCourse::changeScenario(){
 bool RCourse::run(){
 	switch(phase){
 		case -1:
-			lineTracer->changeGain(0.9, 0.0, 0.02);
+			lineTracer->changeGain(0.85, 0.0, 0.02);
             changeScenario();
 		break;
 
@@ -34,7 +34,7 @@ bool RCourse::run(){
 		case 0:
             lineTracer->trace(25, LEFT, 0);
 			if(observer->getDistance() - distance > RST1){
-				lineTracer->changeGain(1.5, 0.0, 0.02);
+				lineTracer->changeGain(1.2, 0.0, 0.015);
 				changeScenario();
 			}
 		break;
@@ -44,14 +44,14 @@ bool RCourse::run(){
 			// lineTracer->changeGain(0.8, 0.045, 0.08);
             lineTracer->trace(16, LEFT, 0);
             if(observer->getDistance() - distance > RBC1){
-            	lineTracer->changeGain(1.5, 0.0, 0.0);
+            	curve->changeGain(1.5, 0.0, 0.0);
 				changeScenario();
 			}
 		break;
 
 		//１番目カーブ
 		case 2:
-			if(curve->curve(5, 55, RC1, -1, 10)){
+			if(curve->curve(4, 40, RC1, L, 10, L)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -59,18 +59,18 @@ bool RCourse::run(){
 
 		//１番目カーブ後のライン復帰
 		case 3:
-			if(lineReturn->run(-1)){
-				lineTracer->changeGain(1.5, 0.0, 0.0);
+			// if(lineReturn->run(-1)){
+			// 	lineTracer->changeGain(1.5, 0.0, 0.0);
 				changeScenario();
-			}
+			// }
 		break;
 
 		//１番目カーブ後の直線
 		case 4:
-			lineTracer->changeGain(0.7, 0.0, 0.0);
+			lineTracer->changeGain(0.7, 0.0, 0.02);
 			lineTracer->trace(12, LEFT, 0);
-			blackdetecter->update();
-			if(blackdetecter->onBlack()){
+			if(observer->getDistance() - distance > RST2){
+            	lineTracer->changeGain(1.5, 0.0, 0.0);
 				changeScenario();
 			}
 		break;
