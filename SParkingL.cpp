@@ -6,6 +6,7 @@ SParkingL::SParkingL(LineTracer *lt, Observer *ob, Drive *dr){
 	observer = ob;
 	drive = dr;
 	runtime = 0;
+	phase = 0;
 }
 
 bool SParkingL::run(){
@@ -20,14 +21,13 @@ bool SParkingL::run(){
 		case 1:
 			lineTracer->changeGain(1.4, 0, 0.03);
 			lineTracer->trace(10, RIGHT, 0);
-			if(distance - observer->getDistance() > 6){
+			if(observer->getDistance() - distance > 8){
 				changeScenario();
-				drive->init();
-				drive->stop(false);
+				drive->opeFRL(0, 0, 0);
 			}
 			break;
 		case 2:
-			if(drive->turn(90, RIGHT, -15)){
+			if(drive->turn(90, LEFT, -20)){
 				changeScenario();
 				drive->init();
 				drive->stop(false);
@@ -35,7 +35,7 @@ bool SParkingL::run(){
 			break;
 		case 3:
 			drive->curve(4, 4);
-			if(distance - observer->getDistance() > 20){
+			if(distance - observer->getDistance() > 38){
 				changeScenario();
 				drive->init();
 				drive->stop(false);
