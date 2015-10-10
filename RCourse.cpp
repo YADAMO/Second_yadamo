@@ -1,8 +1,9 @@
 #include "RCourse.h"
 
 //フル実装版
-//LCourse::LCourse(LineTracer *lt, Curve *cv, Observer *ob, SFigureL *st, SLoopLine *sl, SParking *sp){
+// RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, SFigureL *sf, SLoopLine *sl, SParkingP *sp){
 
+<<<<<<< HEAD
 RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr){
 	lineTracer = lt;
 	curve = cv;
@@ -14,6 +15,16 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Dri
 	//loopline = sl;
 	//parking = sp;
 	//distance = 0;
+=======
+RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, SLoopLine *sl){
+	lineTracer = lt;
+	curve = cv;
+	observer = ob;
+	// figureL = sf;
+	loopLine = sl;
+	// parking = sp;
+	distance = 0;
+>>>>>>> master
 }
 
 bool RCourse::run(){

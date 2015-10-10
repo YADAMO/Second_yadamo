@@ -10,6 +10,7 @@ class STwinBridge : public ScenarioController{
 public:
 	STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch);
     virtual bool run();
+    void changeScenario();
 
 private:
 	LineTracer *lineTracer;

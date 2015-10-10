@@ -28,9 +28,13 @@
 
 class RCourse : public ScenarioController{
 public:
+<<<<<<< HEAD
 	RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Drive *dr);
+=======
+	RCourse(LineTracer *lt, Curve *cv, Observer *ob, SLoopLine *sl);
+>>>>>>> master
 	//フル実装版
-	//LCourse(LineTracer *lt, Curve *cv, Observer *ob, SFigureL *sf, SLoopLine *sl, SParking *sp);
+	//RCourse(LineTracer *lt, Curve *cv, Observer *ob, SFigureL *sf, SLoopLine *sl, SParking *sp);
 
 	virtual bool run();
 
@@ -41,7 +45,7 @@ private:
 	BlackDetecter *blackdetecter;
 	Drive *drive;
 	//SFigureL *figureL;
-	//SLoopLine *loopline;
+	SLoopLine *loopLine;
 	//SParking *parking;
 	double distance;
 };

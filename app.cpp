@@ -53,6 +53,7 @@
 #include "LCourse.h"
 #include "Choilie.h"
 #include "Stepper.h"
+#include "LineReturn.h"
 
 // その他
 #include "LineTracer.h"
@@ -112,9 +113,17 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
+SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 
+<<<<<<< HEAD
 LCourse lcorse(&lineTracer, &curve, &observer, &bridge);
 RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive);
+=======
+LineReturn lineReturn(&lineTracer, &observer, &drive);
+
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
+RCourse rcorse(&lineTracer, &curve, &observer, &loopLine);
+>>>>>>> master
 
 void yadamo_task(intptr_t exinf){
   observer.update();
@@ -125,7 +134,13 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
+<<<<<<< HEAD
             if(rcourse.run()){
+=======
+           // logging();
+           if(lcorse.run()){
+
+>>>>>>> master
                 wup_tsk(MAIN_TASK);
             }
             //logging();
@@ -155,10 +170,15 @@ void logging(){
     logger.addData((double)observer.getRuntime());
     logger.addData((double)rightMotor.getAngle());
     logger.addData((double)leftMotor.getAngle());
+<<<<<<< HEAD
     rightMotor.setSpeed(100);
     leftMotor.setSpeed(100);
     //lineTracer.changeGain(0.75, 0.0, 0.0);
     //logger.addData((double)lineTracer.fastrace(15, LEFT, 0));
+=======
+    logger.addData((double)observer.Fangle);
+    logger.addData((double)color.getReflect());
+>>>>>>> master
     logger.send();
 }
 
@@ -167,6 +187,17 @@ void destroy(){
     logger.end();
     bool back = false;
     frontMotor.setRotate(observer.Fangle, 100, true);
+    rightMotor.setSpeed(0);
+    leftMotor.setSpeed(0);
+    int count = 0;
+
+    while(1){
+        if(count > 100000){
+            break;
+        }
+        count++;
+    }
+
     if(back){
         rightMotor.setRotate(rightMotor.getAngle(), 35, false);
         leftMotor.setRotate(leftMotor.getAngle(), 35, false);
