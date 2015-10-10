@@ -133,7 +133,11 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
+<<<<<<< HEAD
            if(rcourse.run()){
+=======
+           if(lcorse.run()){
+>>>>>>> master
                 wup_tsk(MAIN_TASK);
                 drive.init(true);
            }
