@@ -6,7 +6,7 @@ RCourse::RCourse(LineTracer *lt, Curve *cv, Observer *ob, BlackDetecter *bd, Dri
 	observer = ob;
 	blackdetecter = bd;
 	drive = dr;
-	phase = -1;
+	phase = 4;
 	lineReturn = lr;
 	figureL = fl;
 	loopLine = ll;
@@ -49,7 +49,7 @@ bool RCourse::run(){
 
 		//１番目カーブ
 		case 2:
-			if(curve->runPid(3, 395, RC1, L, 10)){
+			if(curve->runPid(4, 390, RC1, L, 11)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -57,23 +57,25 @@ bool RCourse::run(){
 
 		//１番目カーブ後のライン復帰
 		case 3:
-			lineTracer->trace(10, LEFT, 0);
-			if(observer->getDistance() - distance > RST2){
+			if(lineReturn->run(-1)){
+				lineTracer->changeGain(1.5, 0.0, 0.0);
 				changeScenario();
 			}
 		break;
 
 		//１番目カーブ後の直線
 		case 4:
-			lineTracer->trace(15, LEFT, 0);
-			if(observer->getDistance() - distance > RST2){
+			lineTracer->changeGain(0.7, 0.0, 0.0);
+			lineTracer->trace(12, LEFT, 0);
+			blackdetecter->update();
+			if(blackdetecter->onBlack()){
 				changeScenario();
 			}
 		break;
 
 		//２番目カーブの前半 左カーブ
 		case 5:
-			if(curve->runPid(3, 330, RC2A, L, 10)){
+			if(curve->runPid(4, 410, RC2A, L, 14)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -81,7 +83,7 @@ bool RCourse::run(){
 
 		//２番目カーブの後半 右カーブ
 		case 6:
-			if(curve->runPid(3, -365, RC2B, R, 10)){
+			if(curve->runPid(5, -420, RC2B, R, 14)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -89,8 +91,7 @@ bool RCourse::run(){
 
 		//２番目カーブ後のライン復帰
 		case 7:
-			lineTracer->trace(8, LEFT, 0);
-			if(observer->getDistance() - distance > RST2){
+			if(lineReturn->run(-1)){
 				changeScenario();
 			}
 		break;
@@ -130,7 +131,7 @@ bool RCourse::run(){
 
 		//３番目カーブ
 		case 12:
-			if(curve->runPid(7, -365, RC3, R, 10)){
+			if(curve->runPid(4, -410, RC3, R, 10)){
 				lineTracer->changeGain(0.8, 0, 0.01);
 				changeScenario();
 			}
@@ -138,8 +139,7 @@ bool RCourse::run(){
 
 		//３番目カーブ後のライン復帰
 		case 13:
-			lineTracer->trace(8, LEFT, 0);
-			if(observer->getDistance() - distance > RST2){
+			if(lineReturn->run(1)){
 				changeScenario();
 			}
 		break;
@@ -162,8 +162,8 @@ bool RCourse::run(){
 		case 16:
 			lineTracer->changeGain(0.48, 0.0, 0.02); //お試し用
 			lineTracer->trace(9, RIGHT, 0);
+			blackdetecter->update();
 			if(blackdetecter->onBlack()){
-				ev3_speaker_play_tone(NOTE_C4, 100);
 				changeScenario();
 			}
 		break;
