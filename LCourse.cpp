@@ -49,7 +49,7 @@ bool LCourse::run(){
 		case 2:
 		// return true;
 		curve->changeGain(1.5, 0, 0);
-			if(curve->runPid(3, -495, LC1, R, 10)){
+			if(curve->curve(5, 50, LC1, R, 10, R)){
 				changeScenario();
 				lineTracer->changeGain(1.5, 0, 0.02);
 				distance = observer->getDistance();
@@ -58,8 +58,8 @@ bool LCourse::run(){
 
 		case 3:
 		// return true;
-			// lineTracer->traceReturn(15, RIGHT, 0);
-			if(lineReturn->run(1)){
+			lineTracer->trace(25, RIGHT, 0);
+			if(observer->getDistance() - distance > LAC1){
 				changeScenario();
 			}
 		break;
