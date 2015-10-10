@@ -13,7 +13,7 @@ STwinBridge::STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch){
 bool STwinBridge::run(){
 	switch(phase){
 		case 0:
-			lineTracer->changeTarget(-5);
+			lineTracer->changeTarget(-10);
 			changeScenario();
 		break;
 
@@ -23,9 +23,18 @@ bool STwinBridge::run(){
 			lineTracer->trace(16, RIGHT, 0);
 			if(observer->isStep() && runtime > 800){
 				changeScenario();
+				drive->init(true);
 			}
 			break;
 		
+		// case 2:
+		// 	drive->curve(2, 2);
+		// 	if(distance - observer->getDistance() > 5){
+		// 		changeScenario();
+		// 		drive->curve(0, 0);
+		// 	}
+		// break;
+
 		case 2:
 			// チョイリーする
 			if(choilie->run()){
@@ -49,8 +58,8 @@ bool STwinBridge::run(){
 		break;
 
 		case 5:
-			drive->curve(10, 10);
-			if(distance - observer->getDistance() > 11){
+			drive->curve(3, 3);
+			if(distance - observer->getDistance() > 10){
 				changeScenario();
 			}
 		break;
@@ -58,37 +67,70 @@ bool STwinBridge::run(){
 		case 6:
 			//後輪を乗せる
 			drive->curve(-100, -100);
-			if(observer->getDistance() - distance > 15){
+			if(observer->getDistance() - distance > 16){
 				drive->curve(0, 0);
 				changeScenario();
 			}
 			break;
 		case 7:
 			// 待つ
-			if(runtime > 2000){
+			if(runtime > 1000){
 				changeScenario();
 			}
 			break;
 
 		case 8:
-			lineTracer->trace(20, RIGHT, 0);
-			if(observer->getDistance() - distance > 10){
+			drive->_drive(-5, 8);
+			if(observer->getDistance() - distance > 3){
 				changeScenario();
-				drive->init();
+			}
+
+			if(runtime > 2000 && observer->isStep()){
+				phase -= 2;
+				runtime = 0;
+				distance = observer->getDistance();
 			}
 		break;
 
 		case 9:
-			// ライントレース
+			lineTracer->trace(20, RIGHT, 0);
+			if(observer->getDistance() - distance > 11){
+				changeScenario();
+				drive->init();
+			}
+
+		break;
+
+		case 10:
 			drive->curve(-80, -80);
-			if(observer->getDistance() - distance > 20){
+			if(observer->getDistance() - distance > 15){
 				changeScenario();
 
 			}
 			break;
 
-		case 10:
-			return true;
+		case 11:
+			drive->curve(20, 20);
+			if(observer->isStep()){
+				changeScenario();
+			}
+		break;
+
+		case 12:
+			drive->curve(-5, -5);
+			if(observer->getDistance() - distance > 20){
+				changeScenario();
+			}
+		break;
+
+		case 13:
+			drive->curve(10, 10);
+			if(runtime > 1000 && observer->isStep()){
+				changeScenario();
+			}
+		break;
+
+		case 14:
 		break;
 		default:
 			break;
