@@ -120,7 +120,7 @@ SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 SParkingP parkingP(&observer, &drive, &curve);
 SParkingL parkingL(&lineTracer, &observer, &drive);
 
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn, &barcode, &undetermined);
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn, &barcode, &undetermined, &drive);
 RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &loopLine, &parkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
@@ -134,6 +134,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
            if(lcorse.run()){
+
                 wup_tsk(MAIN_TASK);
                 drive.init(true);
            }
