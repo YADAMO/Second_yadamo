@@ -55,7 +55,7 @@ bool SBarcode::run(){
 				runtime++;
 				drive->opeFRL(0, 0, 0);
 			}else{
-				lineTracer->trace(7,RIGHT,0);
+				lineTracer->trace(8,RIGHT,0);
 			}
 			break;
 		case 4:
