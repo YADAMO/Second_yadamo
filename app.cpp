@@ -115,6 +115,7 @@ SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetect
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
 SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 SParkingP parkingP(&observer, &drive, &curve);
+SParkingL parkingL(&lineTracer, &observer, &drive)
 
 LineReturn lineReturn(&lineTracer, &observer, &drive);
 
@@ -130,7 +131,10 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-            if(rcourse.run()){
+            // if(drive.turn(90, LEFT, -10)){
+            //     wup_tsk(MAIN_TASK);
+            // }
+            if(drive.turn(90, LEFT, -10)){
                 wup_tsk(MAIN_TASK);
             }
             //logging();

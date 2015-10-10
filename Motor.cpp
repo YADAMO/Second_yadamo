@@ -33,3 +33,7 @@ int32_t Motor::getAngle(){
 	return ev3_motor_get_counts(port);
 
 }
+
+void Motor::stop(bool brake){
+	ev3_motor_stop(port, brake);
+}
