@@ -41,7 +41,7 @@ bool RCourse::run(){
 
 		//１番目カーブ
 		case 2:
-			if(curve->runPid(11, 380, RC1, L)){
+			if(curve->runPid(7, 380, RC1, L, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -49,8 +49,7 @@ bool RCourse::run(){
 
 		//１番目カーブ後のライン復帰
 		case 3:
-			lineTracer->trace(10, LEFT, 0);
-			if(observer->getDistance() - distance > RAC1){
+			if(lineReturn->run(-1)){
 				changeScenario();
 			}
 		break;
@@ -65,7 +64,7 @@ bool RCourse::run(){
 
 		//２番目カーブの前半 左カーブ
 		case 5:
-			if(curve->runPid(7, 330, RC2A, L)){
+			if(curve->runPid(7, 330, RC2A, L, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -73,7 +72,7 @@ bool RCourse::run(){
 
 		//２番目カーブの後半 右カーブ
 		case 6:
-			if(curve->runPid(9, -365, RC2B, R)){
+			if(curve->runPid(7, -365, RC2B, R, 10)){
 				lineTracer->changeGain(1.5, 0, 0.02);
 				changeScenario();
 			}
@@ -81,53 +80,76 @@ bool RCourse::run(){
 
 		//２番目カーブ後のライン復帰
 		case 7:
-			lineTracer->trace(10, RIGHT, 0);
-			if(observer->getDistance() - distance > RAC2){
+			if(lineReturn->run(-1)){
 				changeScenario();
 			}
 		break;
 
-		//２番目カーブ後の直線
+		//エッジ切り替え前の減速
 		case 8:
-			lineTracer->trace(20, RIGHT, 0);
-			if(observer->getDistance() - distance > RST3){
+			lineTracer->trace(10, LEFT, 0);
+			if(observer->getDistance() - distance > RBCE){
 				changeScenario();
 			}
 		break;
 
-		//３番目カーブ
+		//エッジ切り替え
 		case 9:
-			if(curve->runPid(9, -365, RC2B, R)){
-				lineTracer->changeGain(0.8, 0, 0.01);
+			drive->_drive(2, 8);
+			if(observer->getDistance() - distance > RBESC){
 				changeScenario();
 			}
 		break;
 
-		//３番目カーブ後のライン復帰
+		//エッジ切り替え後の直進
 		case 10:
-			lineTracer->trace(13, RIGHT, 0);
+			lineTracer->trace(15, LEFT, 0);
+			if(observer->getDistance() - distance > RACE){
+				changeScenario();
+			}
+		break;
+
+		//３番目カーブ後の減速
+		case 11:
+			lineTracer->trace(10, RBC3, 0);
 			if(observer->getDistance() - distance > RAC2){
 				lineTracer->changeGain(0.48, 0.0, 0.023);
 				changeScenario();
 			}
 		break;
 
+		//３番目カーブ
+		case 12:
+			if(curve->runPid(7, -365, RC3, R, 10)){
+				lineTracer->changeGain(0.8, 0, 0.01);
+				changeScenario();
+			}
+		break;
+
+		//３番目カーブ後のライン復帰
+		case 13:
+			if(lineReturn->run(1)){
+				lineTracer->changeGain(0.48, 0.0, 0.023);
+				changeScenario();
+			}
+		break;
+
 		//LFigure
-		case 11:
+		case 14:
 			if(figureL->run()){
 				changeScenario();
 			}
 		break;
 
 		//LoopLine
-		case 12:
+		case 15:
 			if(loopLine->run()){
 				changeScenario();
 			}
 		break;
 
 		//黒検知+ライントレース
-		case 13:
+		case 16:
 			lineTracer->changeGain(0.48, 0.0, 0.02); //お試し用
 			lineTracer->trace(9, RIGHT, 0);
 			if(blackdetecter->onBlack()){
@@ -137,7 +159,7 @@ bool RCourse::run(){
 		break;
 
 		//黒地帯脱出直進
-		case 14:
+		case 17:
 			drive->_drive(1, 8);
 			if(observer->getDistance() - distance > RBESC){
 				changeScenario();
@@ -145,7 +167,7 @@ bool RCourse::run(){
 		break;
 
 		//黒検知後の直線
-		case 15:
+		case 18:
 			lineTracer->trace(20, RIGHT, 0);
 			if(observer->getDistance() - distance > RST4){
 				changeScenario();
@@ -153,7 +175,7 @@ bool RCourse::run(){
 		break;
 
 		//帰り道カーブ前の減速
-		case 16:
+		case 19:
 			lineTracer->trace(17, RIGHT, 0);
 			if(observer->getDistance() - distance > RBC4){
 				distance = observer->getDistance();
@@ -162,46 +184,47 @@ bool RCourse::run(){
 		break;
 
 		//帰り道カーブ
-		case 17:
-			if(curve->runPid(9, -423, RC4, R)){
-				lineTracer->changeGain(0.8, 0, 0.01);
+		case 20:
+			if(curve->runPid(7, -423, RC4, R, 10)){
+				lineTracer->changeGain(0.8, 0.0, 0.01);
 				changeScenario();
 			}
 		break;
 
 		//帰り道カーブ後のライン復帰
-		case 18:
-			lineTracer->trace(13, RIGHT, 0);
-			if(observer->getDistance() - distance > RAC4){
+		case 21:
+			if(lineReturn->run(1)){
 				lineTracer->changeGain(0.6, 0.0, 0.023);
 				changeScenario();
 			}
 		break;
 
 		//帰り道カーブ後の直線
-		case 19:
+		case 22:
 			lineTracer->trace(20, RIGHT, 0);
 			if(observer->getDistance() - distance > RST5){
+				lineTracer->changeGain(0.8, 0.0, 0.01);
 				changeScenario();
 			}
 		break;
 
-		//縦列駐車位置までバック
-		case 20:
-			drive->_drive(0, -15);
-			if(distance - observer->getDistance() > RBACK){
+		//縦列駐車前の減速
+		case 23:
+			lineTracer->trace(8, RIGHT, 0);
+			if(observer->getDistance() - distance > RBPP){
 				changeScenario();
 			}
 		break;
 
 		//縦列駐車
-		case 21:
+		case 24:
 			if(parkingP->run()){
 				changeScenario();
 			}
 		break;
 
-		case 22:
+		//Rコース終了
+		case 25:
 			return true;
 		break;
 	}

@@ -15,17 +15,33 @@
 #define RC1 70 		//１番目カーブ
 #define RAC1 50 	//１番目カーブ後のライン復帰
 #define RST2 80 	//１番目カーブ後の直線
+
 #define RC2A 60 	//２番目カーブの前半 左カーブ
 #define RC2B 45 	//２番目カーブの後半 右カーブ
 #define RAC2 30 	//２番目カーブ後半のライン復帰
-#define RST3 100 	//２番目カーブ後の直線
+
+#define RBCE 20 	//エッジ切り替え前の減速
+#define RCE 10 		//エッジ切り替え
+#define RACE 50 	//エッジ切り替え後の直進
+
+#define RBC3 30		//３番目カーブ前の減速
+#define RC3 70		//３番目カーブ
+#define RAC3 40		//３番目カーブ後のライン復帰
+
+					//FigureL
+					//LoopLine
+
 #define RBESC 10	//黒検知後の黒地帯脱出
 #define RST4 115	//黒検知後の直線
+
 #define RBC4 8		//帰り道カーブ前の減速
 #define RC4 66		//帰り道カーブ
 #define RAC4 30		//帰り道カーブ後のライン復帰
-#define RST5 320	//帰り道カーブ後の直線
-#define RBACK 40	//縦列駐車位置までバック
+#define RST5 250	//帰り道カーブ後の直線
+
+#define RBPP 30		//縦列駐車前の減速
+
+					//ParkingP
 
 class RCourse : public ScenarioController{
 public:
