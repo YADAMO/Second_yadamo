@@ -16,7 +16,7 @@ bool Choilie::run(){
 
 		case 1:
 			drive->curve(100, 100);
-			if(distance - observer->getDistance() > 18){
+			if(distance - observer->getDistance() > 17){
 				changeScenario();
 				distance = observer->getDistance();
 			}
@@ -24,7 +24,7 @@ bool Choilie::run(){
 
 		case 2:
 			drive->curve(-100, -100);
-			if(observer->getDistance() - distance > 18){
+			if(observer->getDistance() - distance > 17){
 				changeScenario();
 			}
 		break;
