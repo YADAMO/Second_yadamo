@@ -120,12 +120,12 @@ SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 SParkingP parkingP(&observer, &drive, &curve);
 SParkingL parkingL(&lineTracer, &observer, &drive);
 
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn, &barcode, &undetermined);
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn, &barcode, &undetermined, &drive);
 RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &loopLine, &parkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
   observer.update();
-  blackDetecter.update();
+  // blackDetecter.update();
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // メインタスクを起こす
     }else{
@@ -134,12 +134,16 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
 <<<<<<< HEAD
+<<<<<<< HEAD
            if(rcourse.run()){
 =======
            if(lcorse.run()){
 >>>>>>> master
+=======
+           if(parkingL.run()){
+>>>>>>> master
                 wup_tsk(MAIN_TASK);
-                drive.init(true);
+                // drive.init(true);
            }
         }
     }
