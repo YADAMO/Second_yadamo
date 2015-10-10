@@ -5,6 +5,8 @@
 #include "Curve.h"
 #include "Observer.h"
 #include "STwinBridge.h"
+#include "SBarcode.h"
+#include "SUndetermined.h"
 #include "LineReturn.h"
 
 #define LSTART 300
@@ -15,7 +17,7 @@
 
 class LCourse : public ScenarioController{
 public:
-	LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineReturn *lr);
+	LCourse(LineTracer *lt, Curve *cv, Observer *ob, STwinBridge *st, LineReturn *lr, SBarcode *bar, SUndetermined *und);
 	virtual bool run();
 
 private:
@@ -23,6 +25,8 @@ private:
 	Curve *curve;
 	Observer *observer;
 	STwinBridge *bridge;
+	SBarcode *barcode;
+	SUndetermined *undetermined;
 	LineReturn *lineReturn;
 
 	double distance;

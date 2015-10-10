@@ -48,6 +48,7 @@
 #include "SParkingP.h"
 #include "STwinBridge.h"
 #include "SUndetermined.h" 
+#include "LineReturn.h"
 
 #include "Curve.h"
 #include "LCourse.h"
@@ -113,12 +114,13 @@ Stepper stepper(&drive, &lineTracer, &observer);
 BlackDetecter blackDetecter(&color);
 SFigureL sfigureL(&drive, &lineTracer, &observer, &stepper, &curve, &blackDetecter);
 SBarcode barcode(&lineTracer, &observer, &drive, &logger, &stepper);
+LineReturn lineReturn(&lineTracer, &observer, &drive);
+SUndetermined undetermined(&barcode, &drive, &observer, &lineReturn, &lineTracer, &stepper);
 SLoopLine loopLine(&lineTracer, &observer, &drive, &stepper, &curve);
 SParkingP parkingP(&observer, &drive, &curve);
+SParkingL parkingL(&lineTracer, &observer, &drive);
 
-LineReturn lineReturn(&lineTracer, &observer, &drive);
-
-LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn);
+LCourse lcorse(&lineTracer, &curve, &observer, &bridge, &lineReturn, &barcode, &undetermined);
 RCourse rcourse(&lineTracer, &curve, &observer, &blackDetecter, &drive, &sfigureL, &loopLine, &parkingP, &lineReturn);
 
 void yadamo_task(intptr_t exinf){
@@ -130,10 +132,11 @@ void yadamo_task(intptr_t exinf){
         if(!calibration_flag){
             calibration_flag = calibration.doCalibration();
         }else{
-            if(rcourse.run()){
+           // logging();
+           if(lcorse.run()){
                 wup_tsk(MAIN_TASK);
-            }
-            //logging();
+                drive.init(true);
+           }
         }
     }
     ext_tsk();

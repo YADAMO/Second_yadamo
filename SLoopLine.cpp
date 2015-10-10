@@ -22,7 +22,7 @@ bool SLoopLine::run(){
 			//フィギュアLの段差を降り、後輪を段差にぶつけた状態からスタート
 			//環状線に近づくために、ある程度ライントレースしたらケース1へ
 			lineTracer->trace(10, RIGHT, 0);
-			if(observer->getDistance() > 25){
+			if(observer->getDistance() > 10){
 				drive->curve(0, 0);
 				drive->init(true);
 				changeScenario();
@@ -37,13 +37,13 @@ bool SLoopLine::run(){
 			//段差のぼったらケース3へ
 			if(stepper->run(1)){
 				changeScenario();
-				lineTracer->changeTarget(5);
+				// lineTracer->changeTarget(5);
 			}
 			break;
 		case 3:
 			//ある程度ライントレースしたらケース4へ
 			lineTracer->trace(10, RIGHT, 0);
-			if(observer->getDistance() - distance > 15){
+			if(observer->getDistance() - distance > 30){
 				drive->curve(0, 0);
 				drive->init(true);
 				changeScenario();
@@ -69,8 +69,8 @@ bool SLoopLine::run(){
 			break;
 		case 7:
 			//ライン上に乗るよう、少し戻って終了
-			drive->curve(9,7);
-			if(distance - observer->getDistance() > 20){
+			drive->curve(9,9);
+			if(distance - observer->getDistance() > 25){
 				end = true;
 			}
 			break;
