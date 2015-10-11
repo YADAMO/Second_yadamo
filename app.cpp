@@ -133,6 +133,7 @@ void yadamo_task(intptr_t exinf){
         }else{
            // logging();
            if(lcorse.run()){
+            // if(choilie.run()){
             // if(curve.curve(5, 40, 50, L, 10, L)){
                 wup_tsk(MAIN_TASK);
                 // drive.init(true);

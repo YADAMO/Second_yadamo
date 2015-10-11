@@ -8,12 +8,13 @@ STwinBridge::STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch){
 	choilie = ch;
 	runtime = 0;
 	distance = 0;
+	phase = 0;
 }
 
 bool STwinBridge::run(){
 	switch(phase){
 		case 0:
-			lineTracer->changeTarget(-10);
+			lineTracer->changeTarget(-6);
 			changeScenario();
 		break;
 
@@ -81,20 +82,15 @@ bool STwinBridge::run(){
 
 		case 8:
 			drive->_drive(-5, 8);
-			if(observer->getDistance() - distance > 3){
+			if(observer->getDistance() - distance > 5){
 				changeScenario();
 			}
 
-			if(runtime > 2000 && observer->isStep()){
-				phase -= 2;
-				runtime = 0;
-				distance = observer->getDistance();
-			}
 		break;
 
 		case 9:
 			lineTracer->trace(20, RIGHT, 0);
-			if(observer->getDistance() - distance > 11){
+			if(observer->getDistance() - distance > 4){
 				changeScenario();
 				drive->init();
 			}
@@ -103,34 +99,21 @@ bool STwinBridge::run(){
 
 		case 10:
 			drive->curve(-80, -80);
-			if(observer->getDistance() - distance > 15){
+			if(observer->getDistance() - distance > 30){
 				changeScenario();
 
 			}
 			break;
 
 		case 11:
-			drive->curve(20, 20);
+			drive->curve(7, 7);
 			if(observer->isStep()){
 				changeScenario();
 			}
 		break;
 
 		case 12:
-			drive->curve(-5, -5);
-			if(observer->getDistance() - distance > 20){
-				changeScenario();
-			}
-		break;
-
-		case 13:
-			drive->curve(10, 10);
-			if(runtime > 1000 && observer->isStep()){
-				changeScenario();
-			}
-		break;
-
-		case 14:
+			return true;
 		break;
 		default:
 			break;

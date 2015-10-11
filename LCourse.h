@@ -11,9 +11,9 @@
 #include "Drive.h"
 
 #define LSTART 300
-#define LBC1 175
-#define LC1 78
-#define LAC1 120
+#define LBC1 176.5
+#define LC1 85
+#define LAC1 80
 #define LACC 10
 #define LCC 62
 
