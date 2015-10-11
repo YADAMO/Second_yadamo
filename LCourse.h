@@ -11,11 +11,11 @@
 #include "Drive.h"
 
 #define LSTART 300
-#define LBC1 172
-#define LC1 80
-#define LAC1 100
+#define LBC1 176.5
+#define LC1 85
+#define LAC1 20
 #define LACC 10
-#define LCC 62
+#define LCC 83
 
 
 class LCourse : public ScenarioController{

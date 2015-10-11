@@ -28,7 +28,7 @@ bool LCourse::run(){
             // lineTracer->fastrace(25, RIGHT, 0);
 
 			lineTracer->changeGain(0.9, 0, 0.02);
-			lineTracer->trace(25, RIGHT, 0);
+			lineTracer->trace(20, RIGHT, 0);
 
 			if(observer->getDistance() - distance > LSTART){
 				changeScenario();
@@ -37,7 +37,7 @@ bool LCourse::run(){
 
 		case 1:
 			lineTracer->changeGain(0.9, 0, 0.02);
-			lineTracer->trace(25, RIGHT, 0);
+			lineTracer->trace(20, RIGHT, 0);
 			// lineTracer->changeGain(0.125, 0.025, 0.5);
             // lineTracer->changeGain(0.28, 0.032, 0.4);
             // lineTracer->fastrace(25, RIGHT, 0);
@@ -48,8 +48,8 @@ bool LCourse::run(){
 
 		case 2:
 		// return true;
-		curve->changeGain(1.5, 0, 0);
-			if(curve->curve(5, 50, LC1, R, 10, R)){
+				curve->changeGain(1.5, 0, 0);
+			if(curve->curve(5, 60, LC1, R, 9, R)){
 				changeScenario();
 				lineTracer->changeGain(1.5, 0, 0.02);
 				distance = observer->getDistance();
@@ -57,56 +57,62 @@ bool LCourse::run(){
 		break;
 
 		case 3:
-		// return true;
-			lineTracer->trace(25, RIGHT, 0);
+			if(lineReturn->run(RIGHT)){
+				changeScenario();	
+			}
+		break;
+
+		case 4:
+			lineTracer->changeGain(0.9, 0, 0.02);
+			lineTracer->trace(20, RIGHT, 0);
 			if(observer->getDistance() - distance > LAC1){
 				changeScenario();
 			}
 		break;
 
-		case 4:
+		case 5:
 			if(bridge->run()){
 				changeScenario();
 				drive->init(true);
 			}
 		break;
 
-		case 5:
-
-			drive->curve(-5, -5);
-			if(observer->getDistance() - distance > LACC){
-				changeScenario();
-			}
-		break;
-
 		case 6:
 
-			if(curve->run(-15, -5, 370, LCC)){
+			// drive->curve(-5, -5);
+			// if(observer->getDistance() - distance > LACC){
+				changeScenario();
+			// }
+		break;
+
+		case 7:
+			curve->changeGain(1.5, 0, 0);
+			if(curve->curve(3, 30, LCC, L, 7, R)){
 				changeScenario();
 				drive->curve(0, 0);
 				drive->init(true);
 			}
 		break;
 
-		case 7:
+		case 8:
 			if(lineReturn->run2(1)){
 				changeScenario();
 			}
 		break;
 
-		case 8:
+		case 9:
 			if(barcode->run()){
 				changeScenario();
 			}
 		break;
 
-		case 9:
+		case 10:
 			if(undetermined->run()){
 				changeScenario();
 			}
 		break;
 
-		case 10:
+		case 11:
 			return true;
 		break;
 	}

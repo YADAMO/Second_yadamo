@@ -132,9 +132,9 @@ void yadamo_task(intptr_t exinf){
             calibration_flag = calibration.doCalibration();
         }else{
            // logging();
-           // if(rcourse.run()){
-            curve.changeGain(1.5, 0, 0);
-            if(curve.curve(5, 40, 50, L, 10, L)){
+           if(lcorse.run()){
+            // if(choilie.run()){
+            // if(curve.curve(5, 40, 50, L, 10, L)){
                 wup_tsk(MAIN_TASK);
                 // drive.init(true);
            }

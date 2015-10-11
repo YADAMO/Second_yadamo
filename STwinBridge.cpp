@@ -8,12 +8,13 @@ STwinBridge::STwinBridge(LineTracer *lt, Observer *ob, Drive *dr, Choilie *ch){
 	choilie = ch;
 	runtime = 0;
 	distance = 0;
+	phase = 0;
 }
 
 bool STwinBridge::run(){
 	switch(phase){
 		case 0:
-			lineTracer->changeTarget(-5);
+			lineTracer->changeTarget(-6);
 			changeScenario();
 		break;
 
@@ -23,9 +24,18 @@ bool STwinBridge::run(){
 			lineTracer->trace(16, RIGHT, 0);
 			if(observer->isStep() && runtime > 800){
 				changeScenario();
+				drive->init(true);
 			}
 			break;
 		
+		// case 2:
+		// 	drive->curve(2, 2);
+		// 	if(distance - observer->getDistance() > 5){
+		// 		changeScenario();
+		// 		drive->curve(0, 0);
+		// 	}
+		// break;
+
 		case 2:
 			// チョイリーする
 			if(choilie->run()){
@@ -49,8 +59,8 @@ bool STwinBridge::run(){
 		break;
 
 		case 5:
-			drive->curve(10, 10);
-			if(distance - observer->getDistance() > 11){
+			drive->curve(3, 3);
+			if(distance - observer->getDistance() > 10){
 				changeScenario();
 			}
 		break;
@@ -58,36 +68,51 @@ bool STwinBridge::run(){
 		case 6:
 			//後輪を乗せる
 			drive->curve(-100, -100);
-			if(observer->getDistance() - distance > 15){
+			if(observer->getDistance() - distance > 16){
 				drive->curve(0, 0);
 				changeScenario();
 			}
 			break;
 		case 7:
 			// 待つ
-			if(runtime > 2000){
+			if(runtime > 1000){
 				changeScenario();
 			}
 			break;
 
 		case 8:
-			lineTracer->trace(20, RIGHT, 0);
-			if(observer->getDistance() - distance > 10){
+			drive->_drive(-5, 8);
+			if(observer->getDistance() - distance > 5){
 				changeScenario();
-				drive->init();
 			}
+
 		break;
 
 		case 9:
-			// ライントレース
+			lineTracer->trace(20, RIGHT, 0);
+			if(observer->getDistance() - distance > 4){
+				changeScenario();
+				drive->init();
+			}
+
+		break;
+
+		case 10:
 			drive->curve(-80, -80);
-			if(observer->getDistance() - distance > 20){
+			if(observer->getDistance() - distance > 30){
 				changeScenario();
 
 			}
 			break;
 
-		case 10:
+		case 11:
+			drive->curve(7, 7);
+			if(observer->isStep()){
+				changeScenario();
+			}
+		break;
+
+		case 12:
 			return true;
 		break;
 		default:
