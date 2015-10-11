@@ -79,15 +79,15 @@ bool LCourse::run(){
 
 		case 6:
 
-			drive->curve(-5, -5);
-			if(observer->getDistance() - distance > LACC){
+			// drive->curve(-5, -5);
+			// if(observer->getDistance() - distance > LACC){
 				changeScenario();
-			}
+			// }
 		break;
 
 		case 7:
-
-			if(curve->curve(5, 30, LCC, L, 5, R)){
+			curve->changeGain(1.5, 0, 0);
+			if(curve->curve(3, 30, LCC, L, 7, R)){
 				changeScenario();
 				drive->curve(0, 0);
 				drive->init(true);
