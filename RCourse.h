@@ -11,16 +11,18 @@
 #include "LineReturn.h"
 
 #define RST1 385 	//最初の直線
-#define RBC1 41 	//１番目カーブ前の減速
+#define RBC1 30 	//１番目カーブ前の減速
 #define RC1 68 		//１番目カーブ
 #define RAC1 20 	//１番目カーブ後のライン復帰
-#define RST2 125 	//１番目カーブ後の直線
+#define RST2 80 	//１番目カーブ後の直線
 
-#define RC2A 55 	//２番目カーブの前半 左カーブ
-#define RC2B 40 	//２番目カーブの後半 右カーブ
+#define RC2A 53 	//２番目カーブの前半 左カーブ
+#define CTOC 7		//前半カーブと後半カーブの間
+#define RC2B 55 	//２番目カーブの後半 右カーブ
 #define RAC2 30 	//２番目カーブ後半のライン復帰
 
-#define RBCE 20 	//エッジ切り替え前の減速
+
+#define RBCE 30 	//エッジ切り替え前の減速
 #define RCE 10 		//エッジ切り替え
 #define RACE 50 	//エッジ切り替え後の直進
 
