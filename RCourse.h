@@ -14,11 +14,11 @@
 #define RBC1 30 	//１番目カーブ前の減速
 #define RC1 68 		//１番目カーブ
 #define RAC1 20 	//１番目カーブ後のライン復帰
-#define RST2 80 	//１番目カーブ後の直線
+#define RST2 145 	//１番目カーブ後の直線
 
-#define RC2A 53 	//２番目カーブの前半 左カーブ
+#define RC2A 60 	//２番目カーブの前半 左カーブ
 #define CTOC 7		//前半カーブと後半カーブの間
-#define RC2B 55 	//２番目カーブの後半 右カーブ
+#define RC2B 50 	//２番目カーブの後半 右カーブ
 #define RAC2 30 	//２番目カーブ後半のライン復帰
 
 

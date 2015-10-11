@@ -52,7 +52,7 @@ bool RCourse::run(){
 		//１番目カーブ
 		case 2:
 			curve->changeGain(1.3, 0.0, 0.0);
-			if(curve->curve(4, 44, RC1, L, 10, L)){
+			if(curve->curve(4, 45, RC1, L, 10, L)){
 				lineTracer->changeTarget(-3);
 				changeScenario();
 			}
@@ -61,7 +61,7 @@ bool RCourse::run(){
 		//１番目カーブ後の直線
 		case 3:
 			if(lineReturn->run(-1)){
-				changeScenario();
+				phase++;
 			}
 		break;
 
@@ -69,7 +69,7 @@ bool RCourse::run(){
 		case 4:
 			// if(lineReturn->run(-1)){
 			// 	lineTracer->changeGain(1.5, 0.0, 0.0);
-				changeScenario();
+				phase++;
 			// }
 		break;
 
@@ -101,7 +101,7 @@ bool RCourse::run(){
 
 		//２番目カーブの後半 右カーブ
 		case 8:
-			if(curve->curve(4, 40, RC2B, R, 10, L)){
+			if(curve->curve(4, 60, RC2B, R, 10, L)){
 				changeScenario();
 			}
 		break;
